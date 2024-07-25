@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Core;
+
 using FluentValidation;
 
 namespace Domain;
@@ -10,8 +11,7 @@ public static class DomainInstaller
     {
         services.AddScoped<IUserDomainService, UserDomainService>();
         services.AddScoped<ICompanyDomainService, CompanyDomainService>();
-        services.AddScoped<IOrbitDomainService, OrbitDomainService>();
-        services.AddScoped<IUserIdentityService, UserIdentityService>();
+     
         //services.InstallSettingsServices();
 
     }
