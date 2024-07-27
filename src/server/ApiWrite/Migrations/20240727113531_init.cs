@@ -18,28 +18,9 @@ namespace ApiWrite.Migrations
                 name: "BottomImageContents",
                 columns: table => new
                 {
-                    ContentId = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BottomImageContents", x => x.ContentId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContentFiles",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -50,14 +31,33 @@ namespace ApiWrite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContentFiles", x => x.Id);
+                    table.PrimaryKey("PK_BottomImageContents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FreeNewsContents",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FreeNewsContents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
                 {
-                    NewsId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Summery = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -68,27 +68,26 @@ namespace ApiWrite.Migrations
                     IsArchived = table.Column<bool>(type: "bit", nullable: false),
                     ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireDuration = table.Column<int>(type: "int", nullable: false),
+                    ContentId = table.Column<long>(type: "bigint", nullable: true),
                     ScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContentId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_News", x => x.NewsId);
+                    table.PrimaryKey("PK_News", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TopBottomImageContents",
                 columns: table => new
                 {
-                    ContentId = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
                     TopImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BottomImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -98,19 +97,18 @@ namespace ApiWrite.Migrations
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TopBottomImageContents", x => x.ContentId);
+                    table.PrimaryKey("PK_TopBottomImageContents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TopImageContents",
                 columns: table => new
                 {
-                    ContentId = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR [NewsContentSequence]"),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -119,19 +117,47 @@ namespace ApiWrite.Migrations
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TopImageContents", x => x.ContentId);
+                    table.PrimaryKey("PK_TopImageContents", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ContentFile",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FreeNewsContentId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContentFile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContentFile_FreeNewsContents_FreeNewsContentId",
+                        column: x => x.FreeNewsContentId,
+                        principalTable: "FreeNewsContents",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContentFile_FreeNewsContentId",
+                table: "ContentFile",
+                column: "FreeNewsContentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_News_ContentId",
                 table: "News",
-                column: "ContentId",
-                unique: true);
+                column: "ContentId");
         }
 
         /// <inheritdoc />
@@ -141,7 +167,7 @@ namespace ApiWrite.Migrations
                 name: "BottomImageContents");
 
             migrationBuilder.DropTable(
-                name: "ContentFiles");
+                name: "ContentFile");
 
             migrationBuilder.DropTable(
                 name: "News");
@@ -151,6 +177,9 @@ namespace ApiWrite.Migrations
 
             migrationBuilder.DropTable(
                 name: "TopImageContents");
+
+            migrationBuilder.DropTable(
+                name: "FreeNewsContents");
 
             migrationBuilder.DropSequence(
                 name: "NewsContentSequence");

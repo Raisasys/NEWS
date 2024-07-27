@@ -14,7 +14,11 @@ namespace Domain
 				
 		}
 
-		public News(string title, string summery, string titleImage, byte newsType, bool isPublished, bool isActive, bool isArchived, DateTime? expirationTime, int expireDuration, NewsContent content, Guid scopedId)
+		public News(
+			string title, string summery, NewsContent content,
+			string titleImage, byte newsType, 
+			bool isPublished, bool isActive, bool isArchived, 
+			DateTime? expirationTime, int expireDuration,  Guid scopedId)
 		{
 			Title = title;
 			Summery = summery;
@@ -23,12 +27,12 @@ namespace Domain
 			IsPublished = isPublished;
 			IsActive = isActive;
 			ExpirationTime = expirationTime;
-			Content = content;
 			ExpireDuration = expireDuration;
 			ScopeId = scopedId;
 			IsArchived = isArchived;
+			Content =content;
 		}
-		public long NewsId { get; set; }
+		
 		public string Title { get; set; }
 		public string Summery { get; set; }
 		public string TitleImage { get; set; }
@@ -40,8 +44,6 @@ namespace Domain
 		public int ExpireDuration { get; set; }
 		public virtual NewsContent Content { get; set; }
 		public Guid ScopeId { get; set; }
-		public long ContentId { get; set; }
-
 
 	}
 

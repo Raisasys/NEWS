@@ -13,7 +13,6 @@ namespace Domain.ModelMappings
 	{
 		public override void MapBuilder(EntityTypeBuilder<News> entityBuilder)
 		{
-			entityBuilder.HasKey(t => t.NewsId);
 			entityBuilder.Property(t => t.ExpirationTime);
 			entityBuilder.Property(t => t.ExpireDuration);
 			entityBuilder.Property(t => t.IsActive);
@@ -28,7 +27,7 @@ namespace Domain.ModelMappings
 			entityBuilder.Property(t => t.CreatedAt);
 			entityBuilder.Property(t => t.LastModifiedBy);
 			entityBuilder.Property(t => t.LastModifiedAt);
-			entityBuilder.HasOne(t => t.Content).WithOne().OnDelete(DeleteBehavior.Cascade);
+			entityBuilder.HasOne(t => t.Content);//.WithOne().OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

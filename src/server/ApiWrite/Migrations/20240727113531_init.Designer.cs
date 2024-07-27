@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiWrite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240727072511_init")]
+    [Migration("20240727113531_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -27,7 +27,7 @@ namespace ApiWrite.Migrations
 
             modelBuilder.HasSequence("NewsContentSequence");
 
-            modelBuilder.Entity("Domain.Editor.agg.ContentFiles", b =>
+            modelBuilder.Entity("Domain.ContentFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,6 +45,12 @@ namespace ApiWrite.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("FreeNewsContentId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -56,18 +62,20 @@ namespace ApiWrite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContentFiles");
+                    b.HasIndex("FreeNewsContentId");
+
+                    b.ToTable("ContentFile");
                 });
 
             modelBuilder.Entity("Domain.News", b =>
                 {
-                    b.Property<long>("NewsId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("NewsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ContentId")
+                    b.Property<long?>("ContentId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -87,9 +95,6 @@ namespace ApiWrite.Migrations
 
                     b.Property<int>("ExpireDuration")
                         .HasColumnType("int");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -124,22 +129,21 @@ namespace ApiWrite.Migrations
                     b.Property<string>("TitleImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("NewsId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ContentId")
-                        .IsUnique();
+                    b.HasIndex("ContentId");
 
                     b.ToTable("News");
                 });
 
             modelBuilder.Entity("Domain.NewsContent", b =>
                 {
-                    b.Property<long>("ContentId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasDefaultValueSql("NEXT VALUE FOR [NewsContentSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<long>("ContentId"));
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<long>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -153,9 +157,6 @@ namespace ApiWrite.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -165,7 +166,7 @@ namespace ApiWrite.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ContentId");
+                    b.HasKey("Id");
 
                     b.ToTable((string)null);
 
@@ -183,6 +184,16 @@ namespace ApiWrite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("BottomImageContents", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.FreeNewsContent", b =>
+                {
+                    b.HasBaseType("Domain.NewsContent");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("FreeNewsContents", (string)null);
                 });
 
             modelBuilder.Entity("Domain.TopBottomImageContent", b =>
@@ -214,15 +225,25 @@ namespace ApiWrite.Migrations
                     b.ToTable("TopImageContents", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.ContentFile", b =>
+                {
+                    b.HasOne("Domain.FreeNewsContent", null)
+                        .WithMany("Files")
+                        .HasForeignKey("FreeNewsContentId");
+                });
+
             modelBuilder.Entity("Domain.News", b =>
                 {
                     b.HasOne("Domain.NewsContent", "Content")
-                        .WithOne()
-                        .HasForeignKey("Domain.News", "ContentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ContentId");
 
                     b.Navigation("Content");
+                });
+
+            modelBuilder.Entity("Domain.FreeNewsContent", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

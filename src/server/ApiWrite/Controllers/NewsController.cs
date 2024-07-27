@@ -8,9 +8,9 @@ namespace ApiWrite.Controllers
 	public class NewsController : AppController
 	{
 		[HttpPost]
-		public async Task<ActionResult<CreateNewsResponse>> Create(CreateNewsCommand command)
+		public async Task<ActionResult<CreateNewsResponse>> CreateByTopImageContent(CreateNewsByTopImageContentCommand command)
 		{
-			var response = await CommandBus.Send<CreateNewsCommand, CreateNewsResponse>(command);
+			var response = await CommandBus.Send<CreateNewsByTopImageContentCommand, CreateNewsResponse>(command);
 			return Ok(response);
 		}
 

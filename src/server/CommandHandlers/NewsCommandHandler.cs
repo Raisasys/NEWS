@@ -7,31 +7,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CommandHandlers
 {
 	public class NewsCommandHandler : CommandHandlerBase,
-		ICommandHandler<CreateNewsCommand, CreateNewsResponse>
+		ICommandHandler<CreateNewsByTopImageContentCommand, CreateNewsResponse>
 
 	{
-		private readonly INewsDomainService newsDomainService;
-		public NewsCommandHandler(INewsDomainService _newsDomainService)
+		private readonly INewsDomainService _newsDomainService;
+		public NewsCommandHandler(INewsDomainService newsDomainService)
 		{
-			newsDomainService = _newsDomainService;
+			_newsDomainService = newsDomainService;
 		}
 
-		public async Task<CreateNewsResponse> Handle(CreateNewsCommand command, CancellationToken cancellationToken)
+		public async Task<CreateNewsResponse> Handle(CreateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var news =  newsDomainService.CreateNews(command.Title, command.Summery, command.TitleImage, command.NewsType, command.IsPublished, 
-				command.IsActive, command.IsArchived,command.ExpirationTime,command.ExpireDuration, command.Content, command.ScopeId);
+			var info = command.Info;
 
+			var content = new TopImageContent
+			{
+				Image = command.Image,
+				Text = command.Text
+			};
+
+			var newNews = new News(info.Title, info.Summery, content ,info.TitleImage, info.NewsType, info.IsPublished, info.IsActive, 
+				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+
+			Database.Add(newNews);
 			await Database.SaveChanges(cancellationToken);
 
 			return new CreateNewsResponse()
 			{
-				NewsId = news.Id,
+				NewsId = newNews.Id,
 			};
 
 		}
+
+
+		
 	}
+
+	
+
 }

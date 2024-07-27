@@ -8,10 +8,9 @@ using Core;
 
 namespace Domain
 {
-    public abstract class NewsContent : GuidEntity
+    public abstract class NewsContent : LongEntity
     {
-        [Key]
-        public long ContentId { get; set; }
+      
     }
 
     public class TopImageContent : NewsContent
