@@ -31,8 +31,6 @@ public class GetWhoByCompanyIdWhoIdQuery : IQuery<PersonDto>
 
 
 
-
-
 public class GetCompanyListQuery : IQuery<CompanyListDto>
 {
 }

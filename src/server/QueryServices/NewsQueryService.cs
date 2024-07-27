@@ -11,7 +11,9 @@ using Queries;
 
 namespace QueryServices
 {
-	public class NewsQueryService : QueryService, IQueryService<GetNewsById, NewsSimpleDto>
+	public class NewsQueryService : QueryService, 
+		IQueryService<GetNewsById, NewsSimpleDto>,
+		IQueryService<GetNewsListDto, NewsListDto>
 	{
 
 		private readonly IMapper _mapper;
@@ -27,6 +29,17 @@ namespace QueryServices
 
 			return result;
 
+		}
+
+
+		public async Task<NewsListDto> Execute(GetNewsListDto query, CancellationToken cancellationToken)
+		{
+			var items = await Database.Set<News>().Include(c => c.Content).ToListAsync(cancellationToken: cancellationToken);
+			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
+			return new NewsListDto
+			{
+				Items = dtos
+			};
 		}
 	}
 }

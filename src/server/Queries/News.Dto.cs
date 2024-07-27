@@ -18,6 +18,11 @@ public class NewsSimpleDto : IDto
 }
 
 
+public class NewsListDto : IListDto<NewsSimpleDto>
+{
+	public IEnumerable<NewsSimpleDto> Items { get; set; }
+}
+
 public class NewsContentDto : IDto
 {
 

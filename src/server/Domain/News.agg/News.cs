@@ -10,6 +10,25 @@ namespace Domain
 {
 	public class News : Aggregate
 	{
+		public News()
+		{
+				
+		}
+
+		public News(string title, string summery, string titleImage, byte newsType, bool isPublished, bool isActive, bool isArchived, DateTime? expirationTime, int expireDuration, NewsContent content, Guid scopedId)
+		{
+			Title = title;
+			Summery = summery;
+			TitleImage = titleImage;
+			NewsType = newsType;
+			IsPublished = isPublished;
+			IsActive = isActive;
+			ExpirationTime = expirationTime;
+			Content = content;
+			ExpireDuration = expireDuration;
+			ScopeId = scopedId;
+			IsArchived = isArchived;
+		}
 		public long NewsId { get; set; }
 		public string Title { get; set; }
 		public string Summery { get; set; }

@@ -12,8 +12,7 @@ namespace Queries
 		public long NewsId { get; set; }
 	}
 
-	public class NewsListDto : IListDto<NewsSimpleDto>
+	public class GetNewsListDto : IQuery<NewsListDto>
 	{
-		public IEnumerable<NewsSimpleDto> Items { get; set; }
 	}
 }
