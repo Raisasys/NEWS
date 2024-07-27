@@ -59,7 +59,7 @@ public static class App
 
         //services.AddFluentValidationAutoValidation();
 
-        services.AddDatabase<Company, CompanyMapping>(typeof(Program).Assembly);
+        services.AddDatabase<News, NewsMapping>(typeof(Program).Assembly);
         //services.AddBearerTokensOptions(Configuration);
         //services.AddConsumerAuthenticationAndAuthorizationByJwtBearer(Configuration);
         /*if (Environment.IsProduction())

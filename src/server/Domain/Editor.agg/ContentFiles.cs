@@ -7,8 +7,9 @@ using Core;
 
 namespace Domain.Editor.agg
 {
-	public class ContentFiles : Entity
+	public class ContentFiles : GuidEntity
 	{
+		
 		protected override void InitializeKey()
 		{
 			throw new NotImplementedException();

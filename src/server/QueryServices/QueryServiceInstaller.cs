@@ -5,12 +5,12 @@ namespace QueryServices;
 
 public static class QueryServiceInstaller
 {
-    public static void AddQueryServices(this IServiceCollection services)
-    {
-        services.InstallQueryService<CompanyQueryService>();
+	public static void AddQueryServices(this IServiceCollection services)
+	{
+		services.InstallQueryService<NewsQueryService>();
 
-        services.AddAutoMapper(typeof(CompanyMapperProfile));
+		services.AddAutoMapper(typeof(NewsMapperProfile));
 
-    }
+	}
 
 }

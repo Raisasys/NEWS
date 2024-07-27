@@ -12,7 +12,7 @@ namespace Domain.ModelMappings
 	{
 		public override void MapBuilder(EntityTypeBuilder<NewsContent> entityBuilder)
 		{
-
+			entityBuilder.HasKey(t => t.ContentId);
 			entityBuilder.Property(t => t.CreatedBy);
 			entityBuilder.Property(t => t.CreatedAt);
 			entityBuilder.Property(t => t.LastModifiedBy);
@@ -23,7 +23,7 @@ namespace Domain.ModelMappings
 
 	}
 
-	public class ContentIheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent>
+	public class ContentInheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent>
 	{
 
 	}

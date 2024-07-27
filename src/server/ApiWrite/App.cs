@@ -43,7 +43,7 @@ public static class App
         services.AddFileUploadOptions();
         services.AddApplicationServices();
         services.AddCommandHandlers();
-        services.AddSeedDataInitializerAssembly<C00_CompanySeedDevDataInitializer>();
+        //services.AddSeedDataInitializerAssembly<C00_CompanySeedDevDataInitializer>();
         //services.AddApiProvider(Configuration);
         //services.AddOptionsFromAppSetting<bot_setting>(Configuration, "bot_setting");
         //services.AddScoped<ITokenValidatorConsumerService, TokenValidatorConsumerService>();
@@ -59,7 +59,7 @@ public static class App
 
         //services.AddFluentValidationAutoValidation();
 
-        services.AddDatabase<Company, CompanyMapping>(typeof(Program).Assembly);
+        services.AddDatabase<News, NewsMapping>(typeof(Program).Assembly);
         //services.AddBearerTokensOptions(Configuration);
         //services.AddConsumerAuthenticationAndAuthorizationByJwtBearer(Configuration);
         /*if (Environment.IsProduction())

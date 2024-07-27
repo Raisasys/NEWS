@@ -8,8 +8,7 @@ public static class CommandHandlerInstaller
 {
     public static void AddCommandHandlers(this IServiceCollection services)
     {
-        services.InstallCommandBus<CompanyCommandHandlers>();
-        //services.AddValidatorsFromAssemblyContaining<AdminCommandBase>();
+        services.InstallCommandBus<NewsCommandHandler>();
 
     }
 
