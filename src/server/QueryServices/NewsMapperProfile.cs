@@ -15,11 +15,12 @@ namespace QueryServices
 		{
 			CreateMap<News, NewsSimpleDto>();
 
-			CreateMap<NewsContent, NewsContentDto>()
-				.Include<TopBottomImageContent, TopBottomImageContentDto>()
-				.Include<BottomImageContent, BottomImageContentDto>()
-				.Include<TopImageContent, TopImageContentDto>()
-				.Include<FreeNewsContent, FreeNewsContentDto>();
+			CreateMap<NewsContent, NewsContentDto>().ReverseMap();
+			CreateMap<TopBottomImageContent, TopBottomImageContentDto>().ReverseMap();
+			CreateMap<BottomImageContent, BottomImageContentDto>().ReverseMap();
+			CreateMap<TopImageContent, TopImageContentDto>().ReverseMap();
+				CreateMap<FreeNewsContent, FreeNewsContentDto>().ReverseMap();
+				
 
 		}
 

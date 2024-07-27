@@ -24,7 +24,7 @@ public class NewsListDto : IListDto<NewsSimpleDto>
 	public IEnumerable<NewsSimpleDto> Items { get; set; }
 }
 
-public class NewsContentDto : IDto
+public abstract class NewsContentDto : IDto
 {
 
 }
@@ -51,7 +51,7 @@ public class TopBottomImageContentDto : NewsContentDto
 public class FreeNewsContentDto : NewsContentDto
 {
     public string Content { get; set; }
-    public virtual ICollection<ContentFile> Files { get; set; }
+    public string FileName { get; set; }
 }
 
 

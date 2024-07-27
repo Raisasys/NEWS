@@ -13,7 +13,9 @@ using static System.Net.Mime.MediaTypeNames;
 namespace CommandHandlers
 {
 	public class NewsCommandHandler : CommandHandlerBase,
-		ICommandHandler<CreateNewsByTopImageContentCommand, CreateNewsResponse>
+		ICommandHandler<CreateNewsByTopImageContentCommand, CreateNewsResponse>,
+		ICommandHandler<CreateNewsByTopBottomImageContentCommand, CreateNewsResponse>,
+		ICommandHandler<CreateNewsByBottomImageContentCommand, CreateNewsResponse>
 
 	{
 		private readonly INewsDomainService _newsDomainService;
@@ -45,8 +47,51 @@ namespace CommandHandlers
 
 		}
 
+		public async Task<CreateNewsResponse> Handle(CreateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
+		{
+			var info = command.Info;
 
-		
+			var content = new TopBottomImageContent
+			{
+				TopImage = command.TopImage,
+				BottomImage = command.BottomImage,
+				Text = command.Text
+			};
+
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, info.IsPublished, info.IsActive,
+				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+
+			Database.Add(newNews);
+			await Database.SaveChanges(cancellationToken);
+
+			return new CreateNewsResponse()
+			{
+				NewsId = newNews.Id,
+			};
+		}
+
+
+		public async Task<CreateNewsResponse> Handle(CreateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
+		{
+			var info = command.Info;
+
+			var content = new BottomImageContent
+			{
+				Image = command.Image,
+				Text = command.Text
+			};
+
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, info.IsPublished, info.IsActive,
+				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+
+			Database.Add(newNews);
+			await Database.SaveChanges(cancellationToken);
+
+			return new CreateNewsResponse()
+			{
+				NewsId = newNews.Id,
+			};
+		}
 	}
 
 	

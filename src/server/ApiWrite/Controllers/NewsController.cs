@@ -14,5 +14,20 @@ namespace ApiWrite.Controllers
 			return Ok(response);
 		}
 
+
+		[HttpPost]
+		public async Task<ActionResult<CreateNewsResponse>> CreateByTopBottomImageContent(CreateNewsByTopBottomImageContentCommand command)
+		{
+			var response = await CommandBus.Send<CreateNewsByTopBottomImageContentCommand, CreateNewsResponse>(command);
+			return Ok(response);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult<CreateNewsResponse>> CreateByBottomImageContent(CreateNewsByBottomImageContentCommand command)
+		{
+			var response = await CommandBus.Send<CreateNewsByBottomImageContentCommand, CreateNewsResponse>(command);
+			return Ok(response);
+		}
+
 	}
 }
