@@ -14,5 +14,9 @@ public static class DomainInstaller
         //services.InstallSettingsServices();
 
     }
-
+    static void Test()
+    {
+        News o = new News();
+        o.Content.
+    }
 }
