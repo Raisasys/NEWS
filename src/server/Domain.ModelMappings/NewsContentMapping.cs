@@ -23,7 +23,7 @@ namespace Domain.ModelMappings
 
 	}
 
-	public class ContentInheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent>
+	public class ContentInheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent,FreeNewsContent>
 	{
 
 	}

@@ -1,4 +1,5 @@
 ﻿using Core;
+using Domain;
 
 namespace Queries;
 
@@ -47,6 +48,10 @@ public class TopBottomImageContentDto : NewsContentDto
 	public string Text { get; set; }
 }
 
-
+public class FreeNewsContentDto : NewsContentDto
+{
+    public string Content { get; set; }
+    public virtual ICollection<ContentFile> Files { get; set; }
+}
 
 
