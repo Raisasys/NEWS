@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
-using Domain;
 
 namespace Domain
 {
-	public class News : LongAggregate
+    public class News : LongAggregate
 	{
 		public News()
 		{

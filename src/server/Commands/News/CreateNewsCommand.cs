@@ -8,7 +8,7 @@ using Domain;
 
 namespace Commands.News
 {
-	public class CreateNewsCommand : Command<CreateNewsResponse>
+    public class CreateNewsCommand : Command<CreateNewsResponse>
 	{
 		public long NewsId { get; set; }
 		public string Title { get; set; }

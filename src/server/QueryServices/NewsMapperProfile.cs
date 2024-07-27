@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain;
 using Queries;
-using NewsContent = Domain.NewsContent;
 
 namespace QueryServices
 {
-	public class NewsMapperProfile : Profile
+    public class NewsMapperProfile : Profile
 	{
 		public NewsMapperProfile()
 		{

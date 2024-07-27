@@ -11,8 +11,6 @@ public static class DomainInstaller
     {
         services.AddScoped<INewsDomainService, NewsDomainService>();
      
-        //services.InstallSettingsServices();
-
     }
 
 }

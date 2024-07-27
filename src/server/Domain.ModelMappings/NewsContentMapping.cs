@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.ModelMappings
 {
-	public class NewsContentMapping : CustomEntityMapper<NewsContent>
+    public class NewsContentMapping : CustomEntityMapper<NewsContent>
 	{
 		public override void MapBuilder(EntityTypeBuilder<NewsContent> entityBuilder)
 		{

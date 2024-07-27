@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain
 {
 
-	public interface INewsDomainService
+    public interface INewsDomainService
 	{
 		News CreateNews (string title, string summery, string titleImage, byte newsType, bool isPublished, bool isActive, bool isArchived, DateTime? expirationTime, int expireDuration, NewsContent content, Guid scopedId);
 	}
