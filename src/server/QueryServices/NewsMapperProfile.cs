@@ -15,12 +15,12 @@ namespace QueryServices
 		public NewsMapperProfile()
 		{
 			CreateMap<News, NewsSimpleDto>();
-			
+
 			CreateMap<NewsContent, NewsContentDto>()
 				.Include<TopBottomImageContent, TopBottomImageContentDto>()
 				.Include<BottomImageContent, BottomImageContentDto>()
-				.Include<TopImageContent, TopImageContentDto>();
-				
+				.Include<TopImageContent, TopImageContentDto>()
+				.Include<FreeNewsContent, FreeNewsContentDto>();
 
 		}
 
