@@ -33,5 +33,15 @@ namespace Domain
         public string Text { get; set; }
     }
 
+    public class FreeNewsContent : NewsContent
+    {
+	    public string Content { get; set; }
+	    public virtual ICollection<ContentFile> Files { get; set; }
+    }
+
+    public class ContentFile : GuidEntity
+    {
+	    public string FileName { get; set; }
+    }
 
 }
