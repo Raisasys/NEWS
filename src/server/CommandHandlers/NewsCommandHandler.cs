@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace CommandHandlers
@@ -15,7 +16,10 @@ namespace CommandHandlers
 	public class NewsCommandHandler : CommandHandlerBase,
 		ICommandHandler<CreateNewsByTopImageContentCommand, CreateNewsResponse>,
 		ICommandHandler<CreateNewsByTopBottomImageContentCommand, CreateNewsResponse>,
-		ICommandHandler<CreateNewsByBottomImageContentCommand, CreateNewsResponse>
+		ICommandHandler<CreateNewsByBottomImageContentCommand, CreateNewsResponse>,
+		ICommandHandler<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>,
+		ICommandHandler<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>,
+		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>
 
 	{
 		private readonly INewsDomainService _newsDomainService;
@@ -92,8 +96,110 @@ namespace CommandHandlers
 				NewsId = newNews.Id,
 			};
 		}
+
+		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
+		{
+			var updateNews = Database.Set<News>().Include(t=>t.Content).SingleOrDefaultAsync(t=>t.Id == command.Info.NewsID).Result;
+
+
+
+			var content = updateNews.Content as TopImageContent;
+			content.Image = command.Image;
+			content.Text = command.Text;
+			var info = command.Info;
+
+			updateNews.Content = content;
+			updateNews.Title = info.Title;
+			updateNews.Summery = info.Summery;
+			updateNews.TitleImage = info.TitleImage;
+			updateNews.NewsType = info.NewsType;
+			updateNews.IsPublished = info.IsPublished;
+			updateNews.IsActive = info.IsActive;
+			updateNews.ExpirationTime = info.ExpirationTime;
+			updateNews.ExpireDuration = info.ExpireDuration;
+			updateNews.ScopeId = info.ScopeId;
+
+			Database.Update(updateNews);
+			await Database.SaveChanges(cancellationToken);
+			return new UpdateNewsResponse();
+
+		}
+
+
+		public async Task<UpdateNewsResponse> Handle(UpdateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
+		{
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.Info.NewsID, cancellationToken);
+			
+			var content = updateNews.Content as BottomImageContent;
+			content.Image = command.Image;
+			content.Text = command.Text;
+
+			var info = command.Info;
+			
+			updateNews.Title = info.Title;
+			updateNews.Summery = info.Summery;
+			updateNews.TitleImage = info.TitleImage;
+			updateNews.NewsType = info.NewsType;
+			updateNews.IsPublished = info.IsPublished;
+			updateNews.IsActive = info.IsActive;
+			updateNews.ExpirationTime = info.ExpirationTime;
+			updateNews.ExpireDuration = info.ExpireDuration;
+			updateNews.ScopeId = info.ScopeId;
+
+			Database.Update(updateNews);
+			await Database.SaveChanges(cancellationToken);
+			return new UpdateNewsResponse();
+
+		}
+
+		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
+		{
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.Info.NewsID, cancellationToken);
+
+			var content = updateNews.Content as TopBottomImageContent;
+			content.CopyMap(command);
+			/*content.BottomImage = command.BottomImage;
+			content.TopImage = command.TopImage;
+			content.Text = command.Text;*/
+
+			var info = command.Info;
+
+			updateNews.CopyMap(info);
+
+			/*updateNews.Title = info.Title;
+			updateNews.Summery = info.Summery;
+			updateNews.TitleImage = info.TitleImage;
+			updateNews.NewsType = info.NewsType;
+			updateNews.IsPublished = info.IsPublished;
+			updateNews.IsActive = info.IsActive;
+			updateNews.ExpirationTime = info.ExpirationTime;
+			updateNews.ExpireDuration = info.ExpireDuration;
+			updateNews.ScopeId = info.ScopeId;*/
+
+			Database.Update(updateNews);
+			await Database.SaveChanges(cancellationToken);
+			return new UpdateNewsResponse();
+
+		}
 	}
 
-	
+	public static class InlineMapper
+	{
+		public static void CopyMap(this object src, object from)
+		{
+			var srcProperties = src.GetType().GetProperties();
+			var fromProperties = from.GetType().GetProperties();
+
+			foreach (var prop in srcProperties)
+			{
+				var fromProperty = fromProperties.FirstOrDefault(i => i.Name == prop.Name);
+				if (fromProperty != null)
+				{
+					var fromPropertyValue = fromProperty.GetValue(from);
+					prop.SetValue(src, fromPropertyValue);
+				}
+			}
+		}
+	}
 
 }

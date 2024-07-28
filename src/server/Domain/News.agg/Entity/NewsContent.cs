@@ -10,13 +10,15 @@ namespace Domain
 {
     public abstract class NewsContent : LongEntity
     {
-      
     }
+
+
 
     public class TopImageContent : NewsContent
     {
         public string Image { get; set; }
         public string Text { get; set; }
+
     }
 
     public class BottomImageContent : NewsContent

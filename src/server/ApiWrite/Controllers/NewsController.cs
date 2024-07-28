@@ -29,5 +29,26 @@ namespace ApiWrite.Controllers
 			return Ok(response);
 		}
 
+		[HttpPost]
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateByTopImageContent(UpdateNewsByTopImageContentCommand command)
+		{
+			var response = await CommandBus.Send<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>(command);
+			return Ok(response);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateByBottomImageContent(UpdateNewsByBottomImageContentCommand command)
+		{
+			var response = await CommandBus.Send<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>(command);
+			return Ok(response);
+		}
+
+
+		[HttpPost]
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateByTopBottomImageContent(UpdateNewsByTopBottomImageContentCommand command)
+		{
+			var response = await CommandBus.Send<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>(command);
+			return Ok(response);
+		}
 	}
 }
