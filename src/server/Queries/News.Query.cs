@@ -11,8 +11,12 @@ namespace Queries
 	{
 		public long NewsId { get; set; }
 	}
+    public class GetNewsByOwnerID : IQuery<NewsSimpleDto>
+    {
+        public long OwnerID { get; set; }
+    }
 
-	public class GetNewsListDto : IQuery<NewsListDto>
+    public class GetNewsListDto : IQuery<NewsListDto>
 	{
 	}
 }

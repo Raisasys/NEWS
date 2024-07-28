@@ -2,6 +2,7 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Queries;
+using System.Net;
 
 namespace ApiRead
 {
@@ -14,5 +15,17 @@ namespace ApiRead
 			return Ok(response);
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<List<NewsSimpleDto>>> GetByOwnerID([FromQuery] GetNewsByOwnerID oQueryString)
+		{
+			try
+			{
+				return Ok(await QueryProcessor.Execute<GetNewsByOwnerID, NewsSimpleDto>(oQueryString));
+			}
+			catch (Exception oEx)
+			{
+				return Problem(oEx.Message);				
+			}			
+		}
 	}
 }

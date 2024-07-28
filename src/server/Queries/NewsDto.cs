@@ -16,6 +16,8 @@ public class NewsSimpleDto : IDto
 	public DateTime? ExpirationTime { get; set; }
 	public int ExpireDuration { get; set; }
 	public Guid ScopeId { get; set; }
+    public string OwnerID { get; set; }
+    public string ContentID { get; set; }
 }
 
 
