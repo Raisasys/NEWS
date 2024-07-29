@@ -130,21 +130,14 @@ namespace CommandHandlers
 		{
 			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.Info.NewsID, cancellationToken);
 			
+		
 			var content = updateNews.Content as BottomImageContent;
-			content.Image = command.Image;
-			content.Text = command.Text;
+			content.CopyMap(command);
+
 
 			var info = command.Info;
-			
-			updateNews.Title = info.Title;
-			updateNews.Summery = info.Summery;
-			updateNews.TitleImage = info.TitleImage;
-			updateNews.NewsType = info.NewsType;
-			updateNews.IsPublished = info.IsPublished;
-			updateNews.IsActive = info.IsActive;
-			updateNews.ExpirationTime = info.ExpirationTime;
-			updateNews.ExpireDuration = info.ExpireDuration;
-			updateNews.ScopeId = info.ScopeId;
+
+			updateNews.CopyMap(info);
 
 			Database.Update(updateNews);
 			await Database.SaveChanges(cancellationToken);
@@ -158,24 +151,13 @@ namespace CommandHandlers
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
-			/*content.BottomImage = command.BottomImage;
-			content.TopImage = command.TopImage;
-			content.Text = command.Text;*/
+			
 
 			var info = command.Info;
 
 			updateNews.CopyMap(info);
 
-			/*updateNews.Title = info.Title;
-			updateNews.Summery = info.Summery;
-			updateNews.TitleImage = info.TitleImage;
-			updateNews.NewsType = info.NewsType;
-			updateNews.IsPublished = info.IsPublished;
-			updateNews.IsActive = info.IsActive;
-			updateNews.ExpirationTime = info.ExpirationTime;
-			updateNews.ExpireDuration = info.ExpireDuration;
-			updateNews.ScopeId = info.ScopeId;*/
-
+			
 			Database.Update(updateNews);
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
