@@ -20,7 +20,8 @@ namespace CommandHandlers
 		ICommandHandler<CreateNewsByBottomImageContentCommand, CreateNewsResponse>,
 		ICommandHandler<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>,
-		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>
+		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>,
+		ICommandHandler<DeleteNewCommand>
 
 	{
 		private readonly INewsDomainService _newsDomainService;
@@ -100,25 +101,15 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = Database.Set<News>().Include(t=>t.Content).SingleOrDefaultAsync(t=>t.Id == command.Info.NewsID).Result;
-
-
+			var updateNews = Database.Set<News>().Include(t=>t.Content).SingleOrDefaultAsync(t=>t.Id == command.NewsID, cancellationToken).Result;
 
 			var content = updateNews.Content as TopImageContent;
-			content.Image = command.Image;
-			content.Text = command.Text;
+			content.CopyMap(command);
+
+
 			var info = command.Info;
 
-			updateNews.Content = content;
-			updateNews.Title = info.Title;
-			updateNews.Summery = info.Summery;
-			updateNews.TitleImage = info.TitleImage;
-			updateNews.NewsType = info.NewsType;
-			updateNews.IsPublished = info.IsPublished;
-			updateNews.IsActive = info.IsActive;
-			updateNews.ExpirationTime = info.ExpirationTime;
-			updateNews.ExpireDuration = info.ExpireDuration;
-			updateNews.ScopeId = info.ScopeId;
+			updateNews.CopyMap(info);
 
 			Database.Update(updateNews);
 			await Database.SaveChanges(cancellationToken);
@@ -129,7 +120,7 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.Info.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
 			
 		
 			var content = updateNews.Content as BottomImageContent;
@@ -148,7 +139,7 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.Info.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
@@ -163,6 +154,14 @@ namespace CommandHandlers
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
 
+		}
+
+		public async Task Handle(DeleteNewCommand command, CancellationToken cancellationToken)
+		{
+			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
+
+			Database.Remove(item);
+			await Database.SaveChanges(cancellationToken);
 		}
 	}
 

@@ -12,6 +12,7 @@ namespace Commands.News
 	public abstract class UpdateNewsCommand : Command<UpdateNewsResponse>
 	{
 		public NewInfoCommand Info { get; set; }
+		public long NewsID { get; set; }
 		public string Image { get; set; }
 		public string Text { get; set; }
 	}
@@ -35,7 +36,6 @@ namespace Commands.News
 
 	public class NewInfoCommand
 	{
-		public long NewsID { get; set; }
 		public string Title { get; set; }
 		public string Summery { get; set; }
 		public string TitleImage { get; set; }

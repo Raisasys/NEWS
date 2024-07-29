@@ -8,7 +8,7 @@ namespace ApiWrite.Controllers
 	public class NewsController : AppController
 	{
 		[HttpPost]
-		public async Task<ActionResult<CreateNewsResponse>> CreateByTopImageContent(CreateNewsByTopImageContentCommand command)
+		public async Task<ActionResult<CreateNewsResponse>> CreateByTopImageContent([FromBody] CreateNewsByTopImageContentCommand command)
 		{
 			var response = await CommandBus.Send<CreateNewsByTopImageContentCommand, CreateNewsResponse>(command);
 			return Ok(response);
@@ -16,14 +16,14 @@ namespace ApiWrite.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult<CreateNewsResponse>> CreateByTopBottomImageContent(CreateNewsByTopBottomImageContentCommand command)
+		public async Task<ActionResult<CreateNewsResponse>> CreateByTopBottomImageContent([FromBody] CreateNewsByTopBottomImageContentCommand command)
 		{
 			var response = await CommandBus.Send<CreateNewsByTopBottomImageContentCommand, CreateNewsResponse>(command);
 			return Ok(response);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<CreateNewsResponse>> CreateByBottomImageContent(CreateNewsByBottomImageContentCommand command)
+		public async Task<ActionResult<CreateNewsResponse>> CreateByBottomImageContent([FromBody] CreateNewsByBottomImageContentCommand command)
 		{
 			var response = await CommandBus.Send<CreateNewsByBottomImageContentCommand, CreateNewsResponse>(command);
 			return Ok(response);
@@ -37,7 +37,7 @@ namespace ApiWrite.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<UpdateNewsResponse>> UpdateByBottomImageContent(UpdateNewsByBottomImageContentCommand command)
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateByBottomImageContent([FromBody] UpdateNewsByBottomImageContentCommand command)
 		{
 			var response = await CommandBus.Send<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>(command);
 			return Ok(response);
@@ -45,10 +45,17 @@ namespace ApiWrite.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult<UpdateNewsResponse>> UpdateByTopBottomImageContent(UpdateNewsByTopBottomImageContentCommand command)
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateByTopBottomImageContent([FromBody] UpdateNewsByTopBottomImageContentCommand command)
 		{
 			var response = await CommandBus.Send<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>(command);
 			return Ok(response);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> DeleteNews([FromBody] DeleteNewCommand command)
+		{
+			await CommandBus.Send<DeleteNewCommand>(command);
+			return Ok();
 		}
 	}
 }
