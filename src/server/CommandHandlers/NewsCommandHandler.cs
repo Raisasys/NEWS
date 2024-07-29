@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
 
 namespace CommandHandlers
 {
@@ -169,9 +170,8 @@ namespace CommandHandlers
 	{
 		public static void CopyMap(this object src, object from)
 		{
-			var srcProperties = src.GetType().GetProperties();
-			var fromProperties = from.GetType().GetProperties();
-
+			var srcProperties = src.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+			var fromProperties = from.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 			foreach (var prop in srcProperties)
 			{
 				var fromProperty = fromProperties.FirstOrDefault(i => i.Name == prop.Name);
