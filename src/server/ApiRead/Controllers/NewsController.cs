@@ -27,5 +27,18 @@ namespace ApiRead
 				return Problem(oEx.Message);				
 			}			
 		}
+
+		[HttpGet]
+		public async Task<ActionResult<NewsListDto>> GetNews([FromQuery] GetNewsListDto oQueryString)
+		{
+			try
+			{
+				return Ok(await QueryProcessor.Execute<GetNewsListDto, NewsListDto>(oQueryString));
+			}
+			catch (Exception oEx)
+			{
+				return Problem(oEx.Message);
+			}
+		}
 	}
 }
