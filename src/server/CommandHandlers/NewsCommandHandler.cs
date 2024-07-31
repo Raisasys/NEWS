@@ -21,7 +21,9 @@ namespace CommandHandlers
 		ICommandHandler<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>,
-		ICommandHandler<DeleteNewCommand>
+		ICommandHandler<DeleteNewCommand>,
+		ICommandHandler<UpdateActivationCommand>
+
 
 	{
 		private readonly INewsDomainService _newsDomainService;
@@ -40,7 +42,7 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content ,info.TitleImage, 0, true, true, 
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
 				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
@@ -101,7 +103,7 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = Database.Set<News>().Include(t=>t.Content).SingleOrDefaultAsync(t=>t.Id == command.NewsID, cancellationToken).Result;
+			var updateNews = Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
 
 			var content = updateNews.Content as TopImageContent;
 			content.CopyMap(command);
@@ -121,8 +123,8 @@ namespace CommandHandlers
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
 			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
-			
-		
+
+
 			var content = updateNews.Content as BottomImageContent;
 			content.CopyMap(command);
 
@@ -143,13 +145,13 @@ namespace CommandHandlers
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
-			
+
 
 			var info = command.Info;
 
 			updateNews.CopyMap(info);
 
-			
+
 			Database.Update(updateNews);
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
@@ -160,27 +162,63 @@ namespace CommandHandlers
 		{
 			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
-			Database.Remove(item);
+			var topImage = item.Content as TopImageContent;
+			var bottomImage = item.Content as BottomImageContent;
+			var topBottomImage = item.Content as TopBottomImageContent;
+
+			item.IsDeleted = true;
+			if (topImage != null)
+			{
+				topImage.IsDeleted = true;
+			}
+			if (bottomImage != null)
+			{
+				bottomImage.IsDeleted = true;
+			}
+			if (topBottomImage != null)
+			{
+				topBottomImage.IsDeleted = true;
+			}
 			await Database.SaveChanges(cancellationToken);
+		}
+
+		public async Task Handle(UpdateActivationCommand command, CancellationToken cancellationToken)
+		{
+			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
+			if (item.IsActive)
+			{
+				item.IsActive = false;
+			}
+			else
+			{
+				item.IsActive = true;
+			}
+
+			
+			await Database.SaveChanges(cancellationToken);
+
 		}
 	}
 
-	public static class InlineMapper
+
+}
+
+public static class InlineMapper
+{
+	public static void CopyMap(this object src, object from)
 	{
-		public static void CopyMap(this object src, object from)
+		var srcProperties = src.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+		var fromProperties = from.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+		foreach (var prop in srcProperties)
 		{
-			var srcProperties = src.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			var fromProperties = from.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			foreach (var prop in srcProperties)
+			var fromProperty = fromProperties.FirstOrDefault(i => i.Name == prop.Name);
+			if (fromProperty != null)
 			{
-				var fromProperty = fromProperties.FirstOrDefault(i => i.Name == prop.Name);
-				if (fromProperty != null)
-				{
-					var fromPropertyValue = fromProperty.GetValue(from);
-					prop.SetValue(src, fromPropertyValue);
-				}
+				var fromPropertyValue = fromProperty.GetValue(from);
+				prop.SetValue(src, fromPropertyValue);
 			}
 		}
 	}
-
 }
+
+

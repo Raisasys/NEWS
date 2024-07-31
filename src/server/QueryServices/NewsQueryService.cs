@@ -12,7 +12,7 @@ using Queries;
 namespace QueryServices
 {
 	public class NewsQueryService : QueryService, 
-		IQueryService<GetNewsById, NewsSimpleDto>,
+		IQueryService<GetNewsById, NewsFullDto>,
 		IQueryService<GetNewsListDto, NewsListDto>
 	{
 
@@ -22,10 +22,10 @@ namespace QueryServices
 		{
 			_mapper = mapper;
 		}
-		public async Task<NewsSimpleDto> Execute(GetNewsById query, CancellationToken cancellationToken)
+		public async Task<NewsFullDto> Execute(GetNewsById query, CancellationToken cancellationToken)
 		{
 			var dataById = await Database.Find<News>(query.NewsId);
-			var result = _mapper.Map<News,NewsSimpleDto>(dataById);
+			var result = _mapper.Map<News, NewsFullDto>(dataById);
 
 			return result;
 
@@ -34,7 +34,7 @@ namespace QueryServices
 
 		public async Task<NewsListDto> Execute(GetNewsListDto query, CancellationToken cancellationToken)
 		{
-			var items = await Database.Set<News>().Include(c => c.Content).ToListAsync(cancellationToken: cancellationToken);
+			var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false).ToListAsync(cancellationToken: cancellationToken);
 			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 		
 			return new NewsListDto

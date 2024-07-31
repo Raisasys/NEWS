@@ -5,7 +5,7 @@ namespace Queries;
 
 public class NewsSimpleDto : IDto
 {
-	public long NewsId { get; set; }
+	public long Id { get; set; }
 	public string Title { get; set; }
 	public string Summery { get; set; }
 	public string TitleImage { get; set; }

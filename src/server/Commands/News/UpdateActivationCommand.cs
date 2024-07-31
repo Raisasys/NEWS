@@ -7,7 +7,7 @@ using Core;
 
 namespace Commands.News
 {
-	public class DeleteNewCommand : Command
+	public class UpdateActivationCommand : Command
 	{
 		public int NewsId { get; set; }
 	}

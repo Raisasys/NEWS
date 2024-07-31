@@ -57,5 +57,12 @@ namespace ApiWrite.Controllers
 			await CommandBus.Send<DeleteNewCommand>(command);
 			return Ok();
 		}
+
+		[HttpPost]
+		public async Task<ActionResult> UpdateActivationNews([FromBody] UpdateActivationCommand command)
+		{
+			await CommandBus.Send<UpdateActivationCommand>(command);
+			return Ok();
+		}
 	}
 }

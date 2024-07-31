@@ -9,9 +9,9 @@ namespace ApiRead
 	public class NewsController : AppController
 	{
 		[HttpGet]
-		public async Task<ActionResult<NewsSimpleDto>> GetById([FromQuery] GetNewsById query)
+		public async Task<ActionResult<NewsFullDto>> GetById([FromQuery] GetNewsById query)
 		{
-			var response = await QueryProcessor.Execute<GetNewsById, NewsSimpleDto>(query);
+			var response = await QueryProcessor.Execute<GetNewsById, NewsFullDto>(query);
 			return Ok(response);
 		}
 

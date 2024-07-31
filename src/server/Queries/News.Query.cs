@@ -7,7 +7,7 @@ using Core;
 
 namespace Queries
 {
-	public class GetNewsById : IQuery<NewsSimpleDto>
+	public class GetNewsById : IQuery<NewsFullDto>
 	{
 		public long NewsId { get; set; }
 	}
@@ -19,4 +19,6 @@ namespace Queries
     public class GetNewsListDto : IQuery<NewsListDto>
 	{
 	}
+
+
 }
