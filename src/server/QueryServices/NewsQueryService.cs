@@ -24,9 +24,8 @@ namespace QueryServices
 		}
 		public async Task<NewsFullDto> Execute(GetNewsById query, CancellationToken cancellationToken)
 		{
-			var dataById = await Database.Find<News>(query.NewsId);
+			var dataById = await Database.Set<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId);
 			var result = _mapper.Map<News, NewsFullDto>(dataById);
-
 			return result;
 
 		}

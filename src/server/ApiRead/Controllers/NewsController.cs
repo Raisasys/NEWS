@@ -1,6 +1,7 @@
 ﻿using Core;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities.Encoders;
 using Queries;
 using System.Net;
 
@@ -11,8 +12,15 @@ namespace ApiRead
 		[HttpGet]
 		public async Task<ActionResult<NewsFullDto>> GetById([FromQuery] GetNewsById query)
 		{
-			var response = await QueryProcessor.Execute<GetNewsById, NewsFullDto>(query);
-			return Ok(response);
+			try
+			{
+                var oResponse = await QueryProcessor.Execute<GetNewsById, NewsFullDto>(query);
+                return Ok(oResponse);
+            }
+            catch (Exception oEx)
+			{
+                return Problem(oEx.Message);
+            }
 		}
 
 		[HttpGet]

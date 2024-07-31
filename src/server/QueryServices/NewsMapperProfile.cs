@@ -10,24 +10,25 @@ using Queries;
 namespace QueryServices
 {
     public class NewsMapperProfile : Profile
-	{
-		public NewsMapperProfile()
-		{
-			CreateMap<News, NewsSimpleDto>();
+    {
+        public NewsMapperProfile()
+        {
+            CreateMap<News, NewsSimpleDto>();
 
-			CreateMap<NewsContent, NewsContentDto>()
-				.Include<TopBottomImageContent, TopBottomImageContentDto>()
-				.Include<BottomImageContent, BottomImageContentDto>()
-				.Include<TopImageContent, TopImageContentDto>()
-				.Include<FreeNewsContent, FreeNewsContentDto>();
+            CreateMap<NewsContent, NewsContentDto>()
+                .Include<TopBottomImageContent, TopBottomImageContentDto>()
+                .Include<BottomImageContent, BottomImageContentDto>()
+                .Include<TopImageContent, TopImageContentDto>()
+                .Include<FreeNewsContent, FreeNewsContentDto>();
 
-			CreateMap<TopBottomImageContent, TopBottomImageContentDto>();
-			CreateMap<BottomImageContent, BottomImageContentDto>();
-			CreateMap<TopImageContent, TopImageContentDto>();
-			CreateMap<FreeNewsContent, FreeNewsContentDto>();
-				
+            CreateMap<TopBottomImageContent, TopBottomImageContentDto>();
+            CreateMap<BottomImageContent, BottomImageContentDto>();
+            CreateMap<TopImageContent, TopImageContentDto>();
+            CreateMap<FreeNewsContent, FreeNewsContentDto>();
+            CreateMap<News, NewsFullDto>();
 
-		}
 
-	}
+        }
+
+    }
 }
