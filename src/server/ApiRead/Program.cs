@@ -1,13 +1,6 @@
-var builder = WebApplication.CreateBuilder(args);
-App.ConfigureServices(builder.Services, builder.Configuration);
-var app = builder.Build();
-App.ConfigurePipeline(app);
-app.Run();
+using Jaguar.Service.Web;
 
-
-
-/*
-services.AddMvc(options =>
-{
-    options.Filters.Add(new ModelStateFilter());
-})*/
+WebApplication
+	.CreateBuilder(args)
+	.Host<ReadApp>()
+	.Run();

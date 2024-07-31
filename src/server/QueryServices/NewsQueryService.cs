@@ -36,6 +36,7 @@ namespace QueryServices
 		{
 			var items = await Database.Set<News>().Include(c => c.Content).ToListAsync(cancellationToken: cancellationToken);
 			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
+		
 			return new NewsListDto
 			{
 				Items = dtos

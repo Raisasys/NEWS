@@ -38,6 +38,5 @@ public class PersonDto : IDto
     public Guid Id { get; set; }
     public UserValue User { get; set; }
     public string Name => User.Name;
-    public string Email => User.Email;
     public PersonRole Role{ get; set; }
 }

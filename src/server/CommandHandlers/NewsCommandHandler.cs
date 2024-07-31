@@ -40,8 +40,8 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content ,info.TitleImage, info.NewsType, info.IsPublished, info.IsActive, 
-				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+			var newNews = new News(info.Title, info.Summery, content ,info.TitleImage, 0, true, true, 
+				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
 			await Database.SaveChanges(cancellationToken);
@@ -64,8 +64,8 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, info.IsPublished, info.IsActive,
-				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
+				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
 			await Database.SaveChanges(cancellationToken);
@@ -87,8 +87,8 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, info.IsPublished, info.IsActive,
-				info.IsArchived, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
+				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
 			await Database.SaveChanges(cancellationToken);

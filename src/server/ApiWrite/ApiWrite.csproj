@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="Jaguar.Service.Web" Version="1.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.5" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.6.2" />
@@ -29,10 +30,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
-	  <ProjectReference Include="..\Core\Core.csproj" />
-	  <ProjectReference Include="..\Data\Data.csproj" />
 	  <ProjectReference Include="..\Domain.ModelMappings\Domain.ModelMappings.csproj" />
-	  <ProjectReference Include="..\Service\Service.csproj" />
 	</ItemGroup>
 
 	
