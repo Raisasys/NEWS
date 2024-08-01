@@ -1,5 +1,4 @@
 using Core;
-using Jaguar.Service.Web;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Web;

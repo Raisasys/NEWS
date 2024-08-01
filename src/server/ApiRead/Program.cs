@@ -1,4 +1,4 @@
-using Jaguar.Service.Web;
+using Service.Web;
 
 WebApplication
 	.CreateBuilder(args)

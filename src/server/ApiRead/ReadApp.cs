@@ -2,7 +2,6 @@ using ApiRead;
 using Domain;
 using Domain.ModelMappings;
 using Service.Web;
-using Jaguar.Service.Web;
 using QueryServices;
 
 class ReadApp : App<ReadApp, News, NewsMapping>

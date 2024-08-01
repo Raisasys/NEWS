@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Service;
 using Service.Web;
-using Jaguar.Service.Web;
+using Shared.Messages;
 
 class WriteApp: App<WriteApp,News,NewsMapping>
 {
@@ -31,5 +31,7 @@ class WriteApp: App<WriteApp,News,NewsMapping>
 	{
 		Services.AddDomainServices();
 		Services.AddCommandHandlers();
+
+		Services.BuildIntegrationBus().AddMessageAssembly<PersistFileIntegrationCommand>().Run();
 	}
 }

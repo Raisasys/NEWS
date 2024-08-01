@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
+using Shared.Messages;
 
 namespace CommandHandlers
 {
@@ -27,9 +28,13 @@ namespace CommandHandlers
 
 	{
 		private readonly INewsDomainService _newsDomainService;
-		public NewsCommandHandler(INewsDomainService newsDomainService)
+
+		private IIntegrationBus _integrationBus;
+
+		public NewsCommandHandler(INewsDomainService newsDomainService, IIntegrationBus integrationBus)
 		{
 			_newsDomainService = newsDomainService;
+			_integrationBus = integrationBus;
 		}
 
 		public async Task<CreateNewsResponse> Handle(CreateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
@@ -42,17 +47,27 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
 				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
-			await Database.SaveChanges(cancellationToken);
 
+			if (!command.Image.IsEmpty())
+			{
+
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+			}
+
+			await Database.SaveChanges(cancellationToken);
 			return new CreateNewsResponse()
 			{
 				NewsId = newNews.Id,
 			};
-
 		}
 
 		public async Task<CreateNewsResponse> Handle(CreateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
@@ -66,12 +81,23 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
 				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
-			await Database.SaveChanges(cancellationToken);
 
+			if (!command.TopImage.IsEmpty() )
+			{
+
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.TopImage }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+			}
+
+			await Database.SaveChanges(cancellationToken);
 			return new CreateNewsResponse()
 			{
 				NewsId = newNews.Id,
@@ -89,12 +115,23 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, 0, true, true,
+			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
 				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
 
 			Database.Add(newNews);
-			await Database.SaveChanges(cancellationToken);
 
+			if (!command.Image.IsEmpty())
+			{
+
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+			}
+
+			await Database.SaveChanges(cancellationToken);
 			return new CreateNewsResponse()
 			{
 				NewsId = newNews.Id,
@@ -179,7 +216,7 @@ namespace CommandHandlers
 				item.IsActive = true;
 			}
 
-			
+
 			await Database.SaveChanges(cancellationToken);
 
 		}

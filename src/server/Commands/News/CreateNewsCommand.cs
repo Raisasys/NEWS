@@ -37,7 +37,7 @@ namespace Commands.News
 		public string Title { get; set; }
 		public string Summery { get; set; }
 		public string TitleImage { get; set; }
-	
+		public byte NewsType { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public Guid ScopeId  { get; set; }
