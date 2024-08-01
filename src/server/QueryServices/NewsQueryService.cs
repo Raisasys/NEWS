@@ -13,9 +13,11 @@ namespace QueryServices
 {
 	public class NewsQueryService : QueryService, 
 		IQueryService<GetNewsById, NewsFullDto>,
-		IQueryService<GetNewsListDto, NewsListDto>
-	{
+		IQueryService<GetNewsListDto, NewsListDto>,
+		IQueryService<GetArchivedNewsListDto, NewsListDto>
 
+	{
+		
 		private readonly IMapper _mapper;
 
 		public NewsQueryService(IMapper mapper)
@@ -33,7 +35,7 @@ namespace QueryServices
 
 		public async Task<NewsListDto> Execute(GetNewsListDto query, CancellationToken cancellationToken)
 		{
-			var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false).ToListAsync(cancellationToken: cancellationToken);
+			var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
 			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 		
 			return new NewsListDto
@@ -43,6 +45,15 @@ namespace QueryServices
 		}
 
 
+		public async Task<NewsListDto> Execute(GetArchivedNewsListDto query, CancellationToken cancellationToken)
+		{
+			var items = await Database.Set<News>().Include(c => c.Content).Where(t => !t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 
+			return new NewsListDto
+			{
+				Items = dtos
+			};
+		}
 	}
 }

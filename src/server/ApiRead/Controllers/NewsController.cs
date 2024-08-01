@@ -50,5 +50,20 @@ namespace ApiRead
 				return Problem(oEx.Message);
 			}
 		}
+
+
+		[HttpGet]
+		public async Task<ActionResult<NewsListDto>> GetArchivedNews([FromQuery] GetArchivedNewsListDto oQueryString)
+		{
+			try
+			{
+				var oResponse = await QueryProcessor.Execute<GetArchivedNewsListDto, NewsListDto>(oQueryString);
+				return Ok(oResponse);
+			}
+			catch (Exception oEx)
+			{
+				return Problem(oEx.Message);
+			}
+		}
 	}
 }

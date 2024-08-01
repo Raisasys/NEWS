@@ -20,5 +20,7 @@ namespace Queries
 	{
 	}
 
-
+	public class GetArchivedNewsListDto : IQuery<NewsListDto>
+	{
+	}
 }

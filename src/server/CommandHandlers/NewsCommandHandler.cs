@@ -162,23 +162,8 @@ namespace CommandHandlers
 		{
 			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
-			var topImage = item.Content as TopImageContent;
-			var bottomImage = item.Content as BottomImageContent;
-			var topBottomImage = item.Content as TopBottomImageContent;
-
-			item.IsDeleted = true;
-			if (topImage != null)
-			{
-				topImage.IsDeleted = true;
-			}
-			if (bottomImage != null)
-			{
-				bottomImage.IsDeleted = true;
-			}
-			if (topBottomImage != null)
-			{
-				topBottomImage.IsDeleted = true;
-			}
+			Database.Remove(item);
+			Database.Remove(item.Content);
 			await Database.SaveChanges(cancellationToken);
 		}
 
