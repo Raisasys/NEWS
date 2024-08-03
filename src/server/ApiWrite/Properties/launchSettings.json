@@ -5,9 +5,9 @@
     "Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "launchUrl": "",
-      "applicationUrl": "http://localhost:5127",
+      "applicationUrl": "http://localhost:2127",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

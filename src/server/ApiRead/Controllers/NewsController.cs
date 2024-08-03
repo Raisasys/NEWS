@@ -10,7 +10,21 @@ namespace ApiRead
 {
 	public class NewsController : AppController
 	{
-		[HttpGet]
+        [HttpGet]
+        public async Task<ActionResult<NewsListDto>> GetNews([FromQuery] GetNewsListDto oQueryString)
+        {
+            try
+            {
+                var oResponse = await QueryProcessor.Execute<GetNewsListDto, NewsListDto>(oQueryString);
+                return Ok(oResponse);
+            }
+            catch (Exception oEx)
+            {
+                return Problem(oEx.Message);
+            }
+        }
+
+        [HttpGet]
 		public async Task<ActionResult<NewsFullDto>> GetById([FromQuery] long newsId)
         {
             try
@@ -37,23 +51,10 @@ namespace ApiRead
 			}			
 		}
 
-		[HttpGet]
-		public async Task<ActionResult<NewsListDto>> GetNews([FromQuery] GetNewsListDto oQueryString)
-		{
-			try
-			{
-				var oResponse = await QueryProcessor.Execute<GetNewsListDto, NewsListDto>(oQueryString);
-                return Ok(oResponse);
-			}
-			catch (Exception oEx)
-			{
-				return Problem(oEx.Message);
-			}
-		}
-
+		
 
 		[HttpGet]
-		public async Task<ActionResult<NewsListDto>> GetArchivedNews([FromQuery] GetArchivedNewsListDto oQueryString)
+		public async Task<ActionResult<NewsListDto>> GetArchived([FromQuery] GetArchivedNewsListDto oQueryString)
 		{
 			try
 			{
