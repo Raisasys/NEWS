@@ -27,7 +27,7 @@ namespace QueryServices
 		}
 		public async Task<NewsFullDto> Execute(GetNewsById query, CancellationToken cancellationToken)
 		{
-			var dataById = await Database.Set<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId);
+			var dataById = await Database.Set<News>().Include(c => c.Content).Include(c => c.Destination).SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
 			var result = _mapper.Map<News, NewsFullDto>(dataById);
 			return result;
 
@@ -36,7 +36,7 @@ namespace QueryServices
 
 		public async Task<NewsListDto> Execute(GetNewsListDto query, CancellationToken cancellationToken)
 		{
-			var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+			var items = await Database.Set<News>().Include(c => c.Content).Include(c=>c.Destination).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
 			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 		
 			return new NewsListDto

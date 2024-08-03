@@ -31,6 +31,12 @@ namespace QueryServices
             CreateMap<News, NewsFullDto>()
 				.ForMember(d => d.NewsType, o => o.MapFrom(s => s.Content.GetType().Name));
 
+            CreateMap<NewsDestination, DestinationDto>()
+				.Include<NewsPublicDestination, NewsPublicDestinationDto>()
+				.Include<NewsScopeDestination, NewsScopeDestinationDto>();
+
+			CreateMap<NewsPublicDestination, NewsPublicDestinationDto>();
+            CreateMap<NewsScopeDestination, NewsScopeDestinationDto>();
 
         }
 

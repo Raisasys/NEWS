@@ -25,6 +25,8 @@ public class NewsSimpleDto : IDto
 public class NewsFullDto : NewsSimpleDto
 {
 	public NewsContentDto Content { get; set; }
+	public DestinationDto Destination { get; set; }
+	
 }
 
 
@@ -64,4 +66,18 @@ public class FreeNewsContentDto : NewsContentDto
 
 }
 
+public abstract class DestinationDto : IDto
+{
+}
+
+
+public class NewsScopeDestinationDto : DestinationDto
+{
+
+}
+
+public class NewsPublicDestinationDto : DestinationDto
+{
+	public bool Authenticated { get; set; }
+}
 

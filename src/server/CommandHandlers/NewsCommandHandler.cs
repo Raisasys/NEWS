@@ -130,11 +130,13 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
+			var updateNews = Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
 
 			var content = updateNews.Content as TopImageContent;
 			content.CopyMap(command);
 
+			var destination = updateNews.Destination;
+			destination.CopyMap(command);
 
 			var info = command.Info;
 
@@ -149,12 +151,13 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
 
 
 			var content = updateNews.Content as BottomImageContent;
 			content.CopyMap(command);
-
+			var destination = updateNews.Destination;
+			destination.CopyMap(command);
 
 			var info = command.Info;
 
@@ -168,11 +171,13 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t=>t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
 
+			var destination = updateNews.Destination;
+			destination.CopyMap(command);
 
 			var info = command.Info;
 
@@ -187,7 +192,7 @@ namespace CommandHandlers
 
 		public async Task Handle(DeleteNewCommand command, CancellationToken cancellationToken)
 		{
-			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
+			var item = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
 			Database.Remove(item);
 			Database.Remove(item.Content);

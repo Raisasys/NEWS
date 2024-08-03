@@ -7,14 +7,21 @@ using Core;
 
 namespace Commands.News
 {
-	
+	public interface IUpdateNewsCommand
+	{
+		NewInfoCommand Info { get; set; }
+		IEnumerable<Guid> Scopes { get; set; }
+		bool Authenticated { get; set; }
+	}
 
-	public abstract class UpdateNewsCommand : Command<UpdateNewsResponse>
+	public abstract class UpdateNewsCommand : Command<UpdateNewsResponse>, IUpdateNewsCommand
 	{
 		public NewInfoCommand Info { get; set; }
 		public long NewsID { get; set; }
 		public string Image { get; set; }
 		public string Text { get; set; }
+		public bool Authenticated { get; set; }
+		public IEnumerable<Guid> Scopes { get; set; }
 	}
 
 	public class UpdateNewsByTopImageContentCommand : UpdateNewsCommand
