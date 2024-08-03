@@ -14,7 +14,8 @@ namespace QueryServices
 	public class NewsQueryService : QueryService, 
 		IQueryService<GetNewsById, NewsFullDto>,
 		IQueryService<GetNewsListDto, NewsListDto>,
-		IQueryService<GetArchivedNewsListDto, NewsListDto>
+		IQueryService<GetArchivedNewsListDto, NewsListDto>,
+		IQueryService<GetNewsListByPagesDto, NewsListDto>
 
 	{
 		
@@ -53,6 +54,21 @@ namespace QueryServices
 			return new NewsListDto
 			{
 				Items = dtos
+			};
+		}
+
+		public async Task<NewsListDto> Execute(GetNewsListByPagesDto query, CancellationToken cancellationToken)
+		{
+			var dataById = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+			var data = _mapper.Map< IList <News> , IList<NewsSimpleDto>>(dataById);
+
+			var offset = (query.PageNumber-1)* query.PageSize;
+			
+			var result = data.Skip(offset).Take(query.PageSize);
+			
+			return new NewsListDto
+			{
+				Items = result
 			};
 		}
 	}

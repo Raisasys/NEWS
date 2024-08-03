@@ -23,4 +23,11 @@ namespace Queries
 	public class GetArchivedNewsListDto : IQuery<NewsListDto>
 	{
 	}
+
+	public class GetNewsListByPagesDto : IQuery<NewsListDto>
+	{
+
+		public int PageNumber { get; set; }
+		public int PageSize { get; set; }
+	}
 }

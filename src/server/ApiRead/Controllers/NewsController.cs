@@ -65,5 +65,19 @@ namespace ApiRead
 				return Problem(oEx.Message);
 			}
 		}
+
+		[HttpGet]
+		public async Task<ActionResult<NewsListDto>> GetNewsByPages([FromQuery] GetNewsListByPagesDto oQueryString)
+		{
+			try
+			{
+				var oResponse = await QueryProcessor.Execute<GetNewsListByPagesDto, NewsListDto>(oQueryString);
+				return Ok(oResponse);
+			}
+			catch (Exception oEx)
+			{
+				return Problem(oEx.Message);
+			}
+		}
 	}
 }
