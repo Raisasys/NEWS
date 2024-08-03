@@ -52,7 +52,7 @@ public class BottomImageContentDto : NewsContentDto
 
 public class TopBottomImageContentDto : NewsContentDto
 {
-	public string TopImage { get; set; }
+	public string Image { get; set; }
 	public string BottomImage { get; set; }
 	public string Text { get; set; }
 }

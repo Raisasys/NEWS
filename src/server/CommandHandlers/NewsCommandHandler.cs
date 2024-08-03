@@ -76,7 +76,7 @@ namespace CommandHandlers
 
 			var content = new TopBottomImageContent
 			{
-				TopImage = command.TopImage,
+				TopImage = command.Image,
 				BottomImage = command.BottomImage,
 				Text = command.Text
 			};
@@ -86,12 +86,12 @@ namespace CommandHandlers
 
 			Database.Add(newNews);
 
-			if (!command.TopImage.IsEmpty() )
+			if (!command.Image.IsEmpty() )
 			{
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.TopImage }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 

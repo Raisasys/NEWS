@@ -26,7 +26,7 @@ namespace Commands.News
 	public class CreateNewsByTopBottomImageContentCommand : Command<CreateNewsResponse>
 	{
 		public NewInfo Info { get; set; }
-		public string TopImage { get; set; }
+		public string Image { get; set; }
 		public string BottomImage { get; set; }
 		public string Text { get; set; }
 	}

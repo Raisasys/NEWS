@@ -21,7 +21,8 @@ namespace QueryServices
                 .Include<TopImageContent, TopImageContentDto>()
                 .Include<FreeNewsContent, FreeNewsContentDto>();
 
-            CreateMap<TopBottomImageContent, TopBottomImageContentDto>();
+            CreateMap<TopBottomImageContent, TopBottomImageContentDto>()
+				 .ForMember(d => d.Image, o => o.MapFrom(s => s.TopImage ));
             CreateMap<BottomImageContent, BottomImageContentDto>();
             CreateMap<TopImageContent, TopImageContentDto>();
             CreateMap<FreeNewsContent, FreeNewsContentDto>();
