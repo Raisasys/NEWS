@@ -18,8 +18,7 @@ namespace Domain.ModelMappings
 			entityBuilder.Property(t => t.IsActive);
 			entityBuilder.Property(t => t.IsArchived);
 			entityBuilder.Property(t => t.IsPublished);
-			entityBuilder.Property(t => t.NewsType);
-			entityBuilder.Property(t => t.ScopeId);
+			entityBuilder.Property(t => t.OwnerScopeId);
 			entityBuilder.Property(t => t.Summery);
 			entityBuilder.Property(t => t.Title);
 			entityBuilder.Property(t => t.TitleImage);

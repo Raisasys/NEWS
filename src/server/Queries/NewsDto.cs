@@ -9,7 +9,7 @@ public class NewsSimpleDto : IDto
 	public string Title { get; set; }
 	public string Summery { get; set; }
 	public string TitleImage { get; set; }
-	public byte NewsType { get; set; }
+	public string NewsType { get; set; }
 	public bool IsPublished { get; set; }
 	public bool IsActive { get; set; }
 	public bool IsArchived { get; set; }
@@ -35,7 +35,7 @@ public class NewsListDto : IListDto<NewsSimpleDto>
 
 public abstract class NewsContentDto : IDto
 {
-
+	public string MainImage { get; set; }
 }
 
 public class TopImageContentDto : NewsContentDto
@@ -61,6 +61,7 @@ public class FreeNewsContentDto : NewsContentDto
 {
     public string Content { get; set; }
     public string FileName { get; set; }
+
 }
 
 

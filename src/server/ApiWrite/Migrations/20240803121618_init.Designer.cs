@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiWrite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240727113531_init")]
+    [Migration("20240803121618_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -36,14 +36,14 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
@@ -57,8 +57,8 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -81,14 +81,17 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DestinationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ExpirationTime")
                         .HasColumnType("datetime2");
@@ -111,13 +114,10 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte>("NewsType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<Guid>("ScopeId")
+                    b.Property<Guid>("OwnerScopeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Summery")
@@ -132,6 +132,8 @@ namespace ApiWrite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContentId");
+
+                    b.HasIndex("DestinationId");
 
                     b.ToTable("News");
                 });
@@ -148,14 +150,14 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -163,14 +165,88 @@ namespace ApiWrite.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.ToTable((string)null);
 
                     b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.NewsDestination", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LastModifiedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.ScopeDestination", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LastModifiedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("NewsScopeDestinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NewsScopeDestinationId");
+
+                    b.ToTable("ScopeDestination");
                 });
 
             modelBuilder.Entity("Domain.BottomImageContent", b =>
@@ -225,6 +301,23 @@ namespace ApiWrite.Migrations
                     b.ToTable("TopImageContents", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.NewsPublicDestination", b =>
+                {
+                    b.HasBaseType("Domain.NewsDestination");
+
+                    b.Property<bool>("Authenticated")
+                        .HasColumnType("bit");
+
+                    b.ToTable("NewsPublicDestinations", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.NewsScopeDestination", b =>
+                {
+                    b.HasBaseType("Domain.NewsDestination");
+
+                    b.ToTable("NewsScopeDestinations", (string)null);
+                });
+
             modelBuilder.Entity("Domain.ContentFile", b =>
                 {
                     b.HasOne("Domain.FreeNewsContent", null)
@@ -238,12 +331,30 @@ namespace ApiWrite.Migrations
                         .WithMany()
                         .HasForeignKey("ContentId");
 
+                    b.HasOne("Domain.NewsDestination", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId");
+
                     b.Navigation("Content");
+
+                    b.Navigation("Destination");
+                });
+
+            modelBuilder.Entity("Domain.ScopeDestination", b =>
+                {
+                    b.HasOne("Domain.NewsScopeDestination", null)
+                        .WithMany("Scopes")
+                        .HasForeignKey("NewsScopeDestinationId");
                 });
 
             modelBuilder.Entity("Domain.FreeNewsContent", b =>
                 {
                     b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("Domain.NewsScopeDestination", b =>
+                {
+                    b.Navigation("Scopes");
                 });
 #pragma warning restore 612, 618
         }

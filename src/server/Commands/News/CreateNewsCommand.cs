@@ -8,11 +8,19 @@ using Domain;
 
 namespace Commands.News
 {
-	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>
+	public interface ICreateNewsCommand
+	{
+		NewInfo Info { get; set; }
+		IEnumerable<Guid> Scopes { get; set; }
+		bool Authenticated { get; set; }
+	}
+	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
 		public string Image { get; set; }
 		public string Text { get; set; }
+		public bool Authenticated { get; set; }
+		public IEnumerable<Guid> Scopes { get; set; }
 	}
 
 	public class CreateNewsByTopImageContentCommand : CreateNewsBaseCommand
@@ -23,12 +31,14 @@ namespace Commands.News
 	{
 	}
 
-	public class CreateNewsByTopBottomImageContentCommand : Command<CreateNewsResponse>
+	public class CreateNewsByTopBottomImageContentCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
 		public string Image { get; set; }
 		public string BottomImage { get; set; }
 		public string Text { get; set; }
+		public IEnumerable<Guid> Scopes { get; set; }
+		public bool Authenticated { get; set; }
 	}
 
 
@@ -37,7 +47,6 @@ namespace Commands.News
 		public string Title { get; set; }
 		public string Summery { get; set; }
 		public string TitleImage { get; set; }
-		public byte NewsType { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public Guid ScopeId  { get; set; }
@@ -46,11 +55,13 @@ namespace Commands.News
 
 
 
-	public class FreeNewsContentCommand : Command<CreateNewsResponse>
+	public class FreeNewsContentCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
 		public string Content { get; set; }
 		public IEnumerable<string> Files { get; set; }
+		public IEnumerable<Guid> Scopes { get; set; }
+		public bool Authenticated { get; set; }
 	}
 	public class CreateNewsResponse
 	{

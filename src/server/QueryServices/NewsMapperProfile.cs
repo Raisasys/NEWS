@@ -13,7 +13,9 @@ namespace QueryServices
     {
         public NewsMapperProfile()
         {
-            CreateMap<News, NewsSimpleDto>();
+            CreateMap<News, NewsSimpleDto>()
+	            .ForMember(d=>d.NewsType, o=>o.MapFrom(s=>s.Content.GetType().Name))
+				.ForMember(d => d.TitleImage, o => o.MapFrom(s => s.Content.MainImage));
 
             CreateMap<NewsContent, NewsContentDto>()
                 .Include<TopBottomImageContent, TopBottomImageContentDto>()
@@ -26,7 +28,8 @@ namespace QueryServices
             CreateMap<BottomImageContent, BottomImageContentDto>();
             CreateMap<TopImageContent, TopImageContentDto>();
             CreateMap<FreeNewsContent, FreeNewsContentDto>();
-            CreateMap<News, NewsFullDto>();
+            CreateMap<News, NewsFullDto>()
+				.ForMember(d => d.NewsType, o => o.MapFrom(s => s.Content.GetType().Name));
 
 
         }

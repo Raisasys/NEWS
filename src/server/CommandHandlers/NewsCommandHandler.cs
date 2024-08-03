@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 using Shared.Messages;
+using System.Reflection.Metadata;
 
 namespace CommandHandlers
 {
@@ -39,17 +40,13 @@ namespace CommandHandlers
 
 		public async Task<CreateNewsResponse> Handle(CreateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var info = command.Info;
-
 			var content = new TopImageContent
 			{
 				Image = command.Image,
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
-				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
-
+			var newNews = command.CreateNews(content);
 			Database.Add(newNews);
 
 			if (!command.Image.IsEmpty())
@@ -72,8 +69,6 @@ namespace CommandHandlers
 
 		public async Task<CreateNewsResponse> Handle(CreateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var info = command.Info;
-
 			var content = new TopBottomImageContent
 			{
 				TopImage = command.Image,
@@ -81,8 +76,7 @@ namespace CommandHandlers
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
-				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
+			var newNews = command.CreateNews(content);
 
 			Database.Add(newNews);
 
@@ -107,17 +101,13 @@ namespace CommandHandlers
 
 		public async Task<CreateNewsResponse> Handle(CreateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var info = command.Info;
-
 			var content = new BottomImageContent
 			{
 				Image = command.Image,
 				Text = command.Text
 			};
 
-			var newNews = new News(info.Title, info.Summery, content, info.TitleImage, info.NewsType, true, true,
-				true, info.ExpirationTime, info.ExpireDuration, info.ScopeId);
-
+			var newNews = command.CreateNews(content);
 			Database.Add(newNews);
 
 			if (!command.Image.IsEmpty())
@@ -241,6 +231,20 @@ public static class InlineMapper
 			}
 		}
 	}
+
+	public static News CreateNews(this ICreateNewsCommand command, NewsContent content)
+	{
+		var info = command.Info;
+		
+
+		if (command.Scopes !=null && command.Scopes.Any())
+		{
+			return News.Scope(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId,command.Scopes);
+		}
+
+		return News.Public(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId, command.Authenticated);
+	}
+	
 }
 
 
