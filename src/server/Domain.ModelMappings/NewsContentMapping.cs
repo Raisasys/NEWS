@@ -22,7 +22,23 @@ namespace Domain.ModelMappings
 
 	}
 
-	public class ContentInheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent,FreeNewsContent>
+	public class SliderImagesContentMapping : CustomEntityMapper<SliderImagesContent>
+	{
+		public override void MapBuilder(EntityTypeBuilder<SliderImagesContent> builder)
+		{
+			builder.HasMany(c => c.SliderImageItems);
+		}
+	}
+	public class SliderImageItemMapping : CustomEntityMapper<SliderImageItem>
+	{
+		public override void MapBuilder(EntityTypeBuilder<SliderImageItem> entityBuilder)
+		{
+			
+		}
+	}
+	
+
+	public class ContentInheritanceMapper : InheritanceEntityMapper<NewsContent, TopBottomImageContent, TopImageContent, BottomImageContent,/*FreeNewsContent,*/SliderImagesContent>
 	{
 
 	}

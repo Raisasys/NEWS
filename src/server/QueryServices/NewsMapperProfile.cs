@@ -21,13 +21,13 @@ namespace QueryServices
                 .Include<TopBottomImageContent, TopBottomImageContentDto>()
                 .Include<BottomImageContent, BottomImageContentDto>()
                 .Include<TopImageContent, TopImageContentDto>()
-                .Include<FreeNewsContent, FreeNewsContentDto>();
+                /*.Include<FreeNewsContent, FreeNewsContentDto>()*/;
 
             CreateMap<TopBottomImageContent, TopBottomImageContentDto>()
 				 .ForMember(d => d.Image, o => o.MapFrom(s => s.TopImage ));
             CreateMap<BottomImageContent, BottomImageContentDto>();
             CreateMap<TopImageContent, TopImageContentDto>();
-            CreateMap<FreeNewsContent, FreeNewsContentDto>();
+            //CreateMap<FreeNewsContent, FreeNewsContentDto>();
             CreateMap<News, NewsFullDto>()
 				.ForMember(d => d.NewsType, o => o.MapFrom(s => s.Content.GetType().Name));
 

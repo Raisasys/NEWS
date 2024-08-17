@@ -29,6 +29,14 @@ namespace ApiWrite.Controllers
 			return Ok(response);
 		}
 
+
+		[HttpPost]
+		public async Task<ActionResult<CreateNewsResponse>> CreateBySliderImageContent([FromBody] CreateNewsBySliderImageContentCommand command)
+		{
+			var response = await CommandBus.Send<CreateNewsBySliderImageContentCommand, CreateNewsResponse>(command);
+			return Ok(response);
+		}
+
 		[HttpPost]
 		public async Task<ActionResult<UpdateNewsResponse>> UpdateByTopImageContent(UpdateNewsByTopImageContentCommand command)
 		{

@@ -20,6 +20,7 @@ namespace CommandHandlers
 		ICommandHandler<CreateNewsByTopImageContentCommand, CreateNewsResponse>,
 		ICommandHandler<CreateNewsByTopBottomImageContentCommand, CreateNewsResponse>,
 		ICommandHandler<CreateNewsByBottomImageContentCommand, CreateNewsResponse>,
+		ICommandHandler<CreateNewsBySliderImageContentCommand, CreateNewsResponse>,
 		ICommandHandler<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>,
@@ -80,7 +81,7 @@ namespace CommandHandlers
 
 			Database.Add(newNews);
 
-			if (!command.Image.IsEmpty() )
+			if (!command.Image.IsEmpty())
 			{
 
 				var fileServiceResponse =
@@ -128,6 +129,48 @@ namespace CommandHandlers
 			};
 		}
 
+		public async Task<CreateNewsResponse> Handle(CreateNewsBySliderImageContentCommand command, CancellationToken cancellationToken)
+		{
+			try
+			{
+				var content = new SliderImagesContent(command.Text, command.SliderImageItemsCommand.Select(s => new SliderImageItem()
+				{
+					Image = s.Image,
+					Title = s.Title,
+					Description = s.Description,
+					
+				}).ToList());
+
+				var newNews = command.CreateNews(content);
+				Database.Add(newNews);
+
+				if (!command.Image.IsEmpty())
+				{
+
+					var fileServiceResponse =
+						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+							new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+					if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+				}
+
+				await Database.SaveChanges(cancellationToken);
+				return new CreateNewsResponse()
+				{
+					NewsId = newNews.Id,
+				};
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+			
+		}
+
+
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
 			var updateNews = Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
@@ -171,7 +214,7 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t=>t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
@@ -215,6 +258,8 @@ namespace CommandHandlers
 			await Database.SaveChanges(cancellationToken);
 
 		}
+
+
 	}
 
 
@@ -240,16 +285,16 @@ public static class InlineMapper
 	public static News CreateNews(this ICreateNewsCommand command, NewsContent content)
 	{
 		var info = command.Info;
-		
 
-		if (command.Scopes !=null && command.Scopes.Any())
+
+		if (command.Scopes != null && command.Scopes.Any())
 		{
-			return News.Scope(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId,command.Scopes);
+			return News.Scope(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId, command.Scopes);
 		}
 
 		return News.Public(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId, command.Authenticated);
 	}
-	
+
 }
 
 

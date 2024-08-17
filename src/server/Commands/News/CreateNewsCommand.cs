@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
-using Domain;
 
 namespace Commands.News
 {
@@ -29,6 +28,20 @@ namespace Commands.News
 
 	public class CreateNewsByBottomImageContentCommand : CreateNewsBaseCommand
 	{
+	}
+
+	public class CreateNewsBySliderImageContentCommand : CreateNewsBaseCommand
+	{
+		public string Text { get; set; }
+		public  IEnumerable<SliderImageItemCommand> SliderImageItemsCommand { get; set; }
+	}
+
+	public class SliderImageItemCommand 
+	{
+		public string Image { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+
 	}
 
 	public class CreateNewsByTopBottomImageContentCommand : Command<CreateNewsResponse>, ICreateNewsCommand
