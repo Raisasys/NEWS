@@ -27,6 +27,7 @@ namespace Domain.ModelMappings
 		public override void MapBuilder(EntityTypeBuilder<SliderImagesContent> builder)
 		{
 			builder.HasMany(c => c.SliderImageItems);
+			builder.Navigation(item => item.SliderImageItems).AutoInclude(true);
 		}
 	}
 	public class SliderImageItemMapping : CustomEntityMapper<SliderImageItem>

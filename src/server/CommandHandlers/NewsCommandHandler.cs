@@ -24,6 +24,7 @@ namespace CommandHandlers
 		ICommandHandler<UpdateNewsByTopImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByBottomImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<UpdateNewsByTopBottomImageContentCommand, UpdateNewsResponse>,
+		ICommandHandler<UpdateNewsBySliderImageContentCommand, UpdateNewsResponse>,
 		ICommandHandler<DeleteNewCommand>,
 		ICommandHandler<UpdateActivationCommand>
 
@@ -149,7 +150,7 @@ namespace CommandHandlers
 
 					var fileServiceResponse =
 						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-							new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+							new PersistFileIntegrationCommand { FileName = command.SliderImageItemsCommand.Select(t=>t.Image).FirstOrDefault() }, cancellationToken);
 					if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -171,6 +172,7 @@ namespace CommandHandlers
 		}
 
 
+
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
 			var updateNews = Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
@@ -186,6 +188,17 @@ namespace CommandHandlers
 			updateNews.CopyMap(info);
 
 			Database.Update(updateNews);
+
+			if (!command.Image.IsEmpty())
+			{
+
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+			}
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
 
@@ -203,10 +216,22 @@ namespace CommandHandlers
 			destination.CopyMap(command);
 
 			var info = command.Info;
+			updateNews.TitleImage = command.Image;
 
 			updateNews.CopyMap(info);
 
 			Database.Update(updateNews);
+
+			if (!command.Image.IsEmpty())
+			{
+
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+			}
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
 
@@ -228,9 +253,84 @@ namespace CommandHandlers
 
 
 			Database.Update(updateNews);
+
+			if (!command.Image.IsEmpty())
+			{
+				var fileServiceResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.TopImage}, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+
+				var fileResponse =
+					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+						new PersistFileIntegrationCommand { FileName = command.BottomImage }, cancellationToken);
+				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+
+			}
 			await Database.SaveChanges(cancellationToken);
 			return new UpdateNewsResponse();
 
+		}
+
+		public async Task<UpdateNewsResponse> Handle(UpdateNewsBySliderImageContentCommand command, CancellationToken cancellationToken)
+		{
+			try
+			{
+				var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+
+				var content = new SliderImagesContent(command.Text, command.SliderImageItemsCommand.Select(s => new SliderImageItem()
+				{
+					Image = s.Image,
+					Title = s.Title,
+					Description = s.Description,
+					
+				}).ToList());
+
+				content.CopyMap(command);
+
+				var destination = updateNews.Destination;
+				destination.CopyMap(command);
+
+				var info = command.Info;
+
+				//updateNews.CopyMap(info);
+				updateNews.TitleImage = command.SliderImageItemsCommand.Select(t => t.Image).FirstOrDefault();
+				updateNews.Title = info.Title;
+				updateNews.Content = content;
+				updateNews.Destination = destination;
+				updateNews.ExpirationTime = info.ExpirationTime;
+				updateNews.ExpireDuration = info.ExpireDuration;
+				updateNews.IsActive = info.IsActive;
+				updateNews.IsArchived = info.IsArchived;
+				updateNews.IsPublished = info.IsPublished;
+				updateNews.OwnerScopeId = info.ScopeId;
+				updateNews.Summery = info.Summery;
+
+
+				Database.Update(updateNews);
+
+				if (!command.Image.IsEmpty())
+				{
+					foreach (var item in command.SliderImageItemsCommand)
+					{
+						var fileServiceResponse =
+							await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+								new PersistFileIntegrationCommand { FileName = item.Image }, cancellationToken);
+						if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+					}
+					
+				}
+				await Database.SaveChanges(cancellationToken);
+				return new UpdateNewsResponse();
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+			
 		}
 
 		public async Task Handle(DeleteNewCommand command, CancellationToken cancellationToken)
@@ -259,7 +359,7 @@ namespace CommandHandlers
 
 		}
 
-
+		
 	}
 
 

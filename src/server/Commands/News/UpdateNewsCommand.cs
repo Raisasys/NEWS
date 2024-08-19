@@ -24,6 +24,20 @@ namespace Commands.News
 		public IEnumerable<Guid> Scopes { get; set; }
 	}
 
+	public class UpdateNewsBySliderImageContentCommand : UpdateNewsCommand
+	{
+		public string Text { get; set; }
+		public IEnumerable<UpdateSliderImageItemCommand> SliderImageItemsCommand { get; set; }
+	}
+
+	public class UpdateSliderImageItemCommand
+	{
+		public string Image { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+
+	}
+
 	public class UpdateNewsByTopImageContentCommand : UpdateNewsCommand
 	{
 
@@ -40,7 +54,7 @@ namespace Commands.News
 		public string Text { get; set; }
 	}
 
-
+	
 	public class NewInfoCommand
 	{
 		public string Title { get; set; }

@@ -15,8 +15,8 @@ public class NewsSimpleDto : IDto
 	public DateTime? ExpirationTime { get; set; }
 	public int ExpireDuration { get; set; }
 	public Guid ScopeId { get; set; }
-    public string OwnerID { get; set; }
-    public string ContentID { get; set; }
+	public string OwnerID { get; set; }
+	public string ContentID { get; set; }
 }
 
 
@@ -25,7 +25,7 @@ public class NewsFullDto : NewsSimpleDto
 {
 	public NewsContentDto Content { get; set; }
 	public DestinationDto Destination { get; set; }
-	
+
 }
 
 
@@ -58,10 +58,23 @@ public class TopBottomImageContentDto : NewsContentDto
 	public string Text { get; set; }
 }
 
+public class SliderImagesContentDto : NewsContentDto
+{
+	public string Text { get; set; }
+	public IEnumerable<SliderImageItemDto> SliderImageItemDto { get; set; }
+}
+public class SliderImageItemDto: IDto
+{
+	public string Image { get; set; }
+	public string Title { get; set; }
+	public string Description { get; set; }
+	public double OrderRank { get; set; }
+}
+
 public class FreeNewsContentDto : NewsContentDto
 {
-    public string Content { get; set; }
-    public string FileName { get; set; }
+	public string Content { get; set; }
+	public string FileName { get; set; }
 
 }
 

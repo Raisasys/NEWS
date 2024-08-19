@@ -60,6 +60,13 @@ namespace ApiWrite.Controllers
 		}
 
 		[HttpPost]
+		public async Task<ActionResult<UpdateNewsResponse>> UpdateBySliderImageContent([FromBody] UpdateNewsBySliderImageContentCommand command)
+		{
+			var response = await CommandBus.Send<UpdateNewsBySliderImageContentCommand, UpdateNewsResponse>(command);
+			return Ok(response);
+		}
+
+		[HttpPost]
 		public async Task<ActionResult> DeleteNews([FromBody] DeleteNewCommand command)
 		{
 			await CommandBus.Send<DeleteNewCommand>(command);
