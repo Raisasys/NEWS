@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiWrite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240819111615_0529-2")]
+    partial class _05292
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +73,10 @@ namespace ApiWrite.Migrations
             modelBuilder.Entity("Domain.AnnouncementFiles", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("AnnouncementId")
+                    b.Property<long?>("AnnouncementId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -441,13 +445,9 @@ namespace ApiWrite.Migrations
 
             modelBuilder.Entity("Domain.AnnouncementFiles", b =>
                 {
-                    b.HasOne("Domain.Announcement", "Announcement")
+                    b.HasOne("Domain.Announcement", null)
                         .WithMany("Files")
-                        .HasForeignKey("AnnouncementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Announcement");
+                        .HasForeignKey("AnnouncementId");
                 });
 
             modelBuilder.Entity("Domain.News", b =>
