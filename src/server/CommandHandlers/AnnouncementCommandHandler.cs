@@ -33,14 +33,16 @@ namespace CommandHandlers
 			var announc = new Announcement(command.Title, command.Image, command.Description, files);
 			Database.Add(announc);
 
-			if (!command.Image.IsEmpty())
+			if (command.Files.Any())
 			{
-
-				var imageServiceResponse =
-					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
-				if (!imageServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
-
+				if (!command.Image.IsEmpty())
+				{
+					var imageServiceResponse =
+						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
+							new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+					if (!imageServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
+				}
+			
 				foreach (var item in command.Files)
 				{
 					var fileServiceResponse =

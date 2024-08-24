@@ -39,7 +39,7 @@ namespace QueryServices
 		{
 			try
 			{
-				var items = await Database.Set<Announcement>().Include(c => c.Files).ToListAsync(cancellationToken: cancellationToken);
+				var items = await Database.Set<Announcement>().Include(c => c.Files).Where(t=>!t.IsDeleted).ToListAsync(cancellationToken: cancellationToken);
 				var dtos = _mapper.Map<IList<Announcement>, IList<AnnouncementDto>>(items);
 
 				return new AnnouncemenListDto
