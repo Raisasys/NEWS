@@ -11,16 +11,16 @@ namespace Commands.News
 	{
 		NewInfoCommand Info { get; set; }
 		IEnumerable<Guid> Scopes { get; set; }
-		bool Authenticated { get; set; }
+		bool ShouldAuthenticated { get; set; }
 	}
 
 	public abstract class UpdateNewsCommand : Command<UpdateNewsResponse>, IUpdateNewsCommand
 	{
 		public NewInfoCommand Info { get; set; }
-		public long NewsID { get; set; }
+		public Guid NewsId { get; set; }
 		public string Image { get; set; }
 		public string Text { get; set; }
-		public bool Authenticated { get; set; }
+		public bool ShouldAuthenticated { get; set; }
 		public IEnumerable<Guid> Scopes { get; set; }
 	}
 

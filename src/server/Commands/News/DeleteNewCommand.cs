@@ -9,6 +9,6 @@ namespace Commands.News
 {
 	public class DeleteNewCommand : Command
 	{
-		public int NewsId { get; set; }
+		public Guid NewsId { get; set; }
 	}
 }

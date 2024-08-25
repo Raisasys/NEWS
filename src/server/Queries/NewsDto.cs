@@ -4,7 +4,7 @@ namespace Queries;
 
 public class NewsSimpleDto : IDto
 {
-	public long Id { get; set; }
+	public Guid Id { get; set; }
 	public string Title { get; set; }
 	public string Summery { get; set; }
 	public string TitleImage { get; set; }
@@ -14,9 +14,9 @@ public class NewsSimpleDto : IDto
 	public bool IsArchived { get; set; }
 	public DateTime? ExpirationTime { get; set; }
 	public int ExpireDuration { get; set; }
-	public Guid ScopeId { get; set; }
-	public string OwnerID { get; set; }
-	public string ContentID { get; set; }
+    public Guid OwnerScopeId { get; set; }
+    public bool ShouldAuthenticated { get; set; }
+    public string ContentId { get; set; }
 }
 
 
@@ -24,7 +24,6 @@ public class NewsSimpleDto : IDto
 public class NewsFullDto : NewsSimpleDto
 {
 	public NewsContentDto Content { get; set; }
-	public DestinationDto Destination { get; set; }
 
 }
 
@@ -77,19 +76,3 @@ public class FreeNewsContentDto : NewsContentDto
 	public string FileName { get; set; }
 
 }
-
-public abstract class DestinationDto : IDto
-{
-}
-
-
-public class NewsScopeDestinationDto : DestinationDto
-{
-
-}
-
-public class NewsPublicDestinationDto : DestinationDto
-{
-	public bool Authenticated { get; set; }
-}
-

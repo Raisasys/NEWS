@@ -9,10 +9,10 @@ namespace Queries
 {
 	public class GetAnnouncementById : IQuery<AnnouncementDto>
 	{
-		public long AnnouncementId { get; set; }
+		public Guid AnnouncementId { get; set; }
 	}
 
-	public class GetAnnouncementListDto : IQuery<AnnouncemenListDto>
+	public class GetAnnouncementListDto : IQuery<AnnouncementListDto>
 	{
 	}
 }

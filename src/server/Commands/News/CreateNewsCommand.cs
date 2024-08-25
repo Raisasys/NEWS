@@ -11,14 +11,14 @@ namespace Commands.News
 	{
 		NewInfo Info { get; set; }
 		IEnumerable<Guid> Scopes { get; set; }
-		bool Authenticated { get; set; }
+		bool ShouldAuthenticated { get; set; }
 	}
 	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
 		public string Image { get; set; }
 		public string Text { get; set; }
-		public bool Authenticated { get; set; }
+		public bool ShouldAuthenticated { get; set; }
 		public IEnumerable<Guid> Scopes { get; set; }
 	}
 
@@ -51,7 +51,7 @@ namespace Commands.News
 		public string BottomImage { get; set; }
 		public string Text { get; set; }
 		public IEnumerable<Guid> Scopes { get; set; }
-		public bool Authenticated { get; set; }
+		public bool ShouldAuthenticated { get; set; }
 	}
 
 
@@ -74,10 +74,10 @@ namespace Commands.News
 		public string Content { get; set; }
 		public IEnumerable<string> Files { get; set; }
 		public IEnumerable<Guid> Scopes { get; set; }
-		public bool Authenticated { get; set; }
+		public bool ShouldAuthenticated { get; set; }
 	}
 	public class CreateNewsResponse
 	{
-		public long NewsId { get; set; }
+		public Guid NewsId { get; set; }
 	}
 }

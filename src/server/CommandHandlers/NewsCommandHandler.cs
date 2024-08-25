@@ -175,14 +175,12 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken).Result;
+			var updateNews = Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken).Result;
 
 			var content = updateNews.Content as TopImageContent;
 			content.CopyMap(command);
 
-			var destination = updateNews.Destination;
-			destination.CopyMap(command);
-
+			
 			var info = command.Info;
 
 			updateNews.CopyMap(info);
@@ -207,14 +205,12 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
 
 			var content = updateNews.Content as BottomImageContent;
 			content.CopyMap(command);
-			var destination = updateNews.Destination;
-			destination.CopyMap(command);
-
+			
 			var info = command.Info;
 			updateNews.TitleImage = command.Image;
 
@@ -239,16 +235,12 @@ namespace CommandHandlers
 
 		public async Task<UpdateNewsResponse> Handle(UpdateNewsByTopBottomImageContentCommand command, CancellationToken cancellationToken)
 		{
-			var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+			var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
 			var content = updateNews.Content as TopBottomImageContent;
 			content.CopyMap(command);
 
-			var destination = updateNews.Destination;
-			destination.CopyMap(command);
-
 			var info = command.Info;
-
 			updateNews.CopyMap(info);
 
 
@@ -277,7 +269,7 @@ namespace CommandHandlers
 		{
 			try
 			{
-				var updateNews = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsID, cancellationToken);
+				var updateNews = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
 				var content = new SliderImagesContent(command.Text, command.SliderImageItemsCommand.Select(s => new SliderImageItem()
 				{
@@ -288,17 +280,13 @@ namespace CommandHandlers
 				}).ToList());
 
 				content.CopyMap(command);
-
-				var destination = updateNews.Destination;
-				destination.CopyMap(command);
-
-				var info = command.Info;
+				
+                var info = command.Info;
 
 				//updateNews.CopyMap(info);
 				updateNews.TitleImage = command.SliderImageItemsCommand.Select(t => t.Image).FirstOrDefault();
 				updateNews.Title = info.Title;
 				updateNews.Content = content;
-				updateNews.Destination = destination;
 				updateNews.ExpirationTime = info.ExpirationTime;
 				updateNews.ExpireDuration = info.ExpireDuration;
 				updateNews.IsActive = info.IsActive;
@@ -335,7 +323,7 @@ namespace CommandHandlers
 
 		public async Task Handle(DeleteNewCommand command, CancellationToken cancellationToken)
 		{
-			var item = await Database.Set<News>().Include(t => t.Content).Include(t => t.Destination).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
+			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
 
 			Database.Remove(item);
 			Database.Remove(item.Content);
@@ -388,11 +376,19 @@ public static class InlineMapper
 
 
 		if (command.Scopes != null && command.Scopes.Any())
-		{
-			return News.Scope(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId, command.Scopes);
-		}
-
-		return News.Public(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId, command.Authenticated);
+        {
+            var news = new News(info.Title, info.Summery, content, info.TitleImage, true, true, true,
+                info.ExpirationTime, info.ExpireDuration, info.ScopeId)
+            {
+				ShouldAuthenticated = true
+            };
+            news.AddScopeAccess(command.Scopes);
+        }
+		
+		return new News(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId)
+        {
+			ShouldAuthenticated = false
+        };
 	}
 
 }

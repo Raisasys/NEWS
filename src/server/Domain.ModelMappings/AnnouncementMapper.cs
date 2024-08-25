@@ -12,7 +12,7 @@ namespace Domain.ModelMappings
 	{
 		public override void MapBuilder(EntityTypeBuilder<Announcement> entityBuilder)
 		{	
-			entityBuilder.HasMany(t => t.Files).WithOne(t=>t.Announcement).IsRequired();
+			entityBuilder.HasMany(t => t.Files);
 		}
 	}
 }

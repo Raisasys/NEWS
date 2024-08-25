@@ -9,12 +9,13 @@ using Domain;
 using Commands.News;
 using Shared.Messages;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace CommandHandlers
 {
 	public class AnnouncementCommandHandler : CommandHandlerBase,
 		ICommandHandler<CreateAnnouncementCommand, CreateAnnouncementResponse>,
-		ICommandHandler<UpdateAnnouncementCommand, UpdateAnnouncResponse>,
+		ICommandHandler<UpdateAnnouncementCommand, UpdateAnnouncementResponse>,
 		ICommandHandler<DeleteAnnouncementCommand>
 
 	{
@@ -25,12 +26,13 @@ namespace CommandHandlers
 		}
 		public async Task<CreateAnnouncementResponse> Handle(CreateAnnouncementCommand command, CancellationToken cancellationToken)
 		{
-			var files = command.Files.Select(s => new AnnouncementFiles
+			var files = command.Files.Select(s => new AnnouncementFile
 			{
-				FilesName = s.Files
+				File= s.File,
+				Name = s.Name
 			}).ToList();
 
-			var announc = new Announcement(command.Title, command.Image, command.Description, files);
+			var announc = new Announcement(command.Title,command.Header, command.Image, command.Description, files);
 			Database.Add(announc);
 
 			if (command.Files.Any())
@@ -47,7 +49,7 @@ namespace CommandHandlers
 				{
 					var fileServiceResponse =
 						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-							new PersistFileIntegrationCommand { FileName = item.Files }, cancellationToken);
+							new PersistFileIntegrationCommand { FileName = item.File }, cancellationToken);
 					if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 				}
@@ -64,7 +66,7 @@ namespace CommandHandlers
 		}
 
 
-		public async Task<UpdateAnnouncResponse> Handle(UpdateAnnouncementCommand command, CancellationToken cancellationToken)
+		public async Task<UpdateAnnouncementResponse> Handle(UpdateAnnouncementCommand command, CancellationToken cancellationToken)
 		{
 			var updateAnnounce = await Database.Set<Announcement>().Include(t => t.Files).SingleOrDefaultAsync(t => t.Id == command.AnnouncementId, cancellationToken);
 
@@ -73,10 +75,11 @@ namespace CommandHandlers
 				updateAnnounce.Files.Remove(item);
 			}
 
-			var files = command.UpdatedFiles.Select(t => new AnnouncementFiles
-			{
-				FilesName = t.Files
-			}).ToList();
+			var files = command.UpdatedFiles.Select(t => new AnnouncementFile
+            {
+				File= t.File,
+                Name = t.Name
+            }).ToList();
 
 			updateAnnounce.Image = command.Image;
 			updateAnnounce.Description = command.Description;
@@ -85,7 +88,7 @@ namespace CommandHandlers
 
 			await Database.SaveChanges(cancellationToken);
 
-			return new UpdateAnnouncResponse();
+			return new UpdateAnnouncementResponse();
 
 		}
 

@@ -1,10 +1,6 @@
 ﻿using Core;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Utilities.Encoders;
 using Queries;
-using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ApiRead
 {
@@ -25,7 +21,7 @@ namespace ApiRead
         }
 
         [HttpGet]
-		public async Task<ActionResult<NewsFullDto>> GetById([FromQuery] long newsId)
+		public async Task<ActionResult<NewsFullDto>> GetById([FromQuery] Guid newsId)
         {
             try
 			{
@@ -39,11 +35,11 @@ namespace ApiRead
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<NewsSimpleDto>>> GetByOwnerID([FromQuery] GetNewsByOwnerID oQueryString)
+		public async Task<ActionResult<List<NewsSimpleDto>>> GetByOwnerId([FromQuery] GetNewsByOwnerId oQueryString)
 		{
 			try
 			{
-				return Ok(await QueryProcessor.Execute<GetNewsByOwnerID, NewsSimpleDto>(oQueryString));
+				return Ok(await QueryProcessor.Execute<GetNewsByOwnerId, NewsSimpleDto>(oQueryString));
 			}
 			catch (Exception oEx)
 			{

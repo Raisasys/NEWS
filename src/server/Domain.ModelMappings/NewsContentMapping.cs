@@ -12,11 +12,6 @@ namespace Domain.ModelMappings
 	{
 		public override void MapBuilder(EntityTypeBuilder<NewsContent> entityBuilder)
 		{
-			//entityBuilder.HasKey(t => t.ContentId);
-			entityBuilder.Property(t => t.CreatedBy);
-			entityBuilder.Property(t => t.CreatedAt);
-			entityBuilder.Property(t => t.LastModifiedBy);
-			entityBuilder.Property(t => t.LastModifiedAt);
 		}
 
 

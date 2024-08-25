@@ -9,19 +9,29 @@ namespace Queries
 {
 	public class AnnouncementDto : IDto
 	{
-		public long Id { get; set; }
+		public Guid Id { get; set; }
 		public string Title { get; set; }
-		public string Image { get; set; }
+        public string Header { get; set; }
+        public string Image { get; set; }
 		public string Description { get; set; }
-		public virtual IEnumerable<AnnouncementFilesDTO> Files { get; set; }
+        public string TitleImage { get; set; }
+        public bool IsPublished { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsArchived { get; set; }
+        public DateTime? ExpirationTime { get; set; }
+        public int ExpireDuration { get; set; }
+        public Guid OwnerScopeId { get; set; }
+        public bool ShouldAuthenticated { get; set; }
+        public virtual IEnumerable<AnnouncementFileDTO> Files { get; set; }
 	}
 
-	public class AnnouncementFilesDTO: IDto
+	public class AnnouncementFileDTO : IDto
 	{
-		public string Files { get; set; }
-	}
+		public string File { get; set; }
+        public string Name { get; set; }
+    }
 
-	public class AnnouncemenListDto : IListDto<AnnouncementDto>
+	public class AnnouncementListDto : IListDto<AnnouncementDto>
 	{
 		public IEnumerable<AnnouncementDto> Items { get; set; }
 	}

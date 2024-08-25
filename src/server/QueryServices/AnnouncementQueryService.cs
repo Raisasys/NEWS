@@ -13,7 +13,7 @@ namespace QueryServices
 {
 	public class AnnouncementQueryService : QueryService, 
 		IQueryService<GetAnnouncementById, AnnouncementDto>,
-		IQueryService<GetAnnouncementListDto, AnnouncemenListDto>
+		IQueryService<GetAnnouncementListDto, AnnouncementListDto>
 	{
 		private readonly IMapper _mapper;
 		public AnnouncementQueryService(IMapper mapper)
@@ -35,15 +35,15 @@ namespace QueryServices
 			}
 		}
 
-		public async Task<AnnouncemenListDto> Execute(GetAnnouncementListDto query, CancellationToken cancellationToken)
+		public async Task<AnnouncementListDto> Execute(GetAnnouncementListDto query, CancellationToken cancellationToken)
 		{
 			try
 			{
 				var items = await Database.Set<Announcement>().Include(c => c.Files).Where(t=>!t.IsDeleted).ToListAsync(cancellationToken: cancellationToken);
 				var dtos = _mapper.Map<IList<Announcement>, IList<AnnouncementDto>>(items);
 
-				return new AnnouncemenListDto
-				{
+				return new AnnouncementListDto
+                {
 					Items = dtos
 				};
 

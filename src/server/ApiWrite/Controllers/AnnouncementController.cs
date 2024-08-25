@@ -15,9 +15,9 @@ namespace ApiWrite.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<UpdateAnnouncResponse>> UpdateAnnouncement([FromBody] UpdateAnnouncementCommand command)
+		public async Task<ActionResult<UpdateAnnouncementResponse>> UpdateAnnouncement([FromBody] UpdateAnnouncementCommand command)
 		{
-			var response = await CommandBus.Send<UpdateAnnouncementCommand, UpdateAnnouncResponse>(command);
+			var response = await CommandBus.Send<UpdateAnnouncementCommand, UpdateAnnouncementResponse>(command);
 			return Ok(response);
 		}
 

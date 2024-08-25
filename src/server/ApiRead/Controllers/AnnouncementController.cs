@@ -7,7 +7,7 @@ namespace ApiRead.Controllers
 	public class AnnouncementController : AppController
 	{
 		[HttpGet]
-		public async Task<ActionResult<AnnouncementDto>> GetAnnouncementById([FromQuery] long announcementId)
+		public async Task<ActionResult<AnnouncementDto>> GetAnnouncementById([FromQuery] Guid announcementId)
 		{
 			try
 			{
@@ -21,11 +21,11 @@ namespace ApiRead.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<AnnouncemenListDto>> GetAnnouncements([FromQuery] GetAnnouncementListDto oQueryString)
+		public async Task<ActionResult<GetAnnouncementListDto>> GetAnnouncements([FromQuery] GetAnnouncementListDto oQueryString)
 		{
 			try
 			{
-				var oResponse = await QueryProcessor.Execute<GetAnnouncementListDto, AnnouncemenListDto>(oQueryString);
+				var oResponse = await QueryProcessor.Execute<GetAnnouncementListDto, AnnouncementListDto>(oQueryString);
 				return Ok(oResponse);
 			}
 			catch (Exception oEx)

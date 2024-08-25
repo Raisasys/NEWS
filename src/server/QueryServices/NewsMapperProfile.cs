@@ -39,13 +39,7 @@ namespace QueryServices
 	            .ForMember(x => x.Text, d=>d.MapFrom(s=>s.Text))
 	            .ForMember(x => x.SliderImageItemDto, d => d.MapFrom(s => s.SliderImageItems));
 
-			CreateMap<NewsDestination, DestinationDto>()
-				.Include<NewsPublicDestination, NewsPublicDestinationDto>()
-				.Include<NewsScopeDestination, NewsScopeDestinationDto>();
-
-			CreateMap<NewsPublicDestination, NewsPublicDestinationDto>();
-            CreateMap<NewsScopeDestination, NewsScopeDestinationDto>();
-            CreateMap<SliderImageItem, SliderImageItemDto>();
+			CreateMap<SliderImageItem, SliderImageItemDto>();
 
         }
 

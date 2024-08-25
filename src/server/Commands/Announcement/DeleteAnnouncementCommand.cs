@@ -9,7 +9,7 @@ namespace Commands.Announcement
 {
 	public  class DeleteAnnouncementCommand : Command
 	{
-		public long AnnouncementId { get; set; }
+		public Guid AnnouncementId { get; set; }
 	}
 }
 
