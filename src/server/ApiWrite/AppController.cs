@@ -6,7 +6,7 @@ using Service.Web;
 namespace ApiWrite;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("News/[controller]/[action]")]
 public abstract class AppController : AppControllerBase
 {
 
