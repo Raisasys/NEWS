@@ -76,5 +76,20 @@ namespace ApiRead
 				return Problem(oEx.Message);
 			}
 		}
+
+
+		[HttpGet]
+		public async Task<ActionResult<NewsListDto>> GetMySliderImageNewsById ([FromQuery] GetMySliderImageNewsById oQueryString)
+		{
+			try
+			{
+				var oResponse = await QueryProcessor.Execute<GetMySliderImageNewsById, NewsListDto>(oQueryString);
+				return Ok(oResponse);
+			}
+			catch (Exception oEx)
+			{
+				return Problem(oEx.Message);
+			}
+		}
 	}
 }

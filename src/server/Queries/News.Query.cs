@@ -30,4 +30,11 @@ namespace Queries
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
 	}
+
+	public class GetMySliderImageNewsById : IQuery<NewsListDto>
+	{
+		public List<string> ScopeIds { get; set; }
+		public int PageNumber { get; set; }
+		public int PageSize { get; set; }
+	}
 }

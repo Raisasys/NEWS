@@ -12,7 +12,7 @@ namespace Domain
 			string title, string summery, NewsContent content,
 			string titleImage, 
 			bool isPublished, bool isActive, bool isArchived, 
-			DateTime? expirationTime, int expireDuration,  Guid ownerScopeId)
+			DateTime? expirationTime, int expireDuration,  string ownerScopeId)
 		{
 			Title = title;
 			Summery = summery;
@@ -38,7 +38,7 @@ namespace Domain
 		public bool IsArchived { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
-		public Guid OwnerScopeId { get; set; }
+		public string OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
         public virtual NewsContent Content { get; set; }
 
