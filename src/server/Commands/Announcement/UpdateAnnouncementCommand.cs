@@ -36,4 +36,20 @@ namespace Commands.Announcement
 	{
 
 	}
+
+	public class UpdateIsGlobalAnnounceCommand : Command
+	{
+		public Guid Id { get; set; }
+		public bool IsGlobal { get; set; }
+
+
+	}
+
+
+	public class UpdateHaveAccessAnnounceCommand : Command
+	{
+		public Guid Id { get; set; }
+		public List<string> Scopes { get; set; }
+		public List<string> Users { get; set; }
+	}
 }

@@ -1,5 +1,7 @@
 ﻿using Core;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Queries;
 
 namespace ApiRead
@@ -90,6 +92,22 @@ namespace ApiRead
 			{
 				return Problem(oEx.Message);
 			}
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<HaveAccessDto>> GetHaveAccess([FromQuery] GetNewsHaveAccessQuery query)
+		{
+			var item = await Database.Set<News>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == query.Id);
+
+			if (item != null)
+
+			{
+				var facade = new GetHaveAccessFacade<News>(item);
+				var result = await facade.Execute();
+				return Ok(result);
+			}
+
+			return Ok(null);
 		}
 	}
 }

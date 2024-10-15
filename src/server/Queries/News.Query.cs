@@ -37,4 +37,9 @@ namespace Queries
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
 	}
+
+	public class GetNewsHaveAccessQuery : IQuery<HaveAccessDto>
+	{
+		public Guid Id { get; set; }
+	}
 }

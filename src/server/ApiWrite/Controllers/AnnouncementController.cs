@@ -1,7 +1,9 @@
 ﻿using Commands.Announcement;
 using Commands.News;
 using Core;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiWrite.Controllers
 {
@@ -28,5 +30,31 @@ namespace ApiWrite.Controllers
 			return Ok();
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> UpdateAccess(UpdateHaveAccessAnnounceCommand command)
+		{
+			var announce = await Database.Set<Announcement>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);
+			if (announce != null)
+			{
+				var facade = new UpdateHaveAccessScopesAndUsers<Announcement>(announce, command.Scopes, command.Users);
+				await facade.Execute();
+			}
+
+			return Ok();
+		}
+
+
+		[HttpPost]
+		public async Task<ActionResult> UpdateIsPublic(UpdateIsGlobalAnnounceCommand command)
+		{
+			var announce = await Database.Set<Announcement>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);
+			if (announce != null)
+			{
+				var facade = new UpdateHaveAccessIsGlobal<Announcement>(announce, command.IsGlobal);
+				await facade.Execute();
+			}
+
+			return Ok();
+		}
 	}
 }

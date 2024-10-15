@@ -1,7 +1,9 @@
 ﻿using Commands;
 using Commands.News;
 using Core;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiWrite.Controllers
 {
@@ -77,6 +79,33 @@ namespace ApiWrite.Controllers
 		public async Task<ActionResult> UpdateActivationNews([FromBody] UpdateActivationCommand command)
 		{
 			await CommandBus.Send<UpdateActivationCommand>(command);
+			return Ok();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> UpdateAccess(UpdateHaveAccessNewsCommand command)
+		{
+			var news = await Database.Set<News>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);
+			if (news != null)
+			{
+				var facade = new UpdateHaveAccessScopesAndUsers<News>(news, command.Scopes, command.Users);
+				await facade.Execute();
+			}
+
+			return Ok();
+		}
+
+
+		[HttpPost]
+		public async Task<ActionResult> UpdateIsPublic(UpdateIsGlobalNewsCommand command)
+		{
+			var news = await Database.Set<News>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);
+			if (news != null)
+			{
+				var facade = new UpdateHaveAccessIsGlobal<News>(news, command.IsGlobal);
+				await facade.Execute();
+			}
+
 			return Ok();
 		}
 	}

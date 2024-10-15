@@ -15,4 +15,10 @@ namespace Queries
 	public class GetAnnouncementListDto : IQuery<AnnouncementListDto>
 	{
 	}
+
+	public class GetAnnounceHaveAccessQuery : IQuery<HaveAccessDto>
+	{
+		public Guid Id { get; set; }
+	}
+
 }

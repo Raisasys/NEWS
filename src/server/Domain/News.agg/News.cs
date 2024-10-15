@@ -28,8 +28,6 @@ namespace Domain
 
 	
 
-		
-
 		public string Title { get; set; }
 		public string Summery { get; set; }
 		public string TitleImage { get; set; }
@@ -42,6 +40,7 @@ namespace Domain
         public bool ShouldAuthenticated { get; set; }
         public virtual NewsContent Content { get; set; }
 
+        public bool IsGlobal { get; set; }
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; }
     }
 

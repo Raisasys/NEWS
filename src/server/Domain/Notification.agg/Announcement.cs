@@ -38,6 +38,7 @@ namespace Domain
         public Guid OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
         public virtual ICollection<AnnouncementFile> Files { get; set; }
+        public bool IsGlobal { get; set; }
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; }
     }
 }

@@ -74,4 +74,20 @@ namespace Commands.News
 
 	}
 
+	public class UpdateIsGlobalNewsCommand : Command
+	{
+		public Guid Id { get; set; }
+		public bool IsGlobal { get; set; }
+
+
+	}
+
+
+	public class UpdateHaveAccessNewsCommand : Command
+	{
+		public Guid Id { get; set; }
+		public List<string> Scopes { get; set; }
+		public List<string> Users { get; set; }
+	}
+
 }
