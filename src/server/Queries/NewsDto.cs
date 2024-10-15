@@ -31,6 +31,7 @@ public class NewsFullDto : NewsSimpleDto
 public class NewsListDto : IListDto<NewsSimpleDto>
 {
 	public IEnumerable<NewsSimpleDto> Items { get; set; }
+	public int TotalItems{ get; set; }
 }
 
 public abstract class NewsContentDto : IDto

@@ -88,7 +88,8 @@ namespace QueryServices
 			
 			return new NewsListDto
 			{
-				Items = result
+				Items = result,
+				TotalItems = data.Count()
 			};
 		}
 
@@ -104,7 +105,8 @@ namespace QueryServices
 
 			return new NewsListDto
 			{
-				Items = result
+				Items = result,
+				TotalItems = data.Count()
 			};
 		}
 	}
