@@ -65,7 +65,7 @@ namespace Commands.News
 		public bool IsArchived { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
-		public Guid ScopeId { get; set; }
+		public string ScopeId { get; set; }
 	}
 
 

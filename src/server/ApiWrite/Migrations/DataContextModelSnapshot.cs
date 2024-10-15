@@ -64,6 +64,9 @@ namespace ApiWrite.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsGlobal")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
@@ -86,6 +89,9 @@ namespace ApiWrite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
 
                     b.ToTable("Announcement");
                 });
@@ -129,6 +135,9 @@ namespace ApiWrite.Migrations
 
                     b.HasIndex("AnnouncementId");
 
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
                     b.ToTable("AnnouncementFile");
                 });
 
@@ -168,6 +177,9 @@ namespace ApiWrite.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsGlobal")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
@@ -177,8 +189,8 @@ namespace ApiWrite.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerScopeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("OwnerScopeId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ShouldAuthenticated")
                         .HasColumnType("bit");
@@ -195,6 +207,9 @@ namespace ApiWrite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContentId");
+
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
 
                     b.ToTable("News");
                 });
@@ -276,6 +291,9 @@ namespace ApiWrite.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
                     b.HasIndex("SliderImagesContentId");
 
                     b.ToTable("SliderImageItem");
@@ -346,8 +364,8 @@ namespace ApiWrite.Migrations
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
-                            b1.Property<Guid>("ScopeId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<string>("ScopeId")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("UserId")
                                 .HasColumnType("nvarchar(max)");
@@ -387,8 +405,8 @@ namespace ApiWrite.Migrations
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
-                            b1.Property<Guid>("ScopeId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<string>("ScopeId")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("UserId")
                                 .HasColumnType("nvarchar(max)");

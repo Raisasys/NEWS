@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiWrite.Migrations
 {
     /// <inheritdoc />
-    public partial class _06041 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,6 +28,7 @@ namespace ApiWrite.Migrations
                     ExpireDuration = table.Column<int>(type: "int", nullable: false),
                     OwnerScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShouldAuthenticated = table.Column<bool>(type: "bit", nullable: false),
+                    IsGlobal = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -74,9 +75,10 @@ namespace ApiWrite.Migrations
                     IsArchived = table.Column<bool>(type: "bit", nullable: false),
                     ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireDuration = table.Column<int>(type: "int", nullable: false),
-                    OwnerScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShouldAuthenticated = table.Column<bool>(type: "bit", nullable: false),
                     ContentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsGlobal = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -158,7 +160,7 @@ namespace ApiWrite.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,7 +207,7 @@ namespace ApiWrite.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -247,14 +249,38 @@ namespace ApiWrite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Announcement_IsDeleted",
+                table: "Announcement",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AnnouncementFile_AnnouncementId",
                 table: "AnnouncementFile",
                 column: "AnnouncementId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnnouncementFile_IsDeleted",
+                table: "AnnouncementFile",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_News_ContentId",
                 table: "News",
                 column: "ContentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_News_IsDeleted",
+                table: "News",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SliderImageItem_IsDeleted",
+                table: "SliderImageItem",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SliderImageItem_SliderImagesContentId",
