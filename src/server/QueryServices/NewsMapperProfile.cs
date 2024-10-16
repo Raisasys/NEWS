@@ -17,7 +17,9 @@ namespace QueryServices
 	            .ForMember(d=>d.NewsType, o=>o.MapFrom(s=>s.Content.GetType().Name))
 				.ForMember(d => d.TitleImage, o => o.MapFrom(s => s.Content.MainImage));
 
-            CreateMap<NewsContent, NewsContentDto>()
+            CreateMap<News, NewsSimpleDto>();
+
+			CreateMap<NewsContent, NewsContentDto>()
                 .Include<TopBottomImageContent, TopBottomImageContentDto>()
                 .Include<BottomImageContent, BottomImageContentDto>()
                 .Include<TopImageContent, TopImageContentDto>()

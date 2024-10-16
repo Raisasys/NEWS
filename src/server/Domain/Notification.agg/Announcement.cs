@@ -35,7 +35,7 @@ namespace Domain
         public bool IsArchived { get; set; }
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
-        public Guid OwnerScopeId { get; set; }
+        public string OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
         public virtual ICollection<AnnouncementFile> Files { get; set; }
         public bool IsGlobal { get; set; }

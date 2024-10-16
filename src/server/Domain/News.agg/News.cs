@@ -41,8 +41,8 @@ namespace Domain
         public virtual NewsContent Content { get; set; }
 
         public bool IsGlobal { get; set; }
-        public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; }
-    }
+        public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
+	}
 
 
 

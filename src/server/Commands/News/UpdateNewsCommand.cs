@@ -10,7 +10,7 @@ namespace Commands.News
 	public interface IUpdateNewsCommand
 	{
 		NewInfoCommand Info { get; set; }
-		IEnumerable<Guid> Scopes { get; set; }
+		IEnumerable<string> Scopes { get; set; }
 		bool ShouldAuthenticated { get; set; }
 	}
 
@@ -21,7 +21,7 @@ namespace Commands.News
 		public string Image { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
-		public IEnumerable<Guid> Scopes { get; set; }
+		public IEnumerable<string> Scopes { get; set; }
 	}
 
 	public class UpdateNewsBySliderImageContentCommand : UpdateNewsCommand

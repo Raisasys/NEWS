@@ -68,29 +68,47 @@ namespace QueryServices
 
 		public async Task<NewsListDto> Execute(GetArchivedNewsListDto query, CancellationToken cancellationToken)
 		{
-			var items = await Database.Set<News>().Include(c => c.Content).Where(t => !t.IsActive).ToListAsync(cancellationToken: cancellationToken);
-			var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
-
-			return new NewsListDto
+			try
 			{
-				Items = dtos
-			};
+				var items = await Database.Set<News>().Include(c => c.Content).Where(t => !t.IsActive)
+					.ToListAsync(cancellationToken: cancellationToken);
+				var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
+
+				return new NewsListDto
+				{
+					Items = dtos
+				};
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
 		}
 
 		public async Task<NewsListDto> Execute(GetNewsListByPagesDto query, CancellationToken cancellationToken)
 		{
-			var dataById = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
-			var data = _mapper.Map< IList <News> , IList<NewsSimpleDto>>(dataById);
-
-			var offset = (query.PageNumber-1)* query.PageSize;
-			
-			var result = data.Skip(offset).Take(query.PageSize);
-			
-			return new NewsListDto
+			try
 			{
-				Items = result,
-				TotalItems = data.Count()
-			};
+				var dataById = await Database.Set<News>().Include(c => c.Content)
+					.Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+				var data = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(dataById);
+
+				var offset = (query.PageNumber - 1) * query.PageSize;
+
+				var result = data.Skip(offset).Take(query.PageSize);
+
+				return new NewsListDto
+				{
+					Items = result,
+					TotalItems = data.Count()
+				};
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
 		}
 
 		public async Task<NewsListDto> Execute(GetMySliderImageNewsById query, CancellationToken cancellationToken)
