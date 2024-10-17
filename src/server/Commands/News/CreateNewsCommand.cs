@@ -10,7 +10,6 @@ namespace Commands.News
 	public interface ICreateNewsCommand
 	{
 		NewInfo Info { get; set; }
-		IEnumerable<string> Scopes { get; set; }
 		bool ShouldAuthenticated { get; set; }
 	}
 	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>, ICreateNewsCommand
@@ -19,7 +18,6 @@ namespace Commands.News
 		public string Image { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
-		public IEnumerable<string> Scopes { get; set; }
 	}
 
 	public class CreateNewsByTopImageContentCommand : CreateNewsBaseCommand
@@ -32,7 +30,6 @@ namespace Commands.News
 
 	public class CreateNewsBySliderImageContentCommand : CreateNewsBaseCommand
 	{
-		public string Text { get; set; }
 		public  IEnumerable<SliderImageItemCommand> SliderImageItemsCommand { get; set; }
 	}
 
@@ -50,7 +47,6 @@ namespace Commands.News
 		public string Image { get; set; }
 		public string BottomImage { get; set; }
 		public string Text { get; set; }
-		public IEnumerable<string> Scopes { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
 
@@ -63,7 +59,6 @@ namespace Commands.News
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public string ScopeId  { get; set; }
-
 	}
 
 
@@ -73,7 +68,6 @@ namespace Commands.News
 		public NewInfo Info { get; set; }
 		public string Content { get; set; }
 		public IEnumerable<string> Files { get; set; }
-		public IEnumerable<string> Scopes { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
 	public class CreateNewsResponse

@@ -119,11 +119,9 @@ namespace CommandHandlers
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
 						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
-
-
 			}
 
-			await Database.SaveChanges(cancellationToken);
+            await Database.SaveChanges(cancellationToken);
 			return new CreateNewsResponse()
 			{
 				NewsId = newNews.Id,
@@ -374,20 +372,9 @@ public static class InlineMapper
 	{
 		var info = command.Info;
 
-
-		if (command.Scopes != null && command.Scopes.Any())
-        {
-            var news = new News(info.Title, info.Summery, content, info.TitleImage, true, true, true,
-                info.ExpirationTime, info.ExpireDuration, info.ScopeId)
-            {
-				ShouldAuthenticated = true
-            };
-            news.AddScopeAccess(command.Scopes);
-        }
-		
 		return new News(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId)
         {
-			ShouldAuthenticated = false
+			ShouldAuthenticated = command.ShouldAuthenticated
         };
 	}
 
