@@ -5,5 +5,5 @@ WebApplication
 	.CreateBuilder(args)
 	.Host<WriteApp>()
 	.MigrateDatabase()
-    .Initialize()
+    //.Initialize()
 	.Run();
