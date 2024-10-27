@@ -331,15 +331,8 @@ namespace CommandHandlers
 		public async Task Handle(UpdateActivationCommand command, CancellationToken cancellationToken)
 		{
 			var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
-			if (item.IsActive)
-			{
-				item.IsActive = false;
-			}
-			else
-			{
-				item.IsActive = true;
-			}
-
+		
+			item.IsActive = command.IsActive;
 
 			await Database.SaveChanges(cancellationToken);
 

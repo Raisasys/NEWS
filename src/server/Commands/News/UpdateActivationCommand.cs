@@ -10,5 +10,6 @@ namespace Commands.News
 	public class UpdateActivationCommand : Command
 	{
 		public Guid NewsId { get; set; }
+        public bool IsActive { get; set; }
 	}
 }
