@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
+using Domain;
 
 namespace Commands.News
 {
 	public interface IUpdateNewsCommand
 	{
 		NewInfoCommand Info { get; set; }
-		IEnumerable<string> Scopes { get; set; }
 		bool ShouldAuthenticated { get; set; }
 	}
 
@@ -18,10 +18,9 @@ namespace Commands.News
 	{
 		public NewInfoCommand Info { get; set; }
 		public Guid NewsId { get; set; }
-		public string Image { get; set; }
+		public FileImage Image { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
-		public IEnumerable<string> Scopes { get; set; }
 	}
 
 	public class UpdateNewsBySliderImageContentCommand : UpdateNewsCommand
@@ -32,7 +31,7 @@ namespace Commands.News
 
 	public class UpdateSliderImageItemCommand
 	{
-		public string Image { get; set; }
+		public FileImage Image { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
 
@@ -49,8 +48,8 @@ namespace Commands.News
 
 	public class UpdateNewsByTopBottomImageContentCommand : UpdateNewsCommand
 	{
-		public string TopImage { get; set; }
-		public string BottomImage { get; set; }
+		public FileImage TopImage { get; set; }
+		public FileImage BottomImage { get; set; }
 		public string Text { get; set; }
 	}
 
@@ -59,13 +58,13 @@ namespace Commands.News
 	{
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public string TitleImage { get; set; }
+		public FileImage TitleImage { get; set; }
 		public bool IsPublished { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsArchived { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
-		public string ScopeId { get; set; }
+		public string OwnerScopeId { get; set; }
 	}
 
 

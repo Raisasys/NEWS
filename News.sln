@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.ModelMappings", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiRead", "src\server\ApiRead\ApiRead.csproj", "{B456588E-71E7-42DA-BE9A-32BDF850F2C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\server\Shared\Shared.csproj", "{69CA9DA4-3F9B-454E-9261-97F315C8F002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{B456588E-71E7-42DA-BE9A-32BDF850F2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B456588E-71E7-42DA-BE9A-32BDF850F2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B456588E-71E7-42DA-BE9A-32BDF850F2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69CA9DA4-3F9B-454E-9261-97F315C8F002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69CA9DA4-3F9B-454E-9261-97F315C8F002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69CA9DA4-3F9B-454E-9261-97F315C8F002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69CA9DA4-3F9B-454E-9261-97F315C8F002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

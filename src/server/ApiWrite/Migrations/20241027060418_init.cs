@@ -18,15 +18,17 @@ namespace ApiWrite.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Header = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleImage_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleImage_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false),
                     ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireDuration = table.Column<int>(type: "int", nullable: false),
-                    OwnerScopeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShouldAuthenticated = table.Column<bool>(type: "bit", nullable: false),
                     IsGlobal = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -47,7 +49,8 @@ namespace ApiWrite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -69,7 +72,8 @@ namespace ApiWrite.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Summery = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleImage_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleImage_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false),
@@ -116,8 +120,10 @@ namespace ApiWrite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TopImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BottomImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TopImage_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TopImage_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BottomImage_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BottomImage_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -137,7 +143,8 @@ namespace ApiWrite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -225,7 +232,8 @@ namespace ApiWrite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderRank = table.Column<double>(type: "float", nullable: false),

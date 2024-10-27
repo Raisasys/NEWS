@@ -10,5 +10,9 @@
 	  <PackageReference Include="Jaguar.Core" Version="1.0.51" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
  
 </Project>

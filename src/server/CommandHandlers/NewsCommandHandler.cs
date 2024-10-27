@@ -51,12 +51,12 @@ namespace CommandHandlers
 			var newNews = command.CreateNews(content);
 			Database.Add(newNews);
 
-			if (!command.Image.IsEmpty())
+			if (command.Image != null)
 			{
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.Image.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -82,12 +82,16 @@ namespace CommandHandlers
 
 			Database.Add(newNews);
 
-			if (!command.Image.IsEmpty())
+			if (command.Image != null)
 			{
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+						new PersistFileIntegrationCommand
+                        {
+                            FileName = command.Image.FileId
+
+                        }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -112,12 +116,12 @@ namespace CommandHandlers
 			var newNews = command.CreateNews(content);
 			Database.Add(newNews);
 
-			if (!command.Image.IsEmpty())
+			if (command.Image != null)
 			{
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.Image.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 			}
 
@@ -143,12 +147,12 @@ namespace CommandHandlers
 				var newNews = command.CreateNews(content);
 				Database.Add(newNews);
 
-				if (!command.Image.IsEmpty())
-				{
+                if (command.Image != null)
+                {
 
 					var fileServiceResponse =
 						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-							new PersistFileIntegrationCommand { FileName = command.SliderImageItemsCommand.Select(t=>t.Image).FirstOrDefault() }, cancellationToken);
+							new PersistFileIntegrationCommand { FileName = command.SliderImageItemsCommand.Select(t=>t.Image.FileId).FirstOrDefault() }, cancellationToken);
 					if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -185,12 +189,12 @@ namespace CommandHandlers
 
 			Database.Update(updateNews);
 
-			if (!command.Image.IsEmpty())
-			{
+            if (command.Image != null)
+            {
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.Image.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -216,12 +220,12 @@ namespace CommandHandlers
 
 			Database.Update(updateNews);
 
-			if (!command.Image.IsEmpty())
-			{
+            if (command.Image != null)
+            {
 
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.Image.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
@@ -244,17 +248,17 @@ namespace CommandHandlers
 
 			Database.Update(updateNews);
 
-			if (!command.Image.IsEmpty())
-			{
+            if (command.Image != null)
+            {
 				var fileServiceResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.TopImage}, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.TopImage.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 
 				var fileResponse =
 					await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-						new PersistFileIntegrationCommand { FileName = command.BottomImage }, cancellationToken);
+						new PersistFileIntegrationCommand { FileName = command.BottomImage.FileId }, cancellationToken);
 				if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
 			}
@@ -290,19 +294,19 @@ namespace CommandHandlers
 				updateNews.IsActive = info.IsActive;
 				updateNews.IsArchived = info.IsArchived;
 				updateNews.IsPublished = info.IsPublished;
-				updateNews.OwnerScopeId = info.ScopeId;
+				updateNews.OwnerScopeId = info.OwnerScopeId;
 				updateNews.Summery = info.Summery;
 
 
 				Database.Update(updateNews);
 
-				if (!command.Image.IsEmpty())
-				{
+                if (command.Image != null)
+                {
 					foreach (var item in command.SliderImageItemsCommand)
 					{
 						var fileServiceResponse =
 							await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-								new PersistFileIntegrationCommand { FileName = item.Image }, cancellationToken);
+								new PersistFileIntegrationCommand { FileName = item.Image.FileId }, cancellationToken);
 						if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 					}
 					

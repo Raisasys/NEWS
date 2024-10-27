@@ -13,6 +13,8 @@ namespace Domain.ModelMappings
 		public override void MapBuilder(EntityTypeBuilder<Announcement> entityBuilder)
 		{	
 			entityBuilder.HasMany(t => t.Files);
-		}
+            entityBuilder.OwnsOne(t => t.Image);
+            entityBuilder.OwnsOne(t => t.TitleImage);
+        }
 	}
 }

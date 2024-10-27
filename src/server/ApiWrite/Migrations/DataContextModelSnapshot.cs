@@ -52,9 +52,6 @@ namespace ApiWrite.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -76,16 +73,13 @@ namespace ApiWrite.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerScopeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("OwnerScopeId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ShouldAuthenticated")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TitleImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -201,9 +195,6 @@ namespace ApiWrite.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TitleImage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ContentId");
@@ -268,9 +259,6 @@ namespace ApiWrite.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -303,9 +291,6 @@ namespace ApiWrite.Migrations
                 {
                     b.HasBaseType("Domain.NewsContent");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -326,13 +311,7 @@ namespace ApiWrite.Migrations
                 {
                     b.HasBaseType("Domain.NewsContent");
 
-                    b.Property<string>("BottomImage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TopImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("TopBottomImageContents", (string)null);
@@ -341,9 +320,6 @@ namespace ApiWrite.Migrations
             modelBuilder.Entity("Domain.TopImageContent", b =>
                 {
                     b.HasBaseType("Domain.NewsContent");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -378,7 +354,53 @@ namespace ApiWrite.Migrations
                                 .HasForeignKey("AnnouncementId");
                         });
 
+                    b.OwnsOne("Domain.FileImage", "Image", b1 =>
+                        {
+                            b1.Property<Guid>("AnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AnnouncementId");
+
+                            b1.ToTable("Announcement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnouncementId");
+                        });
+
+                    b.OwnsOne("Domain.FileImage", "TitleImage", b1 =>
+                        {
+                            b1.Property<Guid>("AnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AnnouncementId");
+
+                            b1.ToTable("Announcement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnouncementId");
+                        });
+
                     b.Navigation("AccessEntityItems");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("TitleImage");
                 });
 
             modelBuilder.Entity("Domain.AnnouncementFile", b =>
@@ -419,9 +441,32 @@ namespace ApiWrite.Migrations
                                 .HasForeignKey("NewsId");
                         });
 
+                    b.OwnsOne("Domain.FileImage", "TitleImage", b1 =>
+                        {
+                            b1.Property<Guid>("NewsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("NewsId");
+
+                            b1.ToTable("News");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NewsId");
+                        });
+
                     b.Navigation("AccessEntityItems");
 
                     b.Navigation("Content");
+
+                    b.Navigation("TitleImage");
                 });
 
             modelBuilder.Entity("Domain.SliderImageItem", b =>
@@ -429,6 +474,130 @@ namespace ApiWrite.Migrations
                     b.HasOne("Domain.SliderImagesContent", null)
                         .WithMany("SliderImageItems")
                         .HasForeignKey("SliderImagesContentId");
+
+                    b.OwnsOne("Domain.FileImage", "Image", b1 =>
+                        {
+                            b1.Property<Guid>("SliderImageItemId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("SliderImageItemId");
+
+                            b1.ToTable("SliderImageItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SliderImageItemId");
+                        });
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Domain.BottomImageContent", b =>
+                {
+                    b.OwnsOne("Domain.FileImage", "Image", b1 =>
+                        {
+                            b1.Property<Guid>("BottomImageContentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("BottomImageContentId");
+
+                            b1.ToTable("BottomImageContents");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BottomImageContentId");
+                        });
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Domain.TopBottomImageContent", b =>
+                {
+                    b.OwnsOne("Domain.FileImage", "BottomImage", b1 =>
+                        {
+                            b1.Property<Guid>("TopBottomImageContentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TopBottomImageContentId");
+
+                            b1.ToTable("TopBottomImageContents");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TopBottomImageContentId");
+                        });
+
+                    b.OwnsOne("Domain.FileImage", "TopImage", b1 =>
+                        {
+                            b1.Property<Guid>("TopBottomImageContentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TopBottomImageContentId");
+
+                            b1.ToTable("TopBottomImageContents");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TopBottomImageContentId");
+                        });
+
+                    b.Navigation("BottomImage");
+
+                    b.Navigation("TopImage");
+                });
+
+            modelBuilder.Entity("Domain.TopImageContent", b =>
+                {
+                    b.OwnsOne("Domain.FileImage", "Image", b1 =>
+                        {
+                            b1.Property<Guid>("TopImageContentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TopImageContentId");
+
+                            b1.ToTable("TopImageContents");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TopImageContentId");
+                        });
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Domain.Announcement", b =>

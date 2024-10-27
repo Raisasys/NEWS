@@ -21,7 +21,7 @@ namespace Domain.ModelMappings
 			entityBuilder.Property(t => t.OwnerScopeId);
 			entityBuilder.Property(t => t.Summery);
 			entityBuilder.Property(t => t.Title);
-			entityBuilder.Property(t => t.TitleImage);
+			entityBuilder.OwnsOne(t => t.TitleImage);
 			entityBuilder.Property(t => t.CreatedBy);
 			entityBuilder.Property(t => t.CreatedAt);
 			entityBuilder.Property(t => t.LastModifiedBy);

@@ -37,11 +37,14 @@ namespace CommandHandlers
 
 			if (command.Files.Any())
 			{
-				if (!command.Image.IsEmpty())
+				if (command.Image != null)
 				{
 					var imageServiceResponse =
 						await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-							new PersistFileIntegrationCommand { FileName = command.Image }, cancellationToken);
+							new PersistFileIntegrationCommand
+                            {
+                                FileName = command.Image.FileId
+                            }, cancellationToken);
 					if (!imageServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 				}
 			

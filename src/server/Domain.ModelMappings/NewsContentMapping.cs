@@ -13,11 +13,33 @@ namespace Domain.ModelMappings
 		public override void MapBuilder(EntityTypeBuilder<NewsContent> entityBuilder)
 		{
 		}
-
-
 	}
 
-	public class SliderImagesContentMapping : CustomEntityMapper<SliderImagesContent>
+    public class BottomImageContentMapping : CustomEntityMapper<BottomImageContent>
+    {
+        public override void MapBuilder(EntityTypeBuilder<BottomImageContent> entityBuilder)
+        {
+            entityBuilder.OwnsOne(c => c.Image);
+        }
+    }
+    public class TopImageContentMapping : CustomEntityMapper<TopImageContent>
+    {
+        public override void MapBuilder(EntityTypeBuilder<TopImageContent> entityBuilder)
+        {
+            entityBuilder.OwnsOne(c => c.Image);
+        }
+    }
+
+    public class TopBottomImageContentMapping : CustomEntityMapper<TopBottomImageContent>
+    {
+        public override void MapBuilder(EntityTypeBuilder<TopBottomImageContent> entityBuilder)
+        {
+            entityBuilder.OwnsOne(c => c.BottomImage);
+            entityBuilder.OwnsOne(c => c.TopImage);
+        }
+    }
+
+    public class SliderImagesContentMapping : CustomEntityMapper<SliderImagesContent>
 	{
 		public override void MapBuilder(EntityTypeBuilder<SliderImagesContent> builder)
 		{
@@ -28,9 +50,9 @@ namespace Domain.ModelMappings
 	public class SliderImageItemMapping : CustomEntityMapper<SliderImageItem>
 	{
 		public override void MapBuilder(EntityTypeBuilder<SliderImageItem> entityBuilder)
-		{
-			
-		}
+        {
+            entityBuilder.OwnsOne(c => c.Image);
+        }
 	}
 	
 

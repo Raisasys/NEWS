@@ -1,5 +1,6 @@
 ﻿using Commands.News;
 using Core;
+using Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Commands.Announcement
 		public Guid AnnouncementId { get; set; }
 		public string Title { get; set; }
         public string Header { get; set; }
-        public string Image { get; set; }
+        public FileImage Image { get; set; }
 		public string Description { get; set; }
-        public string TitleImage { get; set; }
+        public FileImage TitleImage { get; set; }
         public bool IsPublished { get; set; }
         public bool IsActive { get; set; }
         public bool IsArchived { get; set; }

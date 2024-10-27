@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
+using Domain;
 
 namespace Commands.News
 {
@@ -15,7 +16,7 @@ namespace Commands.News
 	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
-		public string Image { get; set; }
+		public FileImage Image { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
@@ -35,7 +36,7 @@ namespace Commands.News
 
 	public class SliderImageItemCommand 
 	{
-		public string Image { get; set; }
+		public FileImage Image { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
 
@@ -44,8 +45,8 @@ namespace Commands.News
 	public class CreateNewsByTopBottomImageContentCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
-		public string Image { get; set; }
-		public string BottomImage { get; set; }
+		public FileImage Image { get; set; }
+		public FileImage BottomImage { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
@@ -55,7 +56,7 @@ namespace Commands.News
 	{
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public string TitleImage { get; set; }
+		public FileImage TitleImage { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public string ScopeId  { get; set; }
@@ -67,7 +68,7 @@ namespace Commands.News
 	{
 		public NewInfo Info { get; set; }
 		public string Content { get; set; }
-		public IEnumerable<string> Files { get; set; }
+		public IEnumerable<FileImage> Files { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
 	public class CreateNewsResponse

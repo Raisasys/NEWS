@@ -10,7 +10,7 @@ namespace Domain
 
         public News(
 			string title, string summery, NewsContent content,
-			string titleImage, 
+			FileImage titleImage, 
 			bool isPublished, bool isActive, bool isArchived, 
 			DateTime? expirationTime, int expireDuration,  string ownerScopeId)
 		{
@@ -30,7 +30,7 @@ namespace Domain
 
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public string TitleImage { get; set; }
+		public FileImage TitleImage { get; set; }
 		public bool IsPublished { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsArchived { get; set; }
