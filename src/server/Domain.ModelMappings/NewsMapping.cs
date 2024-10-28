@@ -29,5 +29,14 @@ namespace Domain.ModelMappings
 			entityBuilder.HasOne(t => t.Content);//.WithOne().OnDelete(DeleteBehavior.Cascade);
 		}
 	}
+
+    public class GroupNewsMapping : CustomEntityMapper<GroupNews>
+    {
+        public override void MapBuilder(EntityTypeBuilder<GroupNews> entityBuilder)
+        {
+            entityBuilder.OwnsMany(c => c.Items);
+        }
+    }
+    
 }
 

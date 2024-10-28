@@ -43,7 +43,4 @@ namespace Domain
         public bool IsGlobal { get; set; }
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
 	}
-
-
-
 }

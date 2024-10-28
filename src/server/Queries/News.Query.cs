@@ -11,6 +11,18 @@ namespace Queries
 	{
 		public Guid NewsId { get; set; }
 	}
+
+
+    public class GetMyNewsById : IQuery<NewsFullDto>
+    {
+        public Guid NewsId { get; set; }
+    }
+
+    public class GetMyGroupNewsById : IQuery<NewsListDto>
+    {
+        public Guid GroupNewsId { get; set; }
+    }
+
     public class GetNewsByOwnerId : IQuery<NewsSimpleDto>
     {
         public Guid OwnerId { get; set; }

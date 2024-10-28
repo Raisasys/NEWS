@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Core;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +11,11 @@ namespace QueryServices
 		IQueryService<GetNewsListDto, NewsListDto>,
 		IQueryService<GetArchivedNewsListDto, NewsListDto>,
 		IQueryService<GetNewsListByPagesDto, NewsListDto>,
-		IQueryService<GetMySliderImageNewsById, NewsListDto>
+		IQueryService<GetMySliderImageNewsById, NewsListDto>,
+        IQueryService<GetMyNewsById, NewsFullDto>,
+        IQueryService<GetMyGroupNewsById, NewsListDto>
 
-	{
+    {
 		
 		private readonly IMapper _mapper;
 
@@ -28,20 +25,10 @@ namespace QueryServices
 		}
 		public async Task<NewsFullDto> Execute(GetNewsById query, CancellationToken cancellationToken)
 		{
-			try
-			{
-				var dataById = await Database.Set<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
-				var result = _mapper.Map<News, NewsFullDto>(dataById);
-				return result;
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
-			
-
-		}
+            var dataById = await Database.Set<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
+            var result = _mapper.Map<News, NewsFullDto>(dataById);
+            return result;
+        }
 
 
 		public async Task<NewsListDto> Execute(GetNewsListDto query, CancellationToken cancellationToken)
@@ -127,5 +114,27 @@ namespace QueryServices
 				TotalItems = data.Count()
 			};
 		}
-	}
+
+        public async Task<NewsFullDto> Execute(GetMyNewsById query, CancellationToken cancellationToken)
+        {
+            var dataById = await Database.SetWithHaveAccess<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
+            var result = _mapper.Map<News, NewsFullDto>(dataById);
+            return result;
+        }
+
+        public async Task<NewsListDto> Execute(GetMyGroupNewsById query, CancellationToken cancellationToken)
+        {
+            var dataById = await Database.SetWithHaveAccess<GroupNews>().Include(c => c.Items)
+                .SingleOrDefaultAsync(i => i.Id == query.GroupNewsId, cancellationToken: cancellationToken);
+            var items = await Database.Set<News>().Where(c => dataById.Items.Select(v => v.NewsId).Contains(c.Id))
+                .ToListAsync(cancellationToken);
+            var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
+            return new NewsListDto
+            {
+                Items = dtos
+            };
+        }
+
+    }
+    
 }
