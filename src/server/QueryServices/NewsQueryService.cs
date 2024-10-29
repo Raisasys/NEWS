@@ -117,22 +117,32 @@ namespace QueryServices
 
         public async Task<NewsFullDto> Execute(GetMyNewsById query, CancellationToken cancellationToken)
         {
-            var dataById = await Database.SetWithHaveAccess<News>().Include(c => c.Content).SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
-            var result = _mapper.Map<News, NewsFullDto>(dataById);
-            return result;
+            var news = await Database.Set<News>()
+                .Include(c => c.Content).Include(c=>c.AccessEntityItems)
+                .SingleOrDefaultAsync(i => i.Id == query.NewsId, cancellationToken: cancellationToken);
+            
+            if (news != null && news.HasAccess(CurrentAppContext.UserIdentity()))
+                return _mapper.Map<News, NewsFullDto>(news);
+            return null;
         }
 
         public async Task<NewsListDto> Execute(GetMyGroupNewsById query, CancellationToken cancellationToken)
         {
-            var dataById = await Database.SetWithHaveAccess<GroupNews>().Include(c => c.Items)
+            var groupNews = await Database.Set<GroupNews>()
+                .Include(c => c.Items).Include(c => c.AccessEntityItems)
                 .SingleOrDefaultAsync(i => i.Id == query.GroupNewsId, cancellationToken: cancellationToken);
-            var items = await Database.Set<News>().Where(c => dataById.Items.Select(v => v.NewsId).Contains(c.Id))
-                .ToListAsync(cancellationToken);
-            var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
-            return new NewsListDto
+
+            if (groupNews != null && groupNews.HasAccess(CurrentAppContext.UserIdentity()))
             {
-                Items = dtos
-            };
+                var items = await Database.Set<News>().Where(c => groupNews.Items.Select(v => v.NewsId).Contains(c.Id)).ToListAsync(cancellationToken);
+                var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
+                return new NewsListDto
+                {
+                    Items = dtos
+                };
+            }
+
+            return null;
         }
 
     }

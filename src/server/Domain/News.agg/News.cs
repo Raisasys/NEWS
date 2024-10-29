@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Domain;
+using System.Security.Principal;
 
 namespace Domain
 {
@@ -42,5 +43,11 @@ namespace Domain
 
         public bool IsGlobal { get; set; }
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
-	}
+
+
+        public bool HasAccess(IUserIdentity identity) =>
+            IsActive && !IsArchived && IsPublished &&
+            (!ShouldAuthenticated || IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
+
+    }
 }

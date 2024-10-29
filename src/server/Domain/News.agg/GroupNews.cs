@@ -36,4 +36,8 @@ public class GroupNews : Aggregate, IHaveAccess
 
     public bool IsGlobal { get; set; }
     public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
+
+    public bool HasAccess(IUserIdentity identity) =>
+        IsActive && !IsArchived && 
+        (!ShouldAuthenticated || IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
 }
