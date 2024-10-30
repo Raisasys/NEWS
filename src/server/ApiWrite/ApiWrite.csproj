@@ -40,6 +40,12 @@
 	  <ProjectReference Include="..\Domain.ModelMappings\Domain.ModelMappings.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update=".env">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 	
 
 </Project>

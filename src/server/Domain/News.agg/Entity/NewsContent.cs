@@ -66,6 +66,7 @@ namespace Domain
 	    public void AddImage(SliderImageItem item)
 	    {
 			item.SortAsLast(SliderImageItems.OrderBy(i=>i.OrderRank).Last());
+			SliderImageItems.Add(item);
 	    }
 	}
 

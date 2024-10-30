@@ -4,6 +4,7 @@ using Core;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shared.Messages;
 
 namespace ApiWrite.Controllers
 {
