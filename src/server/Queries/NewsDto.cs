@@ -13,7 +13,9 @@ public class NewsSimpleDto : IDto
 	public bool IsPublished { get; set; }
 	public bool IsActive { get; set; }
 	public bool IsArchived { get; set; }
-	public DateTime? ExpirationTime { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime? ExpirationTime { get; set; }
 	public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
     public bool ShouldAuthenticated { get; set; }

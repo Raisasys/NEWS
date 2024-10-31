@@ -51,5 +51,20 @@ namespace ApiRead.Controllers
 			return Ok(null);
 		}
 
-	}
+        [HttpGet]
+        public async Task<ActionResult<CommunicationItemListDto>> GetHaveCommunications([FromQuery] GetAnnounceHaveCommunicationsQuery query)
+        {
+            var item = await Database.Set<Announcement>().Include(c => c.Communications).SingleOrDefaultAsync(c => c.Id == query.Id);
+
+            if (item != null)
+            {
+                var facade = new GetHaveCommunicationsFacade<Announcement>(item);
+                var result = await facade.Execute();
+                return Ok(result);
+            }
+
+            return Ok(null);
+        }
+
+    }
 }

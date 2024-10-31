@@ -32,6 +32,9 @@ class WriteApp: App<WriteApp,News,NewsMapping>
 		Services.AddDomainServices();
 		Services.AddCommandHandlers();
         Services.AddSeedDataInitializerAssembly<A00_NewsSeedDataInitializer>();
-        Services.BuildIntegrationBus().AddMessageAssembly<PersistFileIntegrationCommand>().Run();
+        Services.BuildIntegrationBus()
+            .AddMessageAssembly<PersistFileIntegrationCommand>()
+            .AddMessageAssembly<CommunicationMessagesWithResponseCommand>()
+            .Run();
 	}
 }

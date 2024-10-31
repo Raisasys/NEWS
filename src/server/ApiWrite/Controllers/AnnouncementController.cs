@@ -56,5 +56,20 @@ namespace ApiWrite.Controllers
 
 			return Ok();
 		}
-	}
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> AttachCommunication(AttachCommunicationToAnnounceCommand command)
+        {
+            var announce = await Database.Set<Announcement>().Include(c => c.Communications).SingleOrDefaultAsync(c => c.Id == command.Id);
+            if (announce != null)
+            {
+                var facade = new SetHaveCommunications<Announcement>(announce, command.Message);
+                await facade.Execute();
+            }
+
+            return Ok();
+        }
+    }
 }

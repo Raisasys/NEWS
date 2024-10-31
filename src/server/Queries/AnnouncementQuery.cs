@@ -21,4 +21,11 @@ namespace Queries
 		public Guid Id { get; set; }
 	}
 
+
+
+    public class GetAnnounceHaveCommunicationsQuery : IQuery<CommunicationItemListDto>
+    {
+        public Guid Id { get; set; }
+    }
+
 }

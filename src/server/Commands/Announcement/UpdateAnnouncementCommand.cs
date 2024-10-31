@@ -42,8 +42,6 @@ namespace Commands.Announcement
 	{
 		public Guid Id { get; set; }
 		public bool IsGlobal { get; set; }
-
-
 	}
 
 
@@ -53,4 +51,13 @@ namespace Commands.Announcement
 		public List<string> Scopes { get; set; }
 		public List<string> Users { get; set; }
 	}
+
+
+    public class AttachCommunicationToAnnounceCommand : Command
+    {
+        public Guid Id { get; set; }
+        public CommunicationMessage Message{ get; set; }
+    }
+
+
 }
