@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jaguar.Data" Version="1.0.72" />
+    <PackageReference Include="Jaguar.Data" Version="1.0.75" />
   </ItemGroup>
 
   <ItemGroup>
