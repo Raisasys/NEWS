@@ -75,4 +75,10 @@ namespace Commands.News
 	{
 		public Guid NewsId { get; set; }
 	}
+
+    public class AttachCommunicationToNewsCommand : Command
+    {
+        public Guid Id { get; set; }
+        public CommunicationMessage Message { get; set; }
+    }
 }

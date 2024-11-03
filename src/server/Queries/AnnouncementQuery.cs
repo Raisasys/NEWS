@@ -28,4 +28,9 @@ namespace Queries
         public Guid Id { get; set; }
     }
 
+    public class GetMyAnnounceById : IQuery<AnnouncementDto>
+    {
+        public Guid AnnouncementId { get; set; }
+    }
+
 }

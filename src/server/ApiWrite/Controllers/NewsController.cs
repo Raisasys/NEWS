@@ -1,4 +1,5 @@
 ﻿using Commands;
+using Commands.Announcement;
 using Commands.News;
 using Core;
 using Domain;
@@ -109,5 +110,18 @@ namespace ApiWrite.Controllers
 
 			return Ok();
 		}
-	}
+
+        [HttpPost]
+        public async Task<ActionResult> AttachCommunication(AttachCommunicationToNewsCommand command)
+        {
+            var news = await Database.Set<News>().Include(c => c.Communications).SingleOrDefaultAsync(c => c.Id == command.Id);
+            if (news != null)
+            {
+                var facade = new SetHaveCommunications<News>(news, command.Message);
+                await facade.Execute();
+            }
+
+            return Ok();
+        }
+    }
 }

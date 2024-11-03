@@ -42,5 +42,9 @@ namespace Domain
         public bool IsGlobal { get; set; }
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; }
         public virtual ICollection<CommunicationItem> Communications { get; set; }
+
+        public bool HasAccess(IUserIdentity identity) =>
+            IsActive && !IsArchived && IsPublished &&
+            (!ShouldAuthenticated || IsGlobal || (identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
     }
 }

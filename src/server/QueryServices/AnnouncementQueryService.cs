@@ -13,7 +13,8 @@ namespace QueryServices
 {
 	public class AnnouncementQueryService : QueryService, 
 		IQueryService<GetAnnouncementById, AnnouncementDto>,
-		IQueryService<GetAnnouncementListDto, AnnouncementListDto>
+		IQueryService<GetAnnouncementListDto, AnnouncementListDto>,
+		IQueryService<GetMyAnnounceById, AnnouncementDto>
 	{
 		private readonly IMapper _mapper;
 		public AnnouncementQueryService(IMapper mapper)
@@ -54,5 +55,15 @@ namespace QueryServices
 				throw;
 			}
 		}
-	}
+
+        public async Task<AnnouncementDto> Execute(GetMyAnnounceById query, CancellationToken cancellationToken)
+        {
+            var news = await Database.Set<Announcement>().Include(c => c.AccessEntityItems)
+                .SingleOrDefaultAsync(i => i.Id == query.AnnouncementId, cancellationToken: cancellationToken);
+
+            if (news != null && news.HasAccess(CurrentAppContext.UserIdentity()))
+                return _mapper.Map<Announcement, AnnouncementDto>(news);
+            return null;
+        }
+    }
 }
