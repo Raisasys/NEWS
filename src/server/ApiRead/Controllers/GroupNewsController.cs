@@ -23,11 +23,11 @@ namespace ApiRead.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<GroupNewsListDto>> GetGroupNews([FromQuery] GetGroupNewsListQuery oQueryString)
+        public async Task<ActionResult<GroupNewsListDto>> GetGroupNews()
         {
             try
             {
-                var oResponse = await QueryProcessor.Execute<GetGroupNewsListQuery, GroupNewsListDto>(oQueryString);
+                var oResponse = await QueryProcessor.Execute<GetGroupNewsListQuery, GroupNewsListDto>(new GetGroupNewsListQuery());
                 return Ok(oResponse);
             }
             catch (Exception oEx)

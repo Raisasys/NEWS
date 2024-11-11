@@ -29,7 +29,7 @@ namespace QueryServices
 
         public async Task<GroupNewsListDto> Execute(GetGroupNewsListQuery query, CancellationToken cancellationToken)
         {
-            var items = await Database.Set<GroupNews>().Include(c => c.Items).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+            var items = await Database.Set<GroupNews>().Include(c => c.Items).ToListAsync(cancellationToken: cancellationToken);
             var dtos = _mapper.Map<IList<GroupNews>, IList<GroupNewsDto>>(items);
 
             return new GroupNewsListDto
