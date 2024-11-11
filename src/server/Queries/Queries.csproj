@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Jaguar.Core" Version="1.0.74" />
+	  <PackageReference Include="Jaguar.Core" Version="1.0.83" />
+	  <PackageReference Include="Jaguar.Shared.Types" Version="1.0.18" />
   </ItemGroup>
 
   <ItemGroup>

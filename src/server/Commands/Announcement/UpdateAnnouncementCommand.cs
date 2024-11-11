@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Types;
 
 namespace Commands.Announcement
 {
@@ -14,9 +15,9 @@ namespace Commands.Announcement
 		public Guid AnnouncementId { get; set; }
 		public string Title { get; set; }
         public string Header { get; set; }
-        public FileImage Image { get; set; }
+        public AttachedFile Image { get; set; }
 		public string Description { get; set; }
-        public FileImage TitleImage { get; set; }
+        public AttachedFile TitleImage { get; set; }
         public bool IsPublished { get; set; }
         public bool IsActive { get; set; }
         public bool IsArchived { get; set; }
