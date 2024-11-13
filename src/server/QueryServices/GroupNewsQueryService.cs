@@ -9,8 +9,6 @@ namespace QueryServices
 	public class GroupNewsQueryService : QueryService, 
 		IQueryService<GroupNewsByIdQuery, GroupNewsDto>,
 		IQueryService<GetGroupNewsListQuery, GroupNewsListDto>
-
-
     {
 		
 		private readonly IMapper _mapper;
