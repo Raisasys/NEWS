@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Domain;
+using Shared.Types;
 
 namespace Commands.News
 {
@@ -18,7 +19,7 @@ namespace Commands.News
 	{
 		public NewInfoCommand Info { get; set; }
 		public Guid NewsId { get; set; }
-		public FileImage Image { get; set; }
+		public AttachedFile Image { get; set; }
 		public string Text { get; set; }
 		public bool ShouldAuthenticated { get; set; }
 	}
@@ -31,13 +32,23 @@ namespace Commands.News
 
 	public class UpdateSliderImageItemCommand
 	{
-		public FileImage Image { get; set; }
+		public AttachedFile Image { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
 
 	}
 
-	public class UpdateNewsByTopImageContentCommand : UpdateNewsCommand
+    public class UpdateVideoCommand : Command<UpdateNewsResponse>, IUpdateNewsCommand
+    {
+        public AttachedFile Video { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public Guid NewsId { get; set; }
+        public NewInfoCommand Info { get; set; }
+        public bool ShouldAuthenticated { get; set; }
+    }
+
+    public class UpdateNewsByTopImageContentCommand : UpdateNewsCommand
 	{
 
 	}
@@ -48,8 +59,8 @@ namespace Commands.News
 
 	public class UpdateNewsByTopBottomImageContentCommand : UpdateNewsCommand
 	{
-		public FileImage TopImage { get; set; }
-		public FileImage BottomImage { get; set; }
+		public AttachedFile TopImage { get; set; }
+		public AttachedFile BottomImage { get; set; }
 		public string Text { get; set; }
 	}
 
@@ -58,7 +69,7 @@ namespace Commands.News
 	{
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public FileImage TitleImage { get; set; }
+		public AttachedFile TitleImage { get; set; }
 		public bool IsPublished { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsArchived { get; set; }

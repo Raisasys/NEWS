@@ -2,6 +2,7 @@
 using Core.Domain;
 using System.Security.Principal;
 using Core.Types;
+using Shared.Types;
 
 namespace Domain
 {
@@ -12,7 +13,7 @@ namespace Domain
 
         public News(
 			string title, string summery, NewsContent content,
-			FileImage titleImage, 
+			AttachedFile titleImage, 
 			bool isPublished, bool isActive, bool isArchived, 
 			DateTime? expirationTime, int expireDuration,  string ownerScopeId)
 		{
@@ -32,7 +33,7 @@ namespace Domain
 
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public FileImage TitleImage { get; set; }
+		public AttachedFile TitleImage { get; set; }
 		public bool IsPublished { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsArchived { get; set; }

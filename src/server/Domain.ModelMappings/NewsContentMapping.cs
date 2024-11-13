@@ -30,6 +30,14 @@ namespace Domain.ModelMappings
         }
     }
 
+    public class VideoContentMapping : CustomEntityMapper<VideoContent>
+    {
+        public override void MapBuilder(EntityTypeBuilder<VideoContent> entityBuilder)
+        {
+            entityBuilder.OwnsOne(c => c.Video);
+        }
+    }
+
     public class TopBottomImageContentMapping : CustomEntityMapper<TopBottomImageContent>
     {
         public override void MapBuilder(EntityTypeBuilder<TopBottomImageContent> entityBuilder)

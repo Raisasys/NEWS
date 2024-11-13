@@ -1,11 +1,7 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Domain;
 using Core.Types;
+using Shared.Types;
 
 namespace Domain
 {
@@ -17,7 +13,7 @@ namespace Domain
 				
 		}
 
-		public Announcement(string title, string header, FileImage image, string description, ICollection<AnnouncementFile> files)
+		public Announcement(string title, string header, AttachedFile image, string description, ICollection<AnnouncementFile> files)
 		{
 			Title = title;
             Header = header;
@@ -28,9 +24,9 @@ namespace Domain
 
 		public string Title { get; set; }
         public string Header { get; set; }
-        public FileImage Image { get; set; }
+        public AttachedFile Image { get; set; }
 		public string Description { get; set; }
-        public FileImage TitleImage { get; set; }
+        public AttachedFile TitleImage { get; set; }
         public bool IsPublished { get; set; }
         public bool IsActive { get; set; }
         public bool IsArchived { get; set; }

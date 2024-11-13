@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Shared.Types;
 
 namespace Queries;
 
@@ -8,7 +9,7 @@ public class NewsSimpleDto : IDto
 	public Guid Id { get; set; }
 	public string Title { get; set; }
 	public string Summery { get; set; }
-	public FileImage TitleImage { get; set; }
+	public AttachedFile TitleImage { get; set; }
 	public string NewsType { get; set; }
 	public bool IsPublished { get; set; }
 	public bool IsActive { get; set; }
@@ -41,25 +42,30 @@ public class NewsListDto : IListDto<NewsSimpleDto>
 
 public abstract class NewsContentDto : IDto
 {
-	public FileImage MainImage { get; set; }
+	public AttachedFile MainImage { get; set; }
 }
 
 public class TopImageContentDto : NewsContentDto
 {
-	public FileImage Image { get; set; }
+	public AttachedFile Image { get; set; }
 	public string Text { get; set; }
 }
 
+public class VideoContentDto : NewsContentDto
+{
+    public AttachedFile Video { get; set; }
+    public string Text { get; set; }
+}
 public class BottomImageContentDto : NewsContentDto
 {
-	public FileImage Image { get; set; }
+	public AttachedFile Image { get; set; }
 	public string Text { get; set; }
 }
 
 public class TopBottomImageContentDto : NewsContentDto
 {
-	public FileImage Image { get; set; }
-	public FileImage BottomImage { get; set; }
+	public AttachedFile Image { get; set; }
+	public AttachedFile BottomImage { get; set; }
 	public string Text { get; set; }
 }
 
@@ -70,7 +76,7 @@ public class SliderImagesContentDto : NewsContentDto
 }
 public class SliderImageItemDto: IDto
 {
-	public FileImage Image { get; set; }
+	public AttachedFile Image { get; set; }
 	public string Title { get; set; }
 	public string Description { get; set; }
 	public double OrderRank { get; set; }

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jaguar.Shared.Messages" Version="1.0.18" />
+    <PackageReference Include="Jaguar.Shared.Messages" Version="1.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
   </ItemGroup>
 
