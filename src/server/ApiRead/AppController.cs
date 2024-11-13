@@ -9,6 +9,6 @@ namespace ApiRead;
 [Route("api/[controller]/[action]")]
 public abstract class AppController : AppControllerBase
 {
-    protected IDatabase Database => Context.GetDatabase();
+    protected IDatabase Database => Context.Current.GetService<IDatabase>();
 
 }

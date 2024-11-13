@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Core;
 
-using FluentValidation;
 
 namespace Domain;
 

@@ -3,7 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Jaguar.Core.Messages" Version="1.0.2" />
+		<PackageReference Include="Jaguar.Shared.Types" Version="1.0.26" />
+	</ItemGroup>
 </Project>
