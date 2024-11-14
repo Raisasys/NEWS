@@ -69,10 +69,6 @@ namespace Commands.News
 	{
 		public string Title { get; set; }
 		public string Summery { get; set; }
-		public AttachedFile TitleImage { get; set; }
-		public bool IsPublished { get; set; }
-		public bool IsActive { get; set; }
-		public bool IsArchived { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public string OwnerScopeId { get; set; }

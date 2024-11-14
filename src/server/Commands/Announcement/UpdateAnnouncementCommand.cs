@@ -13,14 +13,10 @@ namespace Commands.Announcement
 	public class UpdateAnnouncementCommand : Command<UpdateAnnouncementResponse>
 	{
 		public Guid AnnouncementId { get; set; }
-		public string Title { get; set; }
+        public string Title { get; set; }
         public string Header { get; set; }
-        public AttachedFile Image { get; set; }
-		public string Description { get; set; }
+        public string Description { get; set; }
         public AttachedFile TitleImage { get; set; }
-        public bool IsPublished { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsArchived { get; set; }
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }

@@ -19,17 +19,16 @@ namespace CommandHandlers
         ICommandHandler<UpdateNewsBySliderImageContentCommand, UpdateNewsResponse>,
         ICommandHandler<UpdateVideoCommand, UpdateNewsResponse>,
         ICommandHandler<DeleteNewCommand>,
-        ICommandHandler<UpdateActivationCommand>
+        ICommandHandler<PublishNewsCommand>,
+        ICommandHandler<ArchiveNewsCommand>
 
 
     {
-        private readonly INewsDomainService _newsDomainService;
 
         private IIntegrationBus _integrationBus;
 
-        public NewsCommandHandler(INewsDomainService newsDomainService, IIntegrationBus integrationBus)
+        public NewsCommandHandler(IIntegrationBus integrationBus)
         {
-            _newsDomainService = newsDomainService;
             _integrationBus = integrationBus;
         }
 
@@ -327,9 +326,6 @@ namespace CommandHandlers
             updateNews.Content = content;
             updateNews.ExpirationTime = info.ExpirationTime;
             updateNews.ExpireDuration = info.ExpireDuration;
-            updateNews.IsActive = info.IsActive;
-            updateNews.IsArchived = info.IsArchived;
-            updateNews.IsPublished = info.IsPublished;
             updateNews.OwnerScopeId = info.OwnerScopeId;
             updateNews.Summery = info.Summery;
 
@@ -361,16 +357,7 @@ namespace CommandHandlers
             await Database.SaveChanges(cancellationToken);
         }
 
-        public async Task Handle(UpdateActivationCommand command, CancellationToken cancellationToken)
-        {
-            var item = await Database.Set<News>().Include(t => t.Content).SingleOrDefaultAsync(t => t.Id == command.NewsId, cancellationToken);
-
-            item.IsActive = command.IsActive;
-
-            await Database.SaveChanges(cancellationToken);
-
-        }
-
+       
 
         public async Task<UpdateNewsResponse> Handle(UpdateVideoCommand command, CancellationToken cancellationToken)
         {
@@ -384,7 +371,6 @@ namespace CommandHandlers
             content.CopyMap(command);
 
             var info = command.Info;
-            updateNews.TitleImage = command.Video;
 
             updateNews.CopyMap(info);
 
@@ -403,6 +389,40 @@ namespace CommandHandlers
             return new UpdateNewsResponse();
 
         }
+
+        public async Task Handle(PublishNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<News>(command.NewsId, cancellationToken);
+
+            if (command.Published)
+            {
+                item.Publish(command.UserId);
+            }
+            else
+            {
+                item.Published = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
+
+        public async Task Handle(ArchiveNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<News>(command.NewsId, cancellationToken);
+            if (command.Archived)
+            {
+                item.Archive(command.UserId);
+            }
+            else
+            {
+                item.Archived = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
+
     }
 
 
@@ -429,7 +449,7 @@ public static class InlineMapper
     {
         var info = command.Info;
 
-        return new News(info.Title, info.Summery, content, info.TitleImage, true, true, true, info.ExpirationTime, info.ExpireDuration, info.ScopeId)
+        return new News(info.Title, info.Summery, content, info.TitleImage, info.ExpirationTime, info.ExpireDuration, info.ScopeId)
         {
             ShouldAuthenticated = command.ShouldAuthenticated
         };

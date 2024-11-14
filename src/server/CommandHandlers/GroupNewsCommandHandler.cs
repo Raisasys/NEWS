@@ -10,24 +10,30 @@ using Core;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared.Messages;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CommandHandlers
 {
     public class GroupNewsCommandHandler : CommandHandlerBase, 
-        ICommandHandler<GroupNewsCommand, GroupNewsResponse>,
-        ICommandHandler<GroupNewsUpdateCommand, GroupNewsResponse>,
-        ICommandHandler<DeleteGroupNewsCommand>
+        ICommandHandler<CreateGroupNewsCommand, GroupNewsResponse>,
+        ICommandHandler<UpdateGroupNewsCommand, GroupNewsResponse>,
+        ICommandHandler<DeleteGroupNewsCommand>,
+        ICommandHandler<PublishGroupNewsCommand>,
+        ICommandHandler<ArchiveGroupNewsCommand>
+
     {
         
-        public async Task<GroupNewsResponse> Handle(GroupNewsCommand command, CancellationToken cancellationToken)
+        public async Task<GroupNewsResponse> Handle(CreateGroupNewsCommand command, CancellationToken cancellationToken)
         {
 
-            var GroupNewsItem = command.Items.Select(t => new GroupNewsItem()
+            var groupNewsItem = command.Items.Select(t => new GroupNewsItem()
             {
                 NewsId = t.NewsId,
                 Order = t.Order
             }).ToList();
-            var groupNews = new GroupNews(command.Title, command.Summery, command.IsActive, command.IsArchived, command.ExpirationTime, command.ExpireDuration, command.OwnerScopeId, GroupNewsItem);
+            var groupNews = new GroupNews(command.Title, command.ExpirationTime, command.ExpireDuration, command.OwnerScopeId, groupNewsItem);
+            groupNews.ShouldAuthenticated = command.ShouldAuthenticated;
+
             Database.Add(groupNews);
             await Database.SaveChanges(cancellationToken);
         
@@ -37,26 +43,23 @@ namespace CommandHandlers
             };
         }
 
-        public async Task<GroupNewsResponse> Handle(GroupNewsUpdateCommand command, CancellationToken cancellationToken)
+        public async Task<GroupNewsResponse> Handle(UpdateGroupNewsCommand command, CancellationToken cancellationToken)
         {
             var update = await Database.Set<GroupNews>().Include(t => t.Items).Include(t => t.AccessEntityItems)
                 .SingleOrDefaultAsync(t => t.Id == command.GroupNewsId, cancellationToken: cancellationToken);
-            var GroupNewsItem = command.Items.Select(t => new GroupNewsItem()
+            var groupNewsItems = command.Items.Select(t => new GroupNewsItem()
             {
                 NewsId = t.NewsId,
                 Order = t.Order
             }).ToList();
 
-            GroupNewsItem.CopyMap(command);
-
+            update.Title = command.Title;
             update.ExpirationTime = command.ExpirationTime;
             update.ExpireDuration = command.ExpireDuration;
-            update.IsArchived = command.IsArchived;
             update.OwnerScopeId = command.OwnerScopeId;
             update.ShouldAuthenticated = command.ShouldAuthenticated;
-            update.Summery = command.Summery;
-            update.Title = command.Title;
-            update.Items = GroupNewsItem;
+            update.Items = groupNewsItems;
+
             Database.Update(update);
             await Database.SaveChanges(cancellationToken);
 
@@ -74,10 +77,42 @@ namespace CommandHandlers
             await Database.SaveChanges(cancellationToken);
         }
 
-       
+
+        public async Task Handle(PublishGroupNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<GroupNews>(command.GroupNewsId, cancellationToken);
+
+            if (command.Published)
+            {
+                item.Publish(command.UserId);
+            }
+            else
+            {
+                item.Published = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
+
+        public async Task Handle(ArchiveGroupNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<GroupNews>(command.GroupNewsId, cancellationToken);
+            if (command.Archived)
+            {
+                item.Archive(command.UserId);
+            }
+            else
+            {
+                item.Archived = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
     }
 
-    public static class InlineMapper
+    /*public static class InlineMapper
     {
         public static void CopyMap(this object src, object from)
         {
@@ -93,5 +128,5 @@ namespace CommandHandlers
                 }
             }
         }
-    }
+    }*/
 }

@@ -1,5 +1,6 @@
 ﻿using Commands;
 using Commands.Announcement;
+using Commands.GroupNews;
 using Commands.News;
 using Core;
 using Domain;
@@ -77,14 +78,26 @@ namespace ApiWrite.Controllers
 			return Ok();
 		}
 
-		[HttpPost]
-		public async Task<ActionResult> UpdateActivationNews([FromBody] UpdateActivationCommand command)
-		{
-			await CommandBus.Send<UpdateActivationCommand>(command);
-			return Ok();
-		}
 
-		[HttpPost]
+        [HttpPost]
+        public async Task<ActionResult> Publish([FromBody] PublishNewsCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<PublishNewsCommand>(command);
+            return Ok();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Archive([FromBody] ArchiveNewsCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<ArchiveNewsCommand>(command);
+            return Ok();
+        }
+
+
+        [HttpPost]
 		public async Task<ActionResult> UpdateAccess(UpdateHaveAccessNewsCommand command)
 		{
 			var news = await Database.Set<News>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);

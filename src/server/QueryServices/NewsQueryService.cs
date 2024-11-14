@@ -35,7 +35,7 @@ namespace QueryServices
 		{
 			try
 			{
-				var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+				var items = await Database.Set<News>().Include(c => c.Content).Where(t => t.IsDeleted == false).ToListAsync(cancellationToken: cancellationToken);
 				var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 
 				return new NewsListDto
@@ -57,7 +57,7 @@ namespace QueryServices
 		{
 			try
 			{
-				var items = await Database.Set<News>().Include(c => c.Content).Where(t => !t.IsActive)
+				var items = await Database.Set<News>().Include(c => c.Content)
 					.ToListAsync(cancellationToken: cancellationToken);
 				var dtos = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(items);
 
@@ -78,7 +78,7 @@ namespace QueryServices
 			try
 			{
 				var dataById = await Database.Set<News>().Include(c => c.Content)
-					.Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+					.Where(t => t.IsDeleted == false).ToListAsync(cancellationToken: cancellationToken);
 				var data = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(dataById);
 
 				var offset = (query.PageNumber - 1) * query.PageSize;
@@ -101,7 +101,7 @@ namespace QueryServices
 		public async Task<NewsListDto> Execute(GetMySliderImageNewsById query, CancellationToken cancellationToken)
 		{
 			var dataById = await Database.Set<News>().Include(c => c.Content).Include(t=>t.AccessEntityItems.Where(r=> query.ScopeIds.Contains(r.ScopeId)))
-				.Where(t => t.IsDeleted == false && t.IsActive).ToListAsync(cancellationToken: cancellationToken);
+				.Where(t => t.IsDeleted == false).ToListAsync(cancellationToken: cancellationToken);
 			var data = _mapper.Map<IList<News>, IList<NewsSimpleDto>>(dataById);
 
 			var offset = (query.PageNumber - 1) * query.PageSize;

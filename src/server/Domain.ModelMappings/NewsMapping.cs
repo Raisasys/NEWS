@@ -15,9 +15,6 @@ namespace Domain.ModelMappings
 		{
 			entityBuilder.Property(t => t.ExpirationTime);
 			entityBuilder.Property(t => t.ExpireDuration);
-			entityBuilder.Property(t => t.IsActive);
-			entityBuilder.Property(t => t.IsArchived);
-			entityBuilder.Property(t => t.IsPublished);
 			entityBuilder.Property(t => t.OwnerScopeId);
 			entityBuilder.Property(t => t.Summery);
 			entityBuilder.Property(t => t.Title);
@@ -27,7 +24,9 @@ namespace Domain.ModelMappings
 			entityBuilder.Property(t => t.LastModifiedBy);
 			entityBuilder.Property(t => t.LastModifiedAt);
 			entityBuilder.HasOne(t => t.Content);//.WithOne().OnDelete(DeleteBehavior.Cascade);
-		}
+            entityBuilder.OwnsOne(t => t.Archived);
+            entityBuilder.OwnsOne(t => t.Published);
+        }
 	}
 
     public class GroupNewsMapping : CustomEntityMapper<GroupNews>
@@ -35,6 +34,8 @@ namespace Domain.ModelMappings
         public override void MapBuilder(EntityTypeBuilder<GroupNews> entityBuilder)
         {
             entityBuilder.OwnsMany(c => c.Items);
+            entityBuilder.OwnsOne(t => t.Archived);
+            entityBuilder.OwnsOne(t => t.Published);
         }
     }
     

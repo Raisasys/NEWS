@@ -8,7 +8,7 @@
 
   <ItemGroup>
 	  <PackageReference Include="Jaguar.Core.Bus" Version="1.0.2" />
-	  <PackageReference Include="Jaguar.Service" Version="1.2.3" />
+	  <PackageReference Include="Jaguar.Service" Version="1.2.10" />
 	  <PackageReference Include="Jaguar.Shared.Messages" Version="1.0.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
   </ItemGroup>

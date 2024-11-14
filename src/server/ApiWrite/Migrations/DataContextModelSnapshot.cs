@@ -107,19 +107,10 @@ namespace ApiWrite.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsGlobal")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LastModifiedAt")
@@ -214,12 +205,6 @@ namespace ApiWrite.Migrations
                     b.Property<int>("ExpireDuration")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -237,9 +222,6 @@ namespace ApiWrite.Migrations
 
                     b.Property<bool>("ShouldAuthenticated")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Summery")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -279,19 +261,10 @@ namespace ApiWrite.Migrations
                     b.Property<int>("ExpireDuration")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsGlobal")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LastModifiedAt")
@@ -496,15 +469,34 @@ namespace ApiWrite.Migrations
                                 .HasForeignKey("AnnouncementId");
                         });
 
-                    b.OwnsOne("Shared.Types.AttachedFile", "Image", b1 =>
+                    b.OwnsOne("Domain.ArchiveInfo", "Archived", b1 =>
                         {
                             b1.Property<Guid>("AnnouncementId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("FileId")
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<string>("FileName")
+                            b1.HasKey("AnnouncementId");
+
+                            b1.ToTable("Announcement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnouncementId");
+                        });
+
+                    b.OwnsOne("Domain.PublishInfo", "Published", b1 =>
+                        {
+                            b1.Property<Guid>("AnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("AnnouncementId");
@@ -536,7 +528,9 @@ namespace ApiWrite.Migrations
 
                     b.Navigation("AccessEntityItems");
 
-                    b.Navigation("Image");
+                    b.Navigation("Archived");
+
+                    b.Navigation("Published");
 
                     b.Navigation("TitleImage");
                 });
@@ -575,6 +569,44 @@ namespace ApiWrite.Migrations
                                 .HasForeignKey("GroupNewsId");
                         });
 
+                    b.OwnsOne("Domain.ArchiveInfo", "Archived", b1 =>
+                        {
+                            b1.Property<Guid>("GroupNewsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("GroupNewsId");
+
+                            b1.ToTable("GroupNews");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupNewsId");
+                        });
+
+                    b.OwnsOne("Domain.PublishInfo", "Published", b1 =>
+                        {
+                            b1.Property<Guid>("GroupNewsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("GroupNewsId");
+
+                            b1.ToTable("GroupNews");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupNewsId");
+                        });
+
                     b.OwnsMany("Domain.GroupNewsItem", "Items", b1 =>
                         {
                             b1.Property<Guid>("GroupNewsId")
@@ -602,7 +634,11 @@ namespace ApiWrite.Migrations
 
                     b.Navigation("AccessEntityItems");
 
+                    b.Navigation("Archived");
+
                     b.Navigation("Items");
+
+                    b.Navigation("Published");
                 });
 
             modelBuilder.Entity("Domain.News", b =>
@@ -636,6 +672,44 @@ namespace ApiWrite.Migrations
                                 .HasForeignKey("NewsId");
                         });
 
+                    b.OwnsOne("Domain.ArchiveInfo", "Archived", b1 =>
+                        {
+                            b1.Property<Guid>("NewsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("NewsId");
+
+                            b1.ToTable("News");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NewsId");
+                        });
+
+                    b.OwnsOne("Domain.PublishInfo", "Published", b1 =>
+                        {
+                            b1.Property<Guid>("NewsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("NewsId");
+
+                            b1.ToTable("News");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NewsId");
+                        });
+
                     b.OwnsOne("Shared.Types.AttachedFile", "TitleImage", b1 =>
                         {
                             b1.Property<Guid>("NewsId")
@@ -657,7 +731,11 @@ namespace ApiWrite.Migrations
 
                     b.Navigation("AccessEntityItems");
 
+                    b.Navigation("Archived");
+
                     b.Navigation("Content");
+
+                    b.Navigation("Published");
 
                     b.Navigation("TitleImage");
                 });

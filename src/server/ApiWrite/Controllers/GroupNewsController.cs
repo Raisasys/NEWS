@@ -11,16 +11,16 @@ namespace ApiWrite.Controllers
     {
 
         [HttpPost]
-        public async Task<ActionResult<GroupNewsResponse>> CreateGroupNews([FromBody] GroupNewsCommand command)
+        public async Task<ActionResult<GroupNewsResponse>> CreateGroupNews([FromBody] CreateGroupNewsCommand command)
         {
-            var response = await CommandBus.Send<GroupNewsCommand, GroupNewsResponse>(command);
+            var response = await CommandBus.Send<CreateGroupNewsCommand, GroupNewsResponse>(command);
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GroupNewsResponse>> UpdateGroupNews([FromBody] GroupNewsUpdateCommand command)
+        public async Task<ActionResult<GroupNewsResponse>> UpdateGroupNews([FromBody] UpdateGroupNewsCommand command)
         {
-            var response = await CommandBus.Send<GroupNewsUpdateCommand, GroupNewsResponse>(command);
+            var response = await CommandBus.Send<UpdateGroupNewsCommand, GroupNewsResponse>(command);
             return Ok(response);
         }
 
@@ -30,6 +30,25 @@ namespace ApiWrite.Controllers
             await CommandBus.Send<DeleteGroupNewsCommand>(command);
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Publish([FromBody] PublishGroupNewsCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<PublishGroupNewsCommand>(command);
+            return Ok();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Archive([FromBody] ArchiveGroupNewsCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<ArchiveGroupNewsCommand>(command);
+            return Ok();
+        }
+
+
 
         [HttpPost]
         public async Task<ActionResult> UpdateAccess(UpdateHaveAccessGroupNewsCommand command)

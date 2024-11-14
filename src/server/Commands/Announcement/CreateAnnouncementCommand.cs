@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Domain;
+using Newtonsoft.Json;
 using Shared.Types;
 
 namespace Commands.Announcement
@@ -13,14 +14,10 @@ namespace Commands.Announcement
     {
         public CreateAnnouncementCommand() { }
 
-		public AttachedFile Image { get; set; }
-        public string Header { get; set; }
         public string Title { get; set; }
-		public string Description { get; set; }
+        public string Header { get; set; }
+        public string Description { get; set; }
         public AttachedFile TitleImage { get; set; }
-        public bool IsPublished { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsArchived { get; set; }
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
@@ -40,3 +37,23 @@ namespace Commands.Announcement
 	    public Guid Id { get; set; }
     }
 }
+
+
+public class PublishAnnouncementCommand : Command
+{
+    public Guid AnnouncementId { get; set; }
+    public bool Published { get; set; }
+
+    [JsonIgnore]
+    public string UserId { get; set; }
+}
+
+
+public class ArchiveAnnouncementCommand : Command
+{
+    public Guid AnnouncementId { get; set; }
+    public bool Archived { get; set; }
+    [JsonIgnore]
+    public string UserId { get; set; }
+}
+

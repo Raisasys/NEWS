@@ -44,7 +44,27 @@ namespace ApiWrite.Controllers
 		}
 
 
-		[HttpPost]
+
+        [HttpPost]
+        public async Task<ActionResult> Publish([FromBody] PublishAnnouncementCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<PublishAnnouncementCommand>(command);
+            return Ok();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Archive([FromBody] ArchiveAnnouncementCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<ArchiveAnnouncementCommand>(command);
+            return Ok();
+        }
+
+
+
+        [HttpPost]
 		public async Task<ActionResult> UpdateIsPublic(UpdateIsGlobalAnnounceCommand command)
 		{
 			var announce = await Database.Set<Announcement>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);

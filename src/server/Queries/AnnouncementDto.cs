@@ -12,18 +12,16 @@ namespace Queries
 	public class AnnouncementDto : IDto
 	{
 		public Guid Id { get; set; }
-		public string Title { get; set; }
+        public string Title { get; set; }
         public string Header { get; set; }
-        public AttachedFile Image { get; set; }
-		public string Description { get; set; }
+        public string Description { get; set; }
         public AttachedFile TitleImage { get; set; }
-        public bool IsPublished { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsArchived { get; set; }
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
+        public ArchiveInfo Archived { get; set; }
+        public PublishInfo Published { get; set; }
         public virtual IEnumerable<AnnouncementFileDTO> Files { get; set; }
 	}
 

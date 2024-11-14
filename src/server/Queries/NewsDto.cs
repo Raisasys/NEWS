@@ -7,21 +7,19 @@ namespace Queries;
 public class NewsSimpleDto : IDto
 {
 	public Guid Id { get; set; }
-	public string Title { get; set; }
-	public string Summery { get; set; }
-	public AttachedFile TitleImage { get; set; }
-	public string NewsType { get; set; }
-	public bool IsPublished { get; set; }
-	public bool IsActive { get; set; }
-	public bool IsArchived { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public string CreatedBy { get; set; }
+    public string Title { get; set; }
+    public string Summery { get; set; }
+    public AttachedFile TitleImage { get; set; }
     public DateTime? ExpirationTime { get; set; }
-	public int ExpireDuration { get; set; }
+    public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
     public bool ShouldAuthenticated { get; set; }
-    public string ContentId { get; set; }
-    public bool IsGlobal { get; set; }
+    public ArchiveInfo Archived { get; set; }
+    public PublishInfo Published { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public string CreatedBy { get; set; }
+    public string NewsType { get; set; }
+    
 
 }
 

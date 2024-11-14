@@ -10,36 +10,42 @@ public class GroupNews : Aggregate, IHaveAccess, IHaveCommunications
     protected GroupNews() { }
 
     public GroupNews(
-        string title, string summery, bool isActive, bool isArchived,
-        DateTime? expirationTime, int expireDuration, string ownerScopeId, List<GroupNewsItem> items)
+        string title, DateTime? expirationTime, int expireDuration, string ownerScopeId, List<GroupNewsItem> items)
     {
         Title = title;
-        Summery = summery;
-        IsActive = isActive;
         ExpirationTime = expirationTime;
         ExpireDuration = expireDuration;
         OwnerScopeId = ownerScopeId;
-        IsArchived = isArchived;
         Items =items;
     }
 
 
 
     public string Title { get; set; }
-    public string Summery { get; set; }
-    public bool IsActive { get; set; }
-    public bool IsArchived { get; set; }
     public DateTime? ExpirationTime { get; set; }
     public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
     public bool ShouldAuthenticated { get; set; }
     public virtual ICollection<GroupNewsItem> Items { get; set; } = new List<GroupNewsItem>();
 
+    public ArchiveInfo Archived { get; set; }
+    public PublishInfo Published { get; set; }
+    
+    public void Archive(string user)
+    {
+        Archived = new ArchiveInfo(DateTime.Now, user);
+    }
+
+    public void Publish(string user)
+    {
+        Published = new PublishInfo(DateTime.Now, user);
+    }
+
     public bool IsGlobal { get; set; }
     public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
 
     public bool HasAccess(IUserIdentity identity) =>
-        IsActive && !IsArchived && 
+        !IsDeleted && Archived == null && Published != null &&
         (!ShouldAuthenticated || IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
 
     public ICollection<CommunicationItem> Communications { get; set; }
