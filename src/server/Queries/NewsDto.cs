@@ -70,7 +70,7 @@ public class TopBottomImageContentDto : NewsContentDto
 public class SliderImagesContentDto : NewsContentDto
 {
 	public string Text { get; set; }
-	public IEnumerable<SliderImageItemDto> SliderImageItemDto { get; set; }
+	public IEnumerable<SliderImageItemDto> Sliders { get; set; }
 }
 public class SliderImageItemDto: IDto
 {

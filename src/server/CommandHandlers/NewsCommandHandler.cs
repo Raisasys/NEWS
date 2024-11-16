@@ -137,7 +137,7 @@ namespace CommandHandlers
 
         public async Task<CreateNewsResponse> Handle(CreateNewsBySliderImageContentCommand command, CancellationToken cancellationToken)
         {
-            var content = new SliderImagesContent(command.Text, command.SliderImageItemsCommand.Select(s => new SliderImageItem()
+            var content = new SliderImagesContent(command.Text, command.Sliders.Select(s => new SliderImageItem()
             {
                 Image = s.Image,
                 Title = s.Title,
@@ -151,7 +151,7 @@ namespace CommandHandlers
             var files = new List<string>();
             if (command.Image != null) files.Add(command.Image.FileId);
 
-            foreach (var itemCommand in command.SliderImageItemsCommand)
+            foreach (var itemCommand in command.Sliders)
                 if (itemCommand.Image != null)
                     files.Add(itemCommand.Image.FileId);
 
@@ -449,7 +449,7 @@ public static class InlineMapper
     {
         var info = command.Info;
 
-        return new News(info.Title, info.Summery, content, info.TitleImage, info.ExpirationTime, info.ExpireDuration, info.ScopeId)
+        return new News(info.Title, info.Summery, content, info.TitleImage, info.ExpirationTime, info.ExpireDuration, info.OwnerScopeId)
         {
             ShouldAuthenticated = command.ShouldAuthenticated
         };

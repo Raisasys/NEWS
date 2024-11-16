@@ -40,7 +40,7 @@ namespace Commands.News
 
 	public class CreateNewsBySliderImageContentCommand : CreateNewsBaseCommand
 	{
-		public  IEnumerable<SliderImageItemCommand> SliderImageItemsCommand { get; set; }
+		public  IEnumerable<SliderImageItemCommand> Sliders { get; set; }
 	}
 
 	public class SliderImageItemCommand 
@@ -68,7 +68,7 @@ namespace Commands.News
 		public AttachedFile TitleImage { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
-		public string ScopeId  { get; set; }
+		public string OwnerScopeId { get; set; }
 	}
 
 

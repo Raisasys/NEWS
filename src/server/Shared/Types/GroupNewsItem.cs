@@ -10,6 +10,4 @@ public record GroupNewsItem
 public record ArchiveInfo(DateTime At, string By)
 {
 }
-public record PublishInfo(DateTime At , string By)
-{
-}
+public record PublishInfo(DateTime At , string By){}
