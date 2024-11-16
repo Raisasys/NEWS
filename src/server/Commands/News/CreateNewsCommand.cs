@@ -111,4 +111,12 @@ namespace Commands.News
         public string UserId { get; set; }
     }
 
+    public class AuthenticatedNewsCommand : Command
+    {
+        public Guid NewsId { get; set; }
+        public bool Authenticated { get; set; }
+        [JsonIgnore]
+        public string UserId { get; set; }
+    }
+
 }

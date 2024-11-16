@@ -17,8 +17,9 @@ namespace CommandHandlers
         ICommandHandler<CreateAnnouncementCommand, CreateAnnouncementResponse>,
         ICommandHandler<UpdateAnnouncementCommand, UpdateAnnouncementResponse>,
         ICommandHandler<DeleteAnnouncementCommand>,
-    ICommandHandler<PublishAnnouncementCommand>,
-        ICommandHandler<ArchiveAnnouncementCommand>
+        ICommandHandler<PublishAnnouncementCommand>,
+        ICommandHandler<ArchiveAnnouncementCommand>,
+        ICommandHandler<AuthenticatedAnnouncementCommand>
 
     {
         private IIntegrationBus _integrationBus;
@@ -30,7 +31,7 @@ namespace CommandHandlers
         {
             var files = command.Files.Select(s => new AnnouncementFile
             {
-                File= s.File,
+                File = s.File,
                 Name = s.Name
             }).ToList();
 
@@ -38,7 +39,7 @@ namespace CommandHandlers
             announc.ShouldAuthenticated = command.ShouldAuthenticated;
             announc.ExpirationTime = command.ExpirationTime;
             announc.ExpireDuration = command.ExpireDuration;
-            announc.OwnerScopeId= command.OwnerScopeId;
+            announc.OwnerScopeId = command.OwnerScopeId;
 
             Database.Add(announc);
 
@@ -75,18 +76,18 @@ namespace CommandHandlers
 
             var files = command.UpdatedFiles.Select(t => new AnnouncementFile
             {
-                File= t.File,
+                File = t.File,
                 Name = t.Name
             }).ToList();
 
-            updateAnnounce.TitleImage= command.TitleImage;
+            updateAnnounce.TitleImage = command.TitleImage;
             updateAnnounce.Description = command.Description;
             updateAnnounce.Title = command.Title;
             updateAnnounce.Files = files;
             updateAnnounce.ShouldAuthenticated = command.ShouldAuthenticated;
             updateAnnounce.ExpirationTime = command.ExpirationTime;
             updateAnnounce.ExpireDuration = command.ExpireDuration;
-            updateAnnounce.OwnerScopeId= command.OwnerScopeId;
+            updateAnnounce.OwnerScopeId = command.OwnerScopeId;
 
             await Database.SaveChanges(cancellationToken);
 
@@ -128,6 +129,22 @@ namespace CommandHandlers
             else
             {
                 item.Archived = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
+
+        public async Task Handle(AuthenticatedAnnouncementCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<Announcement>(command.AnnouncementId, cancellationToken);
+            if (command.Authenticated)
+            {
+                item.ShouldAuthenticated = false;
+            }
+            else
+            {
+                item.ShouldAuthenticated = true;
             }
 
             Database.Update(item);

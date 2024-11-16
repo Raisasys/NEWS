@@ -57,3 +57,10 @@ public class ArchiveAnnouncementCommand : Command
     public string UserId { get; set; }
 }
 
+public class AuthenticatedAnnouncementCommand : Command
+{
+    public Guid AnnouncementId { get; set; }
+    public bool Authenticated { get; set; }
+    [JsonIgnore]
+    public string UserId { get; set; }
+}

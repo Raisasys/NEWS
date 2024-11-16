@@ -34,7 +34,13 @@ public class ArchiveGroupNewsCommand : Command
     public string UserId { get; set; }
 }
 
-
+public class AuthenticatedGroupNewsCommand : Command
+{
+    public Guid GroupNewsId { get; set; }
+    public bool Authenticated { get; set; }
+    [JsonIgnore]
+    public string UserId { get; set; }
+}
 public class GroupNewsResponse
 {
     public Guid GroupNewsId { get; set; }

@@ -20,7 +20,8 @@ namespace CommandHandlers
         ICommandHandler<UpdateVideoCommand, UpdateNewsResponse>,
         ICommandHandler<DeleteNewCommand>,
         ICommandHandler<PublishNewsCommand>,
-        ICommandHandler<ArchiveNewsCommand>
+        ICommandHandler<ArchiveNewsCommand>,
+        ICommandHandler<AuthenticatedNewsCommand>
 
 
     {
@@ -423,6 +424,21 @@ namespace CommandHandlers
             await Database.SaveChanges(cancellationToken);
         }
 
+        public async Task Handle(AuthenticatedNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<News>(command.NewsId, cancellationToken);
+            if (command.Authenticated)
+            {
+                item.ShouldAuthenticated = false;
+            }
+            else
+            {
+                item.ShouldAuthenticated = true;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
     }
 
 

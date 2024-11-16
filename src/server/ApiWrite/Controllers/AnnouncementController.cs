@@ -1,4 +1,5 @@
 ﻿using Commands.Announcement;
+using Commands.GroupNews;
 using Commands.News;
 using Core;
 using Domain;
@@ -62,6 +63,13 @@ namespace ApiWrite.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Authenticate([FromBody] AuthenticatedAnnouncementCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<AuthenticatedAnnouncementCommand>(command);
+            return Ok();
+        }
 
 
         [HttpPost]

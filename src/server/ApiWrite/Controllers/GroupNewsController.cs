@@ -48,7 +48,14 @@ namespace ApiWrite.Controllers
             return Ok();
         }
 
-
+        [HttpPost]
+        public async Task<ActionResult> Authenticate([FromBody] AuthenticatedGroupNewsCommand command)
+        {
+            command.UserId = UserIdentity.User.UserId;
+            await CommandBus.Send<AuthenticatedGroupNewsCommand>(command);
+            return Ok();
+        }
+        
 
         [HttpPost]
         public async Task<ActionResult> UpdateAccess(UpdateHaveAccessGroupNewsCommand command)

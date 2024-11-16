@@ -19,7 +19,8 @@ namespace CommandHandlers
         ICommandHandler<UpdateGroupNewsCommand, GroupNewsResponse>,
         ICommandHandler<DeleteGroupNewsCommand>,
         ICommandHandler<PublishGroupNewsCommand>,
-        ICommandHandler<ArchiveGroupNewsCommand>
+        ICommandHandler<ArchiveGroupNewsCommand>,
+        ICommandHandler<AuthenticatedGroupNewsCommand>,
 
     {
         
@@ -105,6 +106,23 @@ namespace CommandHandlers
             else
             {
                 item.Archived = null;
+            }
+
+            Database.Update(item);
+            await Database.SaveChanges(cancellationToken);
+        }
+
+
+        public async Task Handle(AuthenticatedGroupNewsCommand command, CancellationToken cancellationToken)
+        {
+            var item = await Database.Find<GroupNews>(command.GroupNewsId, cancellationToken);
+            if (command.Authenticated)
+            {
+                item.ShouldAuthenticated = false;
+            }
+            else
+            {
+                item.ShouldAuthenticated = true;
             }
 
             Database.Update(item);
