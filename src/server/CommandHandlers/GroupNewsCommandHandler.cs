@@ -20,7 +20,7 @@ namespace CommandHandlers
         ICommandHandler<DeleteGroupNewsCommand>,
         ICommandHandler<PublishGroupNewsCommand>,
         ICommandHandler<ArchiveGroupNewsCommand>,
-        ICommandHandler<AuthenticatedGroupNewsCommand>,
+        ICommandHandler<AuthenticatedGroupNewsCommand>
 
     {
         
