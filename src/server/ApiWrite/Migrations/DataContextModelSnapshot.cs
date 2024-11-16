@@ -156,9 +156,6 @@ namespace ApiWrite.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("File")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -168,7 +165,7 @@ namespace ApiWrite.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -540,6 +537,27 @@ namespace ApiWrite.Migrations
                     b.HasOne("Domain.Announcement", null)
                         .WithMany("Files")
                         .HasForeignKey("AnnouncementId");
+
+                    b.OwnsOne("Shared.Types.AttachedFile", "File", b1 =>
+                        {
+                            b1.Property<Guid>("AnnouncementFileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileId")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FileName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AnnouncementFileId");
+
+                            b1.ToTable("AnnouncementFile");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnouncementFileId");
+                        });
+
+                    b.Navigation("File");
                 });
 
             modelBuilder.Entity("Domain.GroupNews", b =>

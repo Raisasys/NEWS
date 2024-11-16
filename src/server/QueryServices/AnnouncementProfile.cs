@@ -14,7 +14,7 @@ namespace QueryServices
 		public AnnouncementProfile()
         {
             CreateMap<Announcement, AnnouncementDto>();
-			CreateMap<AnnouncementFile, AnnouncementFileDTO>();
+			CreateMap<AnnouncementFile, AnnouncementFileDto>();
 
 		}
 		
