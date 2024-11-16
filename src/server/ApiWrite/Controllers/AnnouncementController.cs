@@ -32,7 +32,7 @@ namespace ApiWrite.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> UpdateAccess(UpdateHaveAccessAnnounceCommand command)
+		public async Task<ActionResult> UpdateAnnouncement(UpdateHaveAccessAnnounceCommand command)
 		{
 			var announce = await Database.Set<Announcement>().Include(c => c.AccessEntityItems).SingleOrDefaultAsync(c => c.Id == command.Id);
 			if (announce != null)

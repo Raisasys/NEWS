@@ -23,11 +23,11 @@ namespace ApiRead.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<GetAnnouncementListDto>> GetAnnouncements([FromQuery] GetAnnouncementListDto oQueryString)
+		public async Task<ActionResult<GetAnnouncementListDto>> GetAnnouncements()
 		{
 			try
 			{
-				var oResponse = await QueryProcessor.Execute<GetAnnouncementListDto, AnnouncementListDto>(oQueryString);
+				var oResponse = await QueryProcessor.Execute<GetAnnouncementListDto, AnnouncementListDto>(new GetAnnouncementListDto());
 				return Ok(oResponse);
 			}
 			catch (Exception oEx)

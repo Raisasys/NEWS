@@ -32,7 +32,7 @@ namespace CommandHandlers
             var files = command.Files.Select(s => new AnnouncementFile
             {
                 File = s.File,
-                Name = s.Name
+                Title = s.Title
             }).ToList();
 
             var announc = new Announcement(command.Title, command.Header, command.TitleImage, command.Description, files);
@@ -47,9 +47,7 @@ namespace CommandHandlers
             {
                 foreach (var item in command.Files)
                 {
-                    var fileServiceResponse =
-                        await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(
-                            new PersistFileIntegrationCommand { FileName = item.File }, cancellationToken);
+                    var fileServiceResponse = await _integrationBus.Send<PersistFileIntegrationCommand, PersistFileResponse>(new PersistFileIntegrationCommand { FileName = item.File.FileId }, cancellationToken);
                     if (!fileServiceResponse.Successed) throw new CoreException("عملیات باگزاری فایل با شکست روبرو شد");
 
                 }
@@ -74,20 +72,23 @@ namespace CommandHandlers
                 updateAnnounce.Files.Remove(item);
             }
 
-            var files = command.UpdatedFiles.Select(t => new AnnouncementFile
+            var files = command.Files.Select(t => new AnnouncementFile
             {
                 File = t.File,
-                Name = t.Name
+                Title= t.Title
             }).ToList();
 
             updateAnnounce.TitleImage = command.TitleImage;
             updateAnnounce.Description = command.Description;
             updateAnnounce.Title = command.Title;
+            updateAnnounce.Header = command.Header;
             updateAnnounce.Files = files;
             updateAnnounce.ShouldAuthenticated = command.ShouldAuthenticated;
             updateAnnounce.ExpirationTime = command.ExpirationTime;
             updateAnnounce.ExpireDuration = command.ExpireDuration;
             updateAnnounce.OwnerScopeId = command.OwnerScopeId;
+
+            Database.Update(updateAnnounce);
 
             await Database.SaveChanges(cancellationToken);
 

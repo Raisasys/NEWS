@@ -2,7 +2,7 @@
 
 namespace Queries;
 
-public class GetAnnouncementById : IQuery<AnnouncementDto>
+public class GetAnnouncementById : IQuery<AnnouncementFullDto>
 {
     public Guid AnnouncementId { get; set; }
 }
@@ -23,7 +23,7 @@ public class GetAnnounceHaveCommunicationsQuery : IQuery<CommunicationItemListDt
     public Guid Id { get; set; }
 }
 
-public class GetMyAnnounceById : IQuery<AnnouncementDto>
+public class GetMyAnnounceById : IQuery<AnnouncementFullDto>
 {
     public Guid AnnouncementId { get; set; }
 }

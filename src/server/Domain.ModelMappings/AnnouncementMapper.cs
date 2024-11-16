@@ -18,4 +18,14 @@ namespace Domain.ModelMappings
             entityBuilder.OwnsOne(t => t.Published);
         }
 	}
+
+    public class AnnouncementFileMapper : CustomEntityMapper<AnnouncementFile>
+    {
+        public override void MapBuilder(EntityTypeBuilder<AnnouncementFile> entityBuilder)
+        {
+            entityBuilder.OwnsOne(t => t.File);
+        }
+    }
+
+    
 }

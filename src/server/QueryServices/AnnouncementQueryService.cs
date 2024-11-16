@@ -12,57 +12,40 @@ using System.Threading.Tasks;
 namespace QueryServices
 {
 	public class AnnouncementQueryService : QueryService, 
-		IQueryService<GetAnnouncementById, AnnouncementDto>,
+		IQueryService<GetAnnouncementById, AnnouncementFullDto>,
 		IQueryService<GetAnnouncementListDto, AnnouncementListDto>,
-		IQueryService<GetMyAnnounceById, AnnouncementDto>
+		IQueryService<GetMyAnnounceById, AnnouncementFullDto>
 	{
 		private readonly IMapper _mapper;
 		public AnnouncementQueryService(IMapper mapper)
 		{
 			_mapper = mapper;
 		}
-		public async Task<AnnouncementDto> Execute(GetAnnouncementById query, CancellationToken cancellationToken)
+		public async Task<AnnouncementFullDto> Execute(GetAnnouncementById query, CancellationToken cancellationToken)
 		{
-			try
-			{
-				var dataById = await Database.Set<Announcement>().Include(c => c.Files).SingleOrDefaultAsync(i => i.Id == query.AnnouncementId, cancellationToken: cancellationToken);
-				var result = _mapper.Map<Announcement, AnnouncementDto>(dataById);
-				return result;
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
-		}
+            var dataById = await Database.Set<Announcement>().Include(c => c.Files).SingleOrDefaultAsync(i => i.Id == query.AnnouncementId, cancellationToken: cancellationToken);
+            var result = _mapper.Map<Announcement, AnnouncementFullDto>(dataById);
+            return result;
+        }
 
 		public async Task<AnnouncementListDto> Execute(GetAnnouncementListDto query, CancellationToken cancellationToken)
 		{
-			try
-			{
-				var items = await Database.Set<Announcement>().Include(c => c.Files).Where(t=>!t.IsDeleted).ToListAsync(cancellationToken: cancellationToken);
-				var dtos = _mapper.Map<IList<Announcement>, IList<AnnouncementDto>>(items);
+            var items = await Database.Set<Announcement>().ToListAsync(cancellationToken: cancellationToken);
+            var dtos = _mapper.Map<IList<Announcement>, IList<AnnouncementDto>>(items);
 
-				return new AnnouncementListDto
-                {
-					Items = dtos
-				};
+            return new AnnouncementListDto
+            {
+                Items = dtos
+            };
+        }
 
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
-		}
-
-        public async Task<AnnouncementDto> Execute(GetMyAnnounceById query, CancellationToken cancellationToken)
+        public async Task<AnnouncementFullDto> Execute(GetMyAnnounceById query, CancellationToken cancellationToken)
         {
             var news = await Database.Set<Announcement>().Include(c => c.AccessEntityItems)
                 .SingleOrDefaultAsync(i => i.Id == query.AnnouncementId, cancellationToken: cancellationToken);
 
             if (news != null && news.HasAccess(CurrentAppContext.UserIdentity()))
-                return _mapper.Map<Announcement, AnnouncementDto>(news);
+                return _mapper.Map<Announcement, AnnouncementFullDto>(news);
             return null;
         }
     }

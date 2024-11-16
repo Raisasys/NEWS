@@ -21,14 +21,9 @@ namespace Commands.Announcement
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
-        public IEnumerable<UpdateAnnouncementFilesCommand> UpdatedFiles { get; set; }
-	}
-
-	public class UpdateAnnouncementFilesCommand
-	{
-		public string File { get; set; }
-        public string Name { get; set; }
+        public List<AnnouncementFileItem> Files { get; set; }
     }
+
 
 	public class UpdateAnnouncementResponse()
 	{

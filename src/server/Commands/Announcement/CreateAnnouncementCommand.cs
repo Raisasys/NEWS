@@ -12,8 +12,6 @@ namespace Commands.Announcement
 {
 	public class CreateAnnouncementCommand: Command<CreateAnnouncementResponse>
     {
-        public CreateAnnouncementCommand() { }
-
         public string Title { get; set; }
         public string Header { get; set; }
         public string Description { get; set; }
@@ -22,13 +20,13 @@ namespace Commands.Announcement
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
         public bool ShouldAuthenticated { get; set; }
-        public List<CreateAnnouncementFilesCommand> Files { get; set; }
+        public List<AnnouncementFileItem> Files { get; set; }
     }
 	
-	public class CreateAnnouncementFilesCommand
+	public class AnnouncementFileItem
 	{
-        public string Name { get; set; }
-        public string File { get; set; }
+        public string Title { get; set; }
+        public AttachedFile File { get; set; }
 
 	}
 

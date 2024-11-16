@@ -37,5 +37,19 @@ namespace ApiRead
                 return Problem(oEx.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<NewsFullDto>> GetAnnouncementById([FromQuery] Guid id)
+        {
+            try
+            {
+                var oResponse = await QueryProcessor.Execute<GetMyAnnounceById, AnnouncementFullDto>(new GetMyAnnounceById { AnnouncementId = id });
+                return Ok(oResponse);
+            }
+            catch (Exception oEx)
+            {
+                return Problem(oEx.Message);
+            }
+        }
     }
 }

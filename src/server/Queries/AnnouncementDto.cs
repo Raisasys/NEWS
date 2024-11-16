@@ -22,13 +22,18 @@ namespace Queries
         public bool ShouldAuthenticated { get; set; }
         public ArchiveInfo Archived { get; set; }
         public PublishInfo Published { get; set; }
-        public virtual IEnumerable<AnnouncementFileDTO> Files { get; set; }
 	}
 
-	public class AnnouncementFileDTO : IDto
-	{
-		public string File { get; set; }
-        public string Name { get; set; }
+
+    public class AnnouncementFullDto : AnnouncementDto
+    {
+        public IEnumerable<AnnouncementFileDto> Files { get; set; }
+    }
+
+    public class AnnouncementFileDto : IDto
+    {
+        public string Title { get; set; }
+        public AttachedFile File { get; set; }
     }
 
 	public class AnnouncementListDto : IListDto<AnnouncementDto>
