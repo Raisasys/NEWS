@@ -6,6 +6,12 @@ public record GroupNewsItem
     public int Order { get; set; }
 }
 
+public record GroupAnnouncementItem
+{
+    public Guid AnnouncementId { get; set; }
+    public int Order { get; set; }
+}
+
 
 public record ArchiveInfo(DateTime At, string By)
 {

@@ -9,11 +9,11 @@ namespace ApiRead.Controllers
 	public class AnnouncementController : AppController
 	{
 		[HttpGet]
-		public async Task<ActionResult<AnnouncementDto>> GetAnnouncementById([FromQuery] Guid announcementId)
+		public async Task<ActionResult<AnnouncementFullDto>> GetAnnouncementById([FromQuery] Guid announcementId)
 		{
 			try
 			{
-				var oResponse = await QueryProcessor.Execute<GetAnnouncementById, AnnouncementDto>(new GetAnnouncementById { AnnouncementId = announcementId });
+				var oResponse = await QueryProcessor.Execute<GetAnnouncementById, AnnouncementFullDto>(new GetAnnouncementById { AnnouncementId = announcementId });
 				return Ok(oResponse);
 			}
 			catch (Exception oEx)

@@ -27,5 +27,17 @@ namespace Domain.ModelMappings
         }
     }
 
-    
+
+
+    public class GroupAnnouncementMapping : CustomEntityMapper<GroupAnnouncement>
+    {
+        public override void MapBuilder(EntityTypeBuilder<GroupAnnouncement> entityBuilder)
+        {
+            entityBuilder.OwnsMany(c => c.Items);
+            entityBuilder.OwnsOne(t => t.Archived);
+            entityBuilder.OwnsOne(t => t.Published);
+        }
+    }
+
+
 }
