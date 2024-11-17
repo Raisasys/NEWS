@@ -1,5 +1,4 @@
 ﻿using Commands.Announcement;
-using Commands.GroupNews;
 using Commands.News;
 using Core;
 using Domain;

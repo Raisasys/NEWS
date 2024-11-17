@@ -1,5 +1,5 @@
 ﻿
-using Commands.GroupNews;
+using Commands;
 using Core;
 using Domain;
 using Microsoft.AspNetCore.Mvc;

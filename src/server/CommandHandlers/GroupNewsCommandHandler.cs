@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Commands.GroupNews;
+using Commands;
 using Commands.News;
 using Core;
 using Domain;

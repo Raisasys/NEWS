@@ -3,7 +3,7 @@ using Core;
 using Domain;
 using Newtonsoft.Json;
 
-namespace Commands.GroupNews;
+namespace Commands;
 
 public class CreateGroupNewsCommand : Command<GroupNewsResponse>
 {
