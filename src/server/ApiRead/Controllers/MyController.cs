@@ -25,7 +25,7 @@ namespace ApiRead
 
 
         [HttpGet]
-        public async Task<ActionResult<NewsFullDto>> GetGroupNewsById([FromQuery] Guid id)
+        public async Task<ActionResult<NewsListDto>> GetGroupNewsById([FromQuery] Guid id)
         {
             try
             {
