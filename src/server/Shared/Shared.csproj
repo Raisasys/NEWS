@@ -6,6 +6,6 @@
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Jaguar.Core.Messages" Version="1.0.2" />
-		<PackageReference Include="Jaguar.Shared.Types" Version="1.0.26" />
+		<PackageReference Include="Jaguar.Shared.Types" Version="1.0.27" />
 	</ItemGroup>
 </Project>

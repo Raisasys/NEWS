@@ -65,6 +65,32 @@ namespace ApiWrite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GroupAnnouncement",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShouldAuthenticated = table.Column<bool>(type: "bit", nullable: false),
+                    Archived_At = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Archived_By = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Published_At = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Published_By = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsGlobal = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupAnnouncement", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GroupNews",
                 columns: table => new
                 {
@@ -257,6 +283,48 @@ namespace ApiWrite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GroupAnnouncement_AccessEntityItems",
+                columns: table => new
+                {
+                    GroupAnnouncementId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ScopeId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupAnnouncement_AccessEntityItems", x => new { x.GroupAnnouncementId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_GroupAnnouncement_AccessEntityItems_GroupAnnouncement_GroupAnnouncementId",
+                        column: x => x.GroupAnnouncementId,
+                        principalTable: "GroupAnnouncement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupAnnouncementItem",
+                columns: table => new
+                {
+                    GroupAnnouncementId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnnouncementId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupAnnouncementItem", x => new { x.GroupAnnouncementId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_GroupAnnouncementItem_GroupAnnouncement_GroupAnnouncementId",
+                        column: x => x.GroupAnnouncementId,
+                        principalTable: "GroupAnnouncement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GroupNews_AccessEntityItems",
                 columns: table => new
                 {
@@ -307,6 +375,7 @@ namespace ApiWrite.Migrations
                     CreationAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreationBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AnnouncementId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    GroupAnnouncementId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     GroupNewsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     NewsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -324,6 +393,11 @@ namespace ApiWrite.Migrations
                         name: "FK_CommunicationItem_Announcement_AnnouncementId",
                         column: x => x.AnnouncementId,
                         principalTable: "Announcement",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CommunicationItem_GroupAnnouncement_GroupAnnouncementId",
+                        column: x => x.GroupAnnouncementId,
+                        principalTable: "GroupAnnouncement",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CommunicationItem_GroupNews_GroupNewsId",
@@ -410,6 +484,11 @@ namespace ApiWrite.Migrations
                 column: "AnnouncementId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CommunicationItem_GroupAnnouncementId",
+                table: "CommunicationItem",
+                column: "GroupAnnouncementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CommunicationItem_GroupNewsId",
                 table: "CommunicationItem",
                 column: "GroupNewsId");
@@ -418,6 +497,12 @@ namespace ApiWrite.Migrations
                 name: "IX_CommunicationItem_NewsId",
                 table: "CommunicationItem",
                 column: "NewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupAnnouncement_IsDeleted",
+                table: "GroupAnnouncement",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupNews_IsDeleted",
@@ -464,6 +549,12 @@ namespace ApiWrite.Migrations
                 name: "CommunicationItem");
 
             migrationBuilder.DropTable(
+                name: "GroupAnnouncement_AccessEntityItems");
+
+            migrationBuilder.DropTable(
+                name: "GroupAnnouncementItem");
+
+            migrationBuilder.DropTable(
                 name: "GroupNews_AccessEntityItems");
 
             migrationBuilder.DropTable(
@@ -486,6 +577,9 @@ namespace ApiWrite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Announcement");
+
+            migrationBuilder.DropTable(
+                name: "GroupAnnouncement");
 
             migrationBuilder.DropTable(
                 name: "GroupNews");

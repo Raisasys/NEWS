@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiWrite.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241116145711_init")]
+    [Migration("20241123122856_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace ApiWrite.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("GroupAnnouncementId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("GroupNewsId")
                         .HasColumnType("uniqueidentifier");
 
@@ -72,6 +75,8 @@ namespace ApiWrite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnnouncementId");
+
+                    b.HasIndex("GroupAnnouncementId");
 
                     b.HasIndex("GroupNewsId");
 
@@ -179,6 +184,53 @@ namespace ApiWrite.Migrations
                         .HasFilter("IsDeleted = 0");
 
                     b.ToTable("AnnouncementFile");
+                });
+
+            modelBuilder.Entity("Domain.GroupAnnouncement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGlobal")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LastModifiedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerScopeId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ShouldAuthenticated")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
+                    b.ToTable("GroupAnnouncement");
                 });
 
             modelBuilder.Entity("Domain.GroupNews", b =>
@@ -433,6 +485,10 @@ namespace ApiWrite.Migrations
                         .WithMany("Communications")
                         .HasForeignKey("AnnouncementId");
 
+                    b.HasOne("Domain.GroupAnnouncement", null)
+                        .WithMany("Communications")
+                        .HasForeignKey("GroupAnnouncementId");
+
                     b.HasOne("Domain.GroupNews", null)
                         .WithMany("Communications")
                         .HasForeignKey("GroupNewsId");
@@ -561,6 +617,105 @@ namespace ApiWrite.Migrations
                         });
 
                     b.Navigation("File");
+                });
+
+            modelBuilder.Entity("Domain.GroupAnnouncement", b =>
+                {
+                    b.OwnsMany("Core.Domain.AccessEntityValue", "AccessEntityItems", b1 =>
+                        {
+                            b1.Property<Guid>("GroupAnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("ScopeId")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("UserId")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("GroupAnnouncementId", "Id");
+
+                            b1.ToTable("GroupAnnouncement_AccessEntityItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupAnnouncementId");
+                        });
+
+                    b.OwnsOne("Domain.ArchiveInfo", "Archived", b1 =>
+                        {
+                            b1.Property<Guid>("GroupAnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("GroupAnnouncementId");
+
+                            b1.ToTable("GroupAnnouncement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupAnnouncementId");
+                        });
+
+                    b.OwnsOne("Domain.PublishInfo", "Published", b1 =>
+                        {
+                            b1.Property<Guid>("GroupAnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("At")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("By")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("GroupAnnouncementId");
+
+                            b1.ToTable("GroupAnnouncement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupAnnouncementId");
+                        });
+
+                    b.OwnsMany("Domain.GroupAnnouncementItem", "Items", b1 =>
+                        {
+                            b1.Property<Guid>("GroupAnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<Guid>("AnnouncementId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Order")
+                                .HasColumnType("int");
+
+                            b1.HasKey("GroupAnnouncementId", "Id");
+
+                            b1.ToTable("GroupAnnouncementItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GroupAnnouncementId");
+                        });
+
+                    b.Navigation("AccessEntityItems");
+
+                    b.Navigation("Archived");
+
+                    b.Navigation("Items");
+
+                    b.Navigation("Published");
                 });
 
             modelBuilder.Entity("Domain.GroupNews", b =>
@@ -911,6 +1066,11 @@ namespace ApiWrite.Migrations
                     b.Navigation("Communications");
 
                     b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("Domain.GroupAnnouncement", b =>
+                {
+                    b.Navigation("Communications");
                 });
 
             modelBuilder.Entity("Domain.GroupNews", b =>
