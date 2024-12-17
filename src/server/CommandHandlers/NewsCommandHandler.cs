@@ -215,6 +215,8 @@ namespace CommandHandlers
 
             updateNews.CopyMap(info);
 
+            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
+
             Database.Update(updateNews);
 
             if (command.Image != null && oldImage.FileId != command.Image.FileId)
@@ -248,7 +250,7 @@ namespace CommandHandlers
             updateNews.TitleImage = command.Image;
 
             updateNews.CopyMap(info);
-
+            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.Image != null && oldImage.FileId != command.Image?.FileId)
@@ -280,7 +282,7 @@ namespace CommandHandlers
             var info = command.Info;
             updateNews.CopyMap(info);
 
-
+            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.TopImage != null && oldTopImage != command.TopImage?.FileId)
@@ -330,7 +332,7 @@ namespace CommandHandlers
             updateNews.OwnerScopeId = info.OwnerScopeId;
             updateNews.Summery = info.Summery;
 
-
+            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             foreach (var item in command.SliderImageItemsCommand)
@@ -374,7 +376,7 @@ namespace CommandHandlers
             var info = command.Info;
 
             updateNews.CopyMap(info);
-
+            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.Video != null && oldVideo.FileId != command.Video?.FileId)

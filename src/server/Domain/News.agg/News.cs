@@ -54,9 +54,13 @@ namespace Domain
         public virtual ICollection<AccessEntityValue> AccessEntityItems { get; set; } = new List<AccessEntityValue>();
 
 
-        public bool HasAccess(IUserIdentity identity) =>
-            !IsDeleted && Archived == null && Published != null &&
-            (!ShouldAuthenticated || IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
+        public bool HasAccess(IUserIdentity identity)
+        {
+            return !IsDeleted && Archived == null && Published != null &&
+                   (!ShouldAuthenticated || IsGlobal ||
+                    (identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
+        }
+            
 
         public ICollection<CommunicationItem> Communications { get; set; }
     }
