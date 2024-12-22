@@ -20,7 +20,6 @@ namespace Commands.Announcement
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
-        public bool ShouldAuthenticated { get; set; }
         public List<AnnouncementFileItem> Files { get; set; }
     }
 

@@ -18,8 +18,7 @@ namespace CommandHandlers
         ICommandHandler<UpdateGroupAnnouncementCommand, GroupAnnouncementResponse>,
         ICommandHandler<DeleteGroupAnnouncementCommand>,
         ICommandHandler<PublishGroupAnnouncementCommand>,
-        ICommandHandler<ArchiveGroupAnnouncementCommand>,
-        ICommandHandler<AuthenticatedGroupAnnouncementCommand>
+        ICommandHandler<ArchiveGroupAnnouncementCommand>
 
     {
         
@@ -32,7 +31,6 @@ namespace CommandHandlers
                 Order = t.Order
             }).ToList();
             var groupAnnouncement = new GroupAnnouncement(command.Title, command.OwnerScopeId, groupAnnouncementItem);
-            groupAnnouncement.ShouldAuthenticated = command.ShouldAuthenticated;
 
             Database.Add(groupAnnouncement);
             await Database.SaveChanges(cancellationToken);
@@ -55,7 +53,6 @@ namespace CommandHandlers
 
             update.Title = command.Title;
             update.OwnerScopeId = command.OwnerScopeId;
-            update.ShouldAuthenticated = command.ShouldAuthenticated;
             update.Items = groupAnnouncementItems;
 
             Database.Update(update);
@@ -110,7 +107,7 @@ namespace CommandHandlers
         }
 
 
-        public async Task Handle(AuthenticatedGroupAnnouncementCommand command, CancellationToken cancellationToken)
+        /*public async Task Handle(AuthenticatedGroupAnnouncementCommand command, CancellationToken cancellationToken)
         {
             var item = await Database.Find<GroupAnnouncement>(command.GroupAnnouncementId, cancellationToken);
             if (command.Authenticated)
@@ -124,7 +121,7 @@ namespace CommandHandlers
 
             Database.Update(item);
             await Database.SaveChanges(cancellationToken);
-        }
+        }*/
     }
 
     /*public static class InlineMapper

@@ -29,7 +29,6 @@ namespace Domain
         public DateTime? ExpirationTime { get; set; }
         public int ExpireDuration { get; set; }
         public string OwnerScopeId { get; set; }
-        public bool ShouldAuthenticated { get; set; }
 
         public ArchiveInfo Archived { get; set; }
         public PublishInfo Published { get; set; }
@@ -53,6 +52,6 @@ namespace Domain
 
         public bool HasAccess(IUserIdentity identity) =>
             !IsDeleted && Archived == null && Published != null &&
-            (!ShouldAuthenticated || IsGlobal || (identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
+            (IsGlobal || (identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
     }
 }

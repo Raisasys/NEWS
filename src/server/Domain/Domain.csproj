@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Jaguar.Core.Entity" Version="1.0.9" />
-	  <PackageReference Include="Jaguar.Core.Service" Version="1.0.6" />
+	  <PackageReference Include="Jaguar.Core.Entity" Version="1.0.13" />
+	  <PackageReference Include="Jaguar.Core.Service" Version="1.0.10" />
   </ItemGroup>
 
   <ItemGroup>

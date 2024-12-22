@@ -13,14 +13,12 @@ namespace Commands.News
 	public interface ICreateNewsCommand
 	{
 		NewInfo Info { get; set; }
-		bool ShouldAuthenticated { get; set; }
 	}
 	public abstract class CreateNewsBaseCommand : Command<CreateNewsResponse>, ICreateNewsCommand
 	{
 		public NewInfo Info { get; set; }
 		public AttachedFile Image { get; set; }
 		public string Text { get; set; }
-		public bool ShouldAuthenticated { get; set; }
 	}
 
 
@@ -29,7 +27,6 @@ namespace Commands.News
         public AttachedFile Video { get; set; }
         public string Description { get; set; }
 		public NewInfo Info { get; set; }
-        public bool ShouldAuthenticated { get; set; }
     }
 
     public class CreateNewsByBottomImageContentCommand : CreateNewsBaseCommand
@@ -57,7 +54,6 @@ namespace Commands.News
 		public AttachedFile Image { get; set; }
 		public AttachedFile BottomImage { get; set; }
 		public string Text { get; set; }
-		public bool ShouldAuthenticated { get; set; }
 	}
 
 
@@ -78,7 +74,6 @@ namespace Commands.News
 		public NewInfo Info { get; set; }
 		public string Content { get; set; }
 		public IEnumerable<AttachedFile> Files { get; set; }
-		public bool ShouldAuthenticated { get; set; }
 	}
 	public class CreateNewsResponse
 	{
@@ -110,13 +105,13 @@ namespace Commands.News
         [JsonIgnore]
         public string UserId { get; set; }
     }
-
+/*
     public class AuthenticatedNewsCommand : Command
     {
         public Guid NewsId { get; set; }
         public bool Authenticated { get; set; }
         [JsonIgnore]
         public string UserId { get; set; }
-    }
+    }*/
 
 }

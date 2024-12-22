@@ -9,7 +9,6 @@ public class CreateGroupAnnouncementCommand : Command<GroupAnnouncementResponse>
 {
     public string Title { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public ICollection<GroupAnnouncementItem> Items { get; set; }
 }
 
@@ -31,14 +30,14 @@ public class ArchiveGroupAnnouncementCommand : Command
     [JsonIgnore]
     public string UserId { get; set; }
 }
-
+/*
 public class AuthenticatedGroupAnnouncementCommand : Command
 {
     public Guid GroupAnnouncementId { get; set; }
     public bool Authenticated { get; set; }
     [JsonIgnore]
     public string UserId { get; set; }
-}
+}*/
 public class GroupAnnouncementResponse
 {
     public Guid GroupAnnouncementId { get; set; }
@@ -49,7 +48,6 @@ public class UpdateGroupAnnouncementCommand : Command<GroupAnnouncementResponse>
     public Guid GroupAnnouncementId { get; set; }
     public string Title { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public ICollection<GroupAnnouncementItem> Items { get; set; }
 }
 

@@ -12,7 +12,6 @@ namespace Commands.News
 	public interface IUpdateNewsCommand
 	{
 		NewInfoCommand Info { get; set; }
-		bool ShouldAuthenticated { get; set; }
 	}
 
 	public abstract class UpdateNewsCommand : Command<UpdateNewsResponse>, IUpdateNewsCommand
@@ -21,7 +20,6 @@ namespace Commands.News
 		public Guid NewsId { get; set; }
 		public AttachedFile Image { get; set; }
 		public string Text { get; set; }
-		public bool ShouldAuthenticated { get; set; }
 	}
 
 	public class UpdateNewsBySliderImageContentCommand : UpdateNewsCommand
@@ -45,7 +43,6 @@ namespace Commands.News
         public string Description { get; set; }
         public Guid NewsId { get; set; }
         public NewInfoCommand Info { get; set; }
-        public bool ShouldAuthenticated { get; set; }
     }
 
     public class UpdateNewsByTopImageContentCommand : UpdateNewsCommand

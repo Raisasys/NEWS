@@ -13,7 +13,6 @@ public class NewsSimpleDto : IDto
     public DateTime? ExpirationTime { get; set; }
     public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public ArchiveInfo Archived { get; set; }
     public PublishInfo Published { get; set; }
     public DateTimeOffset CreatedAt { get; set; }

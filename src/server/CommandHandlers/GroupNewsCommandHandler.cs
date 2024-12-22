@@ -9,8 +9,6 @@ using Commands.News;
 using Core;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Shared.Messages;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CommandHandlers
 {
@@ -19,8 +17,7 @@ namespace CommandHandlers
         ICommandHandler<UpdateGroupNewsCommand, GroupNewsResponse>,
         ICommandHandler<DeleteGroupNewsCommand>,
         ICommandHandler<PublishGroupNewsCommand>,
-        ICommandHandler<ArchiveGroupNewsCommand>,
-        ICommandHandler<AuthenticatedGroupNewsCommand>
+        ICommandHandler<ArchiveGroupNewsCommand>
 
     {
         
@@ -33,7 +30,6 @@ namespace CommandHandlers
                 Order = t.Order
             }).ToList();
             var groupNews = new GroupNews(command.Title, command.ExpirationTime, command.ExpireDuration, command.OwnerScopeId, groupNewsItem);
-            groupNews.ShouldAuthenticated = command.ShouldAuthenticated;
 
             Database.Add(groupNews);
             await Database.SaveChanges(cancellationToken);
@@ -58,7 +54,6 @@ namespace CommandHandlers
             update.ExpirationTime = command.ExpirationTime;
             update.ExpireDuration = command.ExpireDuration;
             update.OwnerScopeId = command.OwnerScopeId;
-            update.ShouldAuthenticated = command.ShouldAuthenticated;
             update.Items = groupNewsItems;
 
             Database.Update(update);
@@ -113,7 +108,7 @@ namespace CommandHandlers
         }
 
 
-        public async Task Handle(AuthenticatedGroupNewsCommand command, CancellationToken cancellationToken)
+        /*public async Task Handle(AuthenticatedGroupNewsCommand command, CancellationToken cancellationToken)
         {
             var item = await Database.Find<GroupNews>(command.GroupNewsId, cancellationToken);
             if (command.Authenticated)
@@ -127,7 +122,7 @@ namespace CommandHandlers
 
             Database.Update(item);
             await Database.SaveChanges(cancellationToken);
-        }
+        }*/
     }
 
     /*public static class InlineMapper

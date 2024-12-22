@@ -18,8 +18,7 @@ namespace CommandHandlers
         ICommandHandler<UpdateAnnouncementCommand, UpdateAnnouncementResponse>,
         ICommandHandler<DeleteAnnouncementCommand>,
         ICommandHandler<PublishAnnouncementCommand>,
-        ICommandHandler<ArchiveAnnouncementCommand>,
-        ICommandHandler<AuthenticatedAnnouncementCommand>
+        ICommandHandler<ArchiveAnnouncementCommand>
 
     {
         private IIntegrationBus _integrationBus;
@@ -36,7 +35,6 @@ namespace CommandHandlers
             }).ToList();
 
             var announc = new Announcement(command.Title, command.Header, command.TitleImage, command.Description, files);
-            announc.ShouldAuthenticated = command.ShouldAuthenticated;
             announc.ExpirationTime = command.ExpirationTime;
             announc.ExpireDuration = command.ExpireDuration;
             announc.OwnerScopeId = command.OwnerScopeId;
@@ -83,7 +81,6 @@ namespace CommandHandlers
             updateAnnounce.Title = command.Title;
             updateAnnounce.Header = command.Header;
             updateAnnounce.Files = files;
-            updateAnnounce.ShouldAuthenticated = command.ShouldAuthenticated;
             updateAnnounce.ExpirationTime = command.ExpirationTime;
             updateAnnounce.ExpireDuration = command.ExpireDuration;
             updateAnnounce.OwnerScopeId = command.OwnerScopeId;
@@ -135,7 +132,7 @@ namespace CommandHandlers
             Database.Update(item);
             await Database.SaveChanges(cancellationToken);
         }
-
+/*
         public async Task Handle(AuthenticatedAnnouncementCommand command, CancellationToken cancellationToken)
         {
             var item = await Database.Find<Announcement>(command.AnnouncementId, cancellationToken);
@@ -150,6 +147,6 @@ namespace CommandHandlers
 
             Database.Update(item);
             await Database.SaveChanges(cancellationToken);
-        }
+        }*/
     }
 }

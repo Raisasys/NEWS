@@ -11,7 +11,6 @@ public class CreateGroupNewsCommand : Command<GroupNewsResponse>
     public DateTime? ExpirationTime { get; set; }
     public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public ICollection<GroupNewsItem> Items { get; set; }
 }
 
@@ -33,14 +32,14 @@ public class ArchiveGroupNewsCommand : Command
     [JsonIgnore]
     public string UserId { get; set; }
 }
-
+/*
 public class AuthenticatedGroupNewsCommand : Command
 {
     public Guid GroupNewsId { get; set; }
     public bool Authenticated { get; set; }
     [JsonIgnore]
     public string UserId { get; set; }
-}
+}*/
 public class GroupNewsResponse
 {
     public Guid GroupNewsId { get; set; }
@@ -53,7 +52,6 @@ public class UpdateGroupNewsCommand : Command<GroupNewsResponse>
     public DateTime? ExpirationTime { get; set; }
     public int ExpireDuration { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public ICollection<GroupNewsItem> Items { get; set; }
 }
 

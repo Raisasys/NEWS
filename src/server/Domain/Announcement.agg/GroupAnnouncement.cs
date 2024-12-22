@@ -20,7 +20,6 @@ public class GroupAnnouncement : Aggregate, IHaveAccess, IHaveCommunications
 
     public string Title { get; set; }
     public string OwnerScopeId { get; set; }
-    public bool ShouldAuthenticated { get; set; }
     public virtual ICollection<GroupAnnouncementItem> Items { get; set; } = new List<GroupAnnouncementItem>();
 
     public ArchiveInfo Archived { get; set; }
@@ -41,7 +40,7 @@ public class GroupAnnouncement : Aggregate, IHaveAccess, IHaveCommunications
 
     public bool HasAccess(IUserIdentity identity) =>
         !IsDeleted && Archived == null && Published != null &&
-        (!ShouldAuthenticated || IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
+        (IsGlobal ||(identity != null && this.HaveAccess(identity.Scopes.ToList(), identity.User)));
 
     public ICollection<CommunicationItem> Communications { get; set; }
 }

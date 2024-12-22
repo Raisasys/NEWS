@@ -91,15 +91,7 @@ namespace ApiWrite.Controllers
             await CommandBus.Send<ArchiveNewsCommand>(command);
             return Ok();
         }
-
-        [HttpPost]
-        public async Task<ActionResult> Authenticate([FromBody] AuthenticatedNewsCommand command)
-        {
-            command.UserId = UserIdentity.User.UserId;
-            await CommandBus.Send<AuthenticatedNewsCommand>(command);
-            return Ok();
-        }
-
+		
 
         [HttpPost]
 		public async Task<ActionResult> UpdateAccess(UpdateHaveAccessNewsCommand command)

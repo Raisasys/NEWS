@@ -48,15 +48,7 @@ namespace ApiWrite.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Authenticate([FromBody] AuthenticatedGroupAnnouncementCommand command)
-        {
-            command.UserId = UserIdentity.User.UserId;
-            await CommandBus.Send<AuthenticatedGroupAnnouncementCommand>(command);
-            return Ok();
-        }
-        
-
+       
         [HttpPost]
         public async Task<ActionResult> UpdateAccess(UpdateHaveAccessGroupAnnouncementCommand command)
         {

@@ -20,8 +20,7 @@ namespace CommandHandlers
         ICommandHandler<UpdateVideoCommand, UpdateNewsResponse>,
         ICommandHandler<DeleteNewCommand>,
         ICommandHandler<PublishNewsCommand>,
-        ICommandHandler<ArchiveNewsCommand>,
-        ICommandHandler<AuthenticatedNewsCommand>
+        ICommandHandler<ArchiveNewsCommand>
 
 
     {
@@ -215,7 +214,6 @@ namespace CommandHandlers
 
             updateNews.CopyMap(info);
 
-            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
 
             Database.Update(updateNews);
 
@@ -250,7 +248,6 @@ namespace CommandHandlers
             updateNews.TitleImage = command.Image;
 
             updateNews.CopyMap(info);
-            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.Image != null && oldImage.FileId != command.Image?.FileId)
@@ -282,7 +279,6 @@ namespace CommandHandlers
             var info = command.Info;
             updateNews.CopyMap(info);
 
-            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.TopImage != null && oldTopImage != command.TopImage?.FileId)
@@ -332,7 +328,6 @@ namespace CommandHandlers
             updateNews.OwnerScopeId = info.OwnerScopeId;
             updateNews.Summery = info.Summery;
 
-            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             foreach (var item in command.SliderImageItemsCommand)
@@ -376,7 +371,6 @@ namespace CommandHandlers
             var info = command.Info;
 
             updateNews.CopyMap(info);
-            updateNews.ShouldAuthenticated = command.ShouldAuthenticated;
             Database.Update(updateNews);
 
             if (command.Video != null && oldVideo.FileId != command.Video?.FileId)
@@ -426,21 +420,7 @@ namespace CommandHandlers
             await Database.SaveChanges(cancellationToken);
         }
 
-        public async Task Handle(AuthenticatedNewsCommand command, CancellationToken cancellationToken)
-        {
-            var item = await Database.Find<News>(command.NewsId, cancellationToken);
-            if (command.Authenticated)
-            {
-                item.ShouldAuthenticated = false;
-            }
-            else
-            {
-                item.ShouldAuthenticated = true;
-            }
-
-            Database.Update(item);
-            await Database.SaveChanges(cancellationToken);
-        }
+        
     }
 
 
@@ -469,7 +449,6 @@ public static class InlineMapper
 
         return new News(info.Title, info.Summery, content, info.TitleImage, info.ExpirationTime, info.ExpireDuration, info.OwnerScopeId)
         {
-            ShouldAuthenticated = command.ShouldAuthenticated
         };
     }
 

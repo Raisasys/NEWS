@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Jaguar.Core.Messages" Version="1.0.2" />
-		<PackageReference Include="Jaguar.Shared.Types" Version="1.0.27" />
+		<PackageReference Include="Jaguar.Core.Messages" Version="1.0.3" />
+		<PackageReference Include="Jaguar.Shared.Types" Version="1.0.29" />
 	</ItemGroup>
 </Project>
