@@ -65,7 +65,8 @@ namespace Commands.News
 	public class NewInfoCommand
 	{
 		public string Title { get; set; }
-		public string Summery { get; set; }
+        public AttachedFile TitleImage { get; set; }
+        public string Summery { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public int ExpireDuration { get; set; }
 		public string OwnerScopeId { get; set; }
